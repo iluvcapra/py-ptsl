@@ -39,7 +39,9 @@ class Client:
             ),
             request_body_json=request_body_json
         )
+
         response = self.stub.SendGrpcRequest(request)
+
         return response
 
     # This works
@@ -128,5 +130,3 @@ class Client:
                 self.session_id = authorization_response.session_id
             else:
                 print("Connection did not authorize, message: " + authorization_response.message)
-
-
