@@ -11,26 +11,39 @@ from . import PTSL_pb2 as p
 PTSL_VERSION=1
 
 class Client:
-    stub: grpc.Channel
+    stub: PTSL_pb2_grpc.PTSLStub
     session_id: str
 
     def __init__(self, api_key_path, address = 'localhost:31416') -> None:
         channel = grpc.insecure_channel(address)
         self.stub = PTSL_pb2_grpc.PTSLStub(channel) 
+        self.session_id = ""
         self.check_if_ready()
         self.authorize_connection(api_key_path)
 
-    def check_if_ready(self):
-        request = p.Request(
-                header=p.RequestHeader(
-                    task_id="", 
-                    session_id="",
-                    command=p.CommandId.HostReadyCheck,
-                    version=PTSL_VERSION,
-                    ), 
-                request_body_json="")
+    def _send_sync_request(self, command_id, request_body, task_id="") -> p.Response:
 
+        if request_body is not None:
+            request_body_json = json_format.MessageToJson(request_body, preserving_proto_field_name=True)
+        else:
+            request_body_json = "" 
+
+        request = p.Request(
+            header=p.RequestHeader(
+                task_id=task_id,
+                session_id=self.session_id,
+                command=command_id,
+                version=PTSL_VERSION
+            ),
+            request_body_json=request_body_json
+        )
         response = self.stub.SendGrpcRequest(request)
+        return response
+
+
+    def check_if_ready(self):
+        response = self._send_sync_request(p.CommandId.HostReadyCheck, None)
+
         if response.header.status == p.Failed:
             print("Pro Tools Not Ready")
             print(response)
@@ -41,19 +54,7 @@ class Client:
         with io.FileIO(api_key_path) as f:
             api_token = f.readall().decode(encoding='ascii')
 
-        request = p.Request(
-            header=p.RequestHeader(
-                task_id="",
-                session_id="",
-                command=p.CommandId.AuthorizeConnection,
-                version=PTSL_VERSION,
-            ),
-            request_body_json=json_format.MessageToJson(
-                p.AuthorizeConnectionRequestBody(auth_string=api_token), 
-                preserving_proto_field_name=True)
-                )
-
-        response : p.Response = self.stub.SendGrpcRequest(request)
+        response = self._send_sync_request(p.CommandId.AuthorizeConnection, p.AuthorizeConnectionRequestBody(auth_string=api_token))
 
         if response.header.status == p.Failed:
             print("An error occurred")
