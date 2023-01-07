@@ -68,6 +68,7 @@ class Client:
             return body.current_setting
 
     # This does not work 
+    # Here is the error I get: https://gist.github.com/iluvcapra/fb8e2480070b0a9891076d39ed95d605
     def create_session(self, name, session_location, 
         file_type : p.FileType = p.FT_WAVE, 
         sample_rate: p.SampleRate = p.SR_48000, 
@@ -89,6 +90,8 @@ class Client:
 
     # This fails if there are zero tracks, the JSON returned from Pro Tools in the response
     # body has a strange format
+    #
+    # Here is the error I get: https://gist.github.com/iluvcapra/90601ade487b245510e08b9c68650925
     def get_track_list(self):
         req_body = p.GetTrackListRequestBody(page_limit=24, 
             track_filter_list=[p.TrackListInvertibleFilter(filter=p.All, is_inverted=False)], 
