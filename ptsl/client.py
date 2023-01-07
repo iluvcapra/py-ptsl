@@ -50,8 +50,41 @@ class Client:
             print("Failed:")
             print(response)
         else:
-            body = json_format.Parse(response.response_body_json, p.GetSessionSampleRateResponseBody)
+            body = json_format.Parse(response.response_body_json, p.GetSessionSampleRateResponseBody(), 
+                ignore_unknown_fields=True)
             return body.sample_rate
+
+
+    def get_session_audio_format(self) -> p.FileType:
+        response = self._send_sync_request(p.GetSessionAudioFormat, None)
+
+        if response.header.status == p.Failed:
+            print("Failed:")
+            print(response)
+        else:
+            body = json_format.Parse(response.response_body_json, p.GetSessionAudioFormatResponseBody())
+            return body.current_setting
+
+
+    def create_session(self, name, session_location, 
+        file_type : p.FileType = p.FT_WAVE, 
+        sample_rate: p.SampleRate = p.SR_48000, 
+        io_settings: p.IOSettings = p.IO_Last,
+        is_interleaved = 1,
+        is_cloud_project = 0,
+        bit_depth: p.BitDepth = p.Bit24
+        ):
+
+        request = p.CreateSessionRequestBody(session_name=name,file_type=file_type, sample_rate=sample_rate,
+            input_output_settings=io_settings, is_interleaved=is_interleaved, 
+            session_location=session_location, bit_depth=bit_depth)
+
+        response = self._send_sync_request(p.CreateSession, request)
+
+        if response.header.status == p.Failed:
+            print("Failed:")
+            print(response)
+
 
     def check_if_ready(self):
         response = self._send_sync_request(p.CommandId.HostReadyCheck, None)
