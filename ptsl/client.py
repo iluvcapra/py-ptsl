@@ -42,7 +42,7 @@ class Client:
         response = self.stub.SendGrpcRequest(request)
         return response
 
-
+    # This works
     def get_session_sample_rate(self) -> p.SampleRate:
         response = self._send_sync_request(p.CommandId.GetSessionSampleRate, None)
 
@@ -54,7 +54,7 @@ class Client:
                 ignore_unknown_fields=True)
             return body.sample_rate
 
-
+    # This works
     def get_session_audio_format(self) -> p.FileType:
         response = self._send_sync_request(p.GetSessionAudioFormat, None)
 
@@ -65,27 +65,43 @@ class Client:
             body = json_format.Parse(response.response_body_json, p.GetSessionAudioFormatResponseBody())
             return body.current_setting
 
-
+    # This does not work 
     def create_session(self, name, session_location, 
         file_type : p.FileType = p.FT_WAVE, 
         sample_rate: p.SampleRate = p.SR_48000, 
         io_settings: p.IOSettings = p.IO_Last,
-        is_interleaved = 1,
-        is_cloud_project = 0,
+        is_interleaved = True,
+        is_cloud_project = False,
         bit_depth: p.BitDepth = p.Bit24
         ):
 
-        request = p.CreateSessionRequestBody(session_name=name,file_type=file_type, sample_rate=sample_rate,
+        req_body = p.CreateSessionRequestBody(session_name=name,file_type=file_type, sample_rate=sample_rate,
             input_output_settings=io_settings, is_interleaved=is_interleaved, 
-            session_location=session_location, bit_depth=bit_depth)
+            session_location=session_location, bit_depth=bit_depth, is_cloud_project=is_cloud_project)
 
-        response = self._send_sync_request(p.CreateSession, request)
+        response = self._send_sync_request(p.CreateSession, req_body)
 
         if response.header.status == p.Failed:
             print("Failed:")
             print(response)
 
+    # This fails if there are zero tracks, the JSON returned from Pro Tools in the response
+    # body has a strange format
+    def get_track_list(self):
+        req_body = p.GetTrackListRequestBody(page_limit=24, 
+            track_filter_list=[p.TrackListInvertibleFilter(filter=p.All, is_inverted=False)], 
+            is_filter_list_additive=False)
 
+        response = self._send_sync_request(p.GetTrackList, req_body)
+
+        if response.header.status == p.Failed:
+            print("Failed:")
+            print(response)
+        else:
+            resp_body = json_format.Parse(response.response_body_json, p.GetTrackListResponseBody())
+            return resp_body.track_list
+
+    # This works
     def check_if_ready(self):
         response = self._send_sync_request(p.CommandId.HostReadyCheck, None)
 
@@ -95,7 +111,7 @@ class Client:
         else:
             print("Pro Tools Ready")
 
-
+    # This works
     def authorize_connection(self, api_key_path) -> Optional[str]:
         with io.FileIO(api_key_path) as f:
             api_token = f.readall().decode(encoding='ascii')
