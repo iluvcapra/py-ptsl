@@ -14,12 +14,14 @@ class Client:
     stub: PTSL_pb2_grpc.PTSLStub
     session_id: str
 
+
     def __init__(self, api_key_path, address = 'localhost:31416') -> None:
         channel = grpc.insecure_channel(address)
         self.stub = PTSL_pb2_grpc.PTSLStub(channel) 
         self.session_id = ""
         self.check_if_ready()
         self.authorize_connection(api_key_path)
+
 
     def _send_sync_request(self, command_id, request_body, task_id="") -> p.Response:
 
@@ -41,6 +43,16 @@ class Client:
         return response
 
 
+    def get_session_sample_rate(self) -> p.SampleRate:
+        response = self._send_sync_request(p.CommandId.GetSessionSampleRate, None)
+
+        if response.header.status == p.Failed:
+            print("Failed:")
+            print(response)
+        else:
+            body = json_format.Parse(response.response_body_json, p.GetSessionSampleRateResponseBody)
+            return body.sample_rate
+
     def check_if_ready(self):
         response = self._send_sync_request(p.CommandId.HostReadyCheck, None)
 
@@ -49,6 +61,7 @@ class Client:
             print(response)
         else:
             print("Pro Tools Ready")
+
 
     def authorize_connection(self, api_key_path) -> Optional[str]:
         with io.FileIO(api_key_path) as f:
@@ -66,19 +79,5 @@ class Client:
                 self.session_id = authorization_response.session_id
             else:
                 print("Connection did not authorize, message: " + authorization_response.message)
-
-            
-
-
-
-# def run(api_key_path):
-#     with grpc.insecure_channel('localhost:31416') as channel:
-#         stub = PTSL_pb2_grpc.PTSLStub(channel)
-
-#         check_if_ready(stub)
-#         session_id = authorize_connection(stub, api_key_path)
-#         print("Session ID is " + session_id)
-
-
 
 
