@@ -22,8 +22,8 @@ track_list = c.get_track_list()
 
 ## API Coverage
 
-|Command| Implemented |
-| ----- | :---------: |
+|Command| Implemented | Notes |
+| ----- | :---------: | ----- |
 |CreateSession| |
 |OpenSession|  |
 |Import|  |
@@ -61,7 +61,7 @@ track_list = c.get_track_list()
 |GetSessionAudioFormat| ☑️ |
 |GetSessionSampleRate| ☑️ |
 |GetSessionBitDepth| ☑️ |
-|GetSessionInterleavedState| ☑  [Bug Reported](https://duc.avid.com/showthread.php?p=2658177#post2658177) |
+|GetSessionInterleavedState| ☑ | [Bug Reported](https://duc.avid.com/showthread.php?p=2658177#post2658177) |
 |GetSessionTimeCodeRate| ☑️ |
 |GetSessionFeetFramesRate| ☑️ |
 |GetSessionAudioRatePullSettings| ☑️ |
