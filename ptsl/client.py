@@ -1,4 +1,5 @@
 import io
+from contextlib import contextmanager
 
 from typing import Optional, List
 
@@ -12,11 +13,20 @@ from .ops import Operation
 
 PTSL_VERSION=1
 
+@contextmanager
+def open_client(*args, **kwargs):
+    client = Client(*args, **kwargs)
+
+    try:
+        yield client
+    finally:
+        client.close()
+
+
 class Client:
     channel: grpc.Channel
     raw_client: PTSL_pb2_grpc.PTSLStub
     session_id: str
-
 
     def __init__(self, api_key_path: str, address: str = 'localhost:31416') -> None:
         self.channel = grpc.insecure_channel(address)
@@ -57,7 +67,7 @@ class Client:
 
         if response.header.status == pt.Failed:
             command_error = json_format.Parse(response.response_error_json, pt.CommandError())
-            self.error_handler(operation, command_error)
+            self._default_error_handler(operation, command_error)
             return command_error
 
         elif response.header.status == pt.Completed:
@@ -75,7 +85,7 @@ class Client:
                 pt.TaskStatus.Name[response.header.status])
 
 
-    def error_handler(self, operation: Operation, command_error: pt.CommandError):
+    def _default_error_handler(self, operation: Operation, command_error: pt.CommandError):
         error_type = "WARNING" if command_error.is_warning else "FAILURE"
 
         message = "%s: Operation %s failed.\n  Error type %i (%s)\n  Message: %s" % (error_type, 
@@ -173,7 +183,7 @@ class Client:
         else:
             return True
 
-    # This works
+
     def _authorize_connection(self, api_key_path) -> Optional[str]:
         """
         Authorizes the client's connection to the Pro Tools RPC server.
