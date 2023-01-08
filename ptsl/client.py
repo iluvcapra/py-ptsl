@@ -1,6 +1,6 @@
 import io
 
-from typing import Optional
+from typing import Optional, List
 
 import grpc
 from google.protobuf import json_format
@@ -13,20 +13,19 @@ from .ops import Operation
 PTSL_VERSION=1
 
 class Client:
-    stub: PTSL_pb2_grpc.PTSLStub
+    raw_client: PTSL_pb2_grpc.PTSLStub
     session_id: str
 
 
-    def __init__(self, api_key_path, address = 'localhost:31416') -> None:
+    def __init__(self, api_key_path: str, address: str = 'localhost:31416') -> None:
         channel = grpc.insecure_channel(address)
-        self.stub = PTSL_pb2_grpc.PTSLStub(channel) 
+        self.raw_client = PTSL_pb2_grpc.PTSLStub(channel) 
         self.session_id = ""
-        if self.check_if_ready():
-            self.authorize_connection(api_key_path)
+        if self._primitive_check_if_ready():
+            self._authorize_connection(api_key_path)
 
 
     def _send_sync_request(self, command_id, request_body, task_id="") -> pt.Response:
-
         if request_body is not None:
             request_body_json = json_format.MessageToJson(request_body, preserving_proto_field_name=True)
         else:
@@ -42,30 +41,40 @@ class Client:
             request_body_json=request_body_json
         )
 
-        response = self.stub.SendGrpcRequest(request)
+        response = self.raw_client.SendGrpcRequest(request)
 
         return response
 
 
     def run(self, operation: Operation) -> Optional[pt.CommandError]:
+        """
+        Run an operation on the client.
+
+        :returns: If the response from the server is 
+        """
         response = self._send_sync_request(operation.command_id, operation.request)
 
         if response.header.status == pt.Failed:
             command_error = json_format.Parse(response.response_error_json, pt.CommandError())
             self.error_handler(operation, command_error)
             return command_error
-        else:
+
+        elif response.header.status == pt.Completed:
             p = operation.response_body_prototype
             if len(response.response_body_json) > 0 and p is not None:
-                resp_body = json_format.Parse(response.response_body_json, p)
+                resp_body = json_format.Parse(response.response_body_json, p, ignore_unknown_fields=True)
                 operation.on_response_body(resp_body)
             else:
                 operation.on_empty_response_body()
 
             return None
+        else:
+            # FIXME: dump out for now, will be on the lookout for when this happens
+            assert False, "Unexpected response code %i (%s)" % (response.header.status, 
+                pt.TaskStatus.Name[response.header.status])
 
 
-    def error_handler(self, operation, command_error):
+    def error_handler(self, operation: Operation, command_error: pt.CommandError):
         error_type = "WARNING" if command_error.is_warning else "FAILURE"
 
         message = "%s: Operation %s failed.\n  Error type %i (%s)\n  Message: %s" % (error_type, 
@@ -125,7 +134,9 @@ class Client:
     # body has a strange format
     #
     # Here is the error I get: https://gist.github.com/iluvcapra/90601ade487b245510e08b9c68650925
-    def get_track_list(self, filters=[pt.TrackListInvertibleFilter(filter=pt.All, is_inverted=False)]):
+    def get_track_list(self, filters : List[pt.TrackListInvertibleFilter] = 
+            [pt.TrackListInvertibleFilter(filter=pt.All, is_inverted=False)]):
+
         req_body = pt.GetTrackListRequestBody(page_limit=24, 
             track_filter_list=filters, 
             is_filter_list_additive=False)
@@ -140,7 +151,11 @@ class Client:
             return resp_body.track_list
 
     # This works
-    def check_if_ready(self) -> bool:
+    def _primitive_check_if_ready(self) -> bool:
+        """
+        Checks if the Pro Tools RPC server is listening. The server will respond
+        to this command even if the client is not yet authenticated.
+        """
         response = self._send_sync_request(pt.CommandId.HostReadyCheck, None)
 
         if response.header.status == pt.Failed:
@@ -151,9 +166,16 @@ class Client:
             return True
 
     # This works
-    def authorize_connection(self, api_key_path) -> Optional[str]:
+    def _authorize_connection(self, api_key_path) -> Optional[str]:
+        """
+        Authorizes the client's connection to the Pro Tools RPC server.
+
+        This method is called automatically by the initializer.
+        """
+        KEY_FILE_ENCODING = 'ascii'
+
         with io.FileIO(api_key_path) as f:
-            api_token = f.readall().decode(encoding='ascii')
+            api_token = f.readall().decode(encoding=KEY_FILE_ENCODING)
 
         response = self._send_sync_request(pt.CommandId.AuthorizeConnection, pt.AuthorizeConnectionRequestBody(auth_string=api_token))
 

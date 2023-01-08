@@ -1,6 +1,11 @@
 from typing import Any
 
 class Operation:
+    """
+    An operation composes a `CommandId` with its request and response type.
+
+    The client runs `Operation`s with the Client.run() method. 
+    """
     request: Any
     
     def command_id(self):
