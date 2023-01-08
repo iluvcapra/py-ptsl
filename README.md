@@ -22,66 +22,66 @@ track_list = c.get_track_list()
 
 ## API Coverage
 
-|Command| Implemented | Tested and Works |
-| ----- | :---------: | :--------------: |
-|CreateSession| [ ] | [ ] |
-|OpenSession| [ ] | [ ] |
-|Import| [ ] | [ ] |
-|GetTrackList| [ ] | [ ] |
-|SelectAllClipsOnTrack| [ ] | [ ] |
-|ExtendSelectionToTargetTracks| [ ] | [ ] |
-|TrimToSelection| [ ] | [ ] |
-|CreateFadesBasedOnPreset| [ ] | [ ] |
-|RenameTargetTrack| [ ] | [ ] |
-|ConsolidateClip| [ ] | [ ] |
-|ExportClipsAsFiles| [ ] | [ ] |
-|ExportSelectedTracksAsAAFOMF| [ ] | [ ] |
-|GetTaskStatus| [ ] | [ ] |
-|HostReadyCheck| [ ] | [ ] |
-|RefreshTargetAudioFiles| [ ] | [ ] |
-|RefreshAllModifiedAudioFiles| [ ] | [ ] |
-|GetFileLocation| [ ] | [ ] |
-|CloseSession| [ ] | [ ] |
-|SaveSession| [ ] | [ ] |
-|SaveSessionAs| [ ] | [ ] |
-|Cut| [ ] | [ ] |
-|Copy| [ ] | [ ] |
-|Paste| [ ] | [ ] |
-|Clear| [ ] | [ ] |
-|CutSpecial| [ ] | [ ] |
-|CopySpecial| [ ] | [ ] |
-|ClearSpecial| [ ] | [ ] |
-|PasteSpecial| [ ] | [ ] |
-|ExportMix| [ ] | [ ] |
-|Spot| [ ] | [ ] |
-|ExportSessionInfoAsText| [ ] | [ ] |
-|GetDynamicProperties| [ ] | [ ] |
-|SetPlaybackMode| [ ] | [ ] |
-|SetRecordMode| [ ] | [ ] |
-|GetSessionAudioFormat| [X] | [ ] |
-|GetSessionSampleRate| [X] | [ ] |
-|GetSessionBitDepth| [X] | [ ] |
-|GetSessionInterleavedState| [ ] | [ ] |
-|GetSessionTimeCodeRate| [ ] | [ ] |
-|GetSessionFeetFramesRate| [ ] | [ ] |
-|GetSessionAudioRatePullSettings| [ ] | [ ] |
-|GetSessionVideoRatePullSettings| [ ] | [ ] |
-|GetSessionName| [ ] | [ ] |
-|GetSessionPath| [ ] | [ ] |
-|GetSessionStartTime| [ ] | [ ] |
-|GetSessionLength| [ ] | [ ] |
-|SetSessionAudioFormat| [ ] | [ ] |
-|SetSessionBitDepth| [ ] | [ ] |
-|SetSessionInterleavedState| [ ] | [ ] |
-|SetSessionTimeCodeRate| [ ] | [ ] |
-|SetSessionFeetFramesRate| [ ] | [ ] |
-|SetSessionAudioRatePullSettings| [ ] | [ ] |
-|SetSessionVideoRatePullSettings| [ ] | [ ] |
-|SetSessionStartTime| [ ] | [ ] |
-|SetSessionLength| [ ] | [ ] |
-|GetPTSLVersion| [ ] | [ ] |
-|GetPlaybackMode| [ ] | [ ] |
-|GetRecordMode| [ ] | [ ] |
-|GetTransportArmed| [ ] | [ ] |
-|GetTransportState| [ ] | [ ] |
-|AuthorizeConnection| [ ] | [ ] |
+|Command| Implemented |
+| ----- | :---------: |
+|CreateSession| In progress |
+|OpenSession|  |
+|Import|  |
+|GetTrackList| ☑️ |
+|SelectAllClipsOnTrack|  |
+|ExtendSelectionToTargetTracks|   |
+|TrimToSelection|  |
+|CreateFadesBasedOnPreset|  |
+|RenameTargetTrack|  |
+|ConsolidateClip|  |
+|ExportClipsAsFiles|  |
+|ExportSelectedTracksAsAAFOMF|  |
+|GetTaskStatus|  |
+|HostReadyCheck| ☑️ |
+|RefreshTargetAudioFiles|  |
+|RefreshAllModifiedAudioFiles|   |
+|GetFileLocation|  |
+|CloseSession|  |
+|SaveSession|  |
+|SaveSessionAs|  |
+|Cut|  |
+|Copy|  |
+|Paste|  |
+|Clear|  |
+|CutSpecial|  |
+|CopySpecial|  |
+|ClearSpecial|  |
+|PasteSpecial|  |
+|ExportMix|  |
+|Spot|  |
+|ExportSessionInfoAsText|  |
+|GetDynamicProperties|  |
+|SetPlaybackMode|  |
+|SetRecordMode|  |
+|GetSessionAudioFormat| ☑️ |
+|GetSessionSampleRate| ☑️ |
+|GetSessionBitDepth| ☑️ |
+|GetSessionInterleavedState|  |
+|GetSessionTimeCodeRate| ☑️ |
+|GetSessionFeetFramesRate| ☑️ |
+|GetSessionAudioRatePullSettings|  |
+|GetSessionVideoRatePullSettings|  |
+|GetSessionName| ☑️ |
+|GetSessionPath| ☑️ |
+|GetSessionStartTime| ☑️ |
+|GetSessionLength|  |
+|SetSessionAudioFormat|  |
+|SetSessionBitDepth|  |
+|SetSessionInterleavedState|  |
+|SetSessionTimeCodeRate|  |
+|SetSessionFeetFramesRate|  |
+|SetSessionAudioRatePullSettings|  |
+|SetSessionVideoRatePullSettings|  |
+|SetSessionStartTime|  |
+|SetSessionLength|  |
+|GetPTSLVersion| ☑️ |
+|GetPlaybackMode|  |
+|GetRecordMode|  |
+|GetTransportArmed|  |
+|GetTransportState|  |
+|AuthorizeConnection| ☑️ |
