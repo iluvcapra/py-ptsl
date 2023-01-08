@@ -41,7 +41,7 @@ Record Mode: RM_Normal
 This script will print a list of every track in the currently open session.
 
 ```sh
-$ python3 examples/print_tracks.py '/Users/jamiehardt/src/ptsl/Pro Tools Scripting SDK_jamiehardt@me.com.json'  
+$ python3 examples/print_tracks.py 'path/to/<your api key>.json'  
 1:  S    : AudioTrack : A1                               : #ff2a2a2a : {00000000-2a000000-d4cbe0df-2590e43e}
 2:       : AudioTrack : A2                               : #ff2a2a2a : {00000000-2a000000-d4cbe0df-ac40203f}
 3:       : BasicFolde : Folder 1                         : #ff2a2a2a : {00000000-2a000000-de01e1df-2d2b4575}
