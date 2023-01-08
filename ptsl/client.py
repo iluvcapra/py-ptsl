@@ -8,6 +8,8 @@ from google.protobuf import json_format
 from . import PTSL_pb2_grpc
 from . import PTSL_pb2 as pt
 
+from .ops import Operation
+
 PTSL_VERSION=1
 
 class Client:
@@ -19,8 +21,8 @@ class Client:
         channel = grpc.insecure_channel(address)
         self.stub = PTSL_pb2_grpc.PTSLStub(channel) 
         self.session_id = ""
-        self.check_if_ready()
-        self.authorize_connection(api_key_path)
+        if self.check_if_ready():
+            self.authorize_connection(api_key_path)
 
 
     def _send_sync_request(self, command_id, request_body, task_id="") -> pt.Response:
@@ -43,6 +45,37 @@ class Client:
         response = self.stub.SendGrpcRequest(request)
 
         return response
+
+
+    def run(self, operation: Operation) -> Optional[pt.CommandError]:
+        response = self._send_sync_request(operation.command_id, operation.request)
+
+        if response.header.status == pt.Failed:
+            command_error = json_format.Parse(response.response_error_json, pt.CommandError())
+            self.error_handler(operation, command_error)
+            return command_error
+        else:
+            p = operation.response_body_prototype
+            if len(response.response_body_json) > 0 and p is not None:
+                resp_body = json_format.Parse(response.response_body_json, p)
+                operation.on_response_body(resp_body)
+            else:
+                operation.on_empty_response_body()
+
+            return None
+
+
+    def error_handler(self, operation, command_error):
+        error_type = "WARNING" if command_error.is_warning else "FAILURE"
+
+        message = "%s: Operation %s failed.\n  Error type %i (%s)\n  Message: %s" % (error_type, 
+                pt.CommandId.Name[operation.command_id],
+                command_error.command_error_type,
+                pt.CommandErrorType.Name[command_error.command_error_type],
+                command_error )
+
+        print(message)
+
 
     # This works
     def get_session_sample_rate(self) -> pt.SampleRate:
@@ -107,14 +140,15 @@ class Client:
             return resp_body.track_list
 
     # This works
-    def check_if_ready(self):
+    def check_if_ready(self) -> bool:
         response = self._send_sync_request(pt.CommandId.HostReadyCheck, None)
 
         if response.header.status == pt.Failed:
             print("Pro Tools Not Ready")
             print(response)
+            return False
         else:
-            print("Pro Tools Ready")
+            return True
 
     # This works
     def authorize_connection(self, api_key_path) -> Optional[str]:
