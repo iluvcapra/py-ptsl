@@ -13,13 +13,14 @@ from .ops import Operation
 PTSL_VERSION=1
 
 class Client:
+    channel: grpc.Channel
     raw_client: PTSL_pb2_grpc.PTSLStub
     session_id: str
 
 
     def __init__(self, api_key_path: str, address: str = 'localhost:31416') -> None:
-        channel = grpc.insecure_channel(address)
-        self.raw_client = PTSL_pb2_grpc.PTSLStub(channel) 
+        self.channel = grpc.insecure_channel(address)
+        self.raw_client = PTSL_pb2_grpc.PTSLStub(self.channel) 
         self.session_id = ""
         if self._primitive_check_if_ready():
             self._authorize_connection(api_key_path)
@@ -85,6 +86,13 @@ class Client:
 
         print(message)
 
+    def close(self):
+        """
+        Closes the client.
+        """
+        self.raw_client = None
+        self.channel.close()
+        self.session_id = ""
 
     # This works
     def get_session_sample_rate(self) -> pt.SampleRate:
