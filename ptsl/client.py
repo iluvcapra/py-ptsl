@@ -13,6 +13,14 @@ from .ops import Operation
 
 PTSL_VERSION=1
 
+class CommandError(RuntimeError):
+    error_response: pt.CommandError
+
+    def __init__(self, error_response: pt.CommandError) -> None:
+        self.error_response = error_response
+        super().__init__()
+
+
 @contextmanager
 def open_client(*args, **kwargs):
     client = Client(*args, **kwargs)
@@ -57,22 +65,26 @@ class Client:
         return response
 
 
-    def run(self, operation: Operation) -> Optional[pt.CommandError]:
+    def run(self, operation: Operation):
         """
         Run an operation on the client.
 
-        :returns: If the response from the server is 
+        :raises: `CommandError` if the server returns an error
+        
         """
-        response = self._send_sync_request(operation.command_id, operation.request)
-
+        response = self._send_sync_request(operation.command_id(), operation.request)
+        # print("Got response")
         if response.header.status == pt.Failed:
             command_error = json_format.Parse(response.response_error_json, pt.CommandError())
             self._default_error_handler(operation, command_error)
-            return command_error
+            raise CommandError(command_error)
 
         elif response.header.status == pt.Completed:
-            p = operation.response_body_prototype
+            # print("response Completed")
+            # print("response body: " + response.response_body_json)
+            p = operation.response_body_prototype()
             if len(response.response_body_json) > 0 and p is not None:
+                # print("Will read response body: %s" % response.response_body_json)
                 resp_body = json_format.Parse(response.response_body_json, p, ignore_unknown_fields=True)
                 operation.on_response_body(resp_body)
             else:
@@ -82,16 +94,16 @@ class Client:
         else:
             # FIXME: dump out for now, will be on the lookout for when this happens
             assert False, "Unexpected response code %i (%s)" % (response.header.status, 
-                pt.TaskStatus.Name[response.header.status])
+                pt.TaskStatus.Name(response.header.status))
 
 
     def _default_error_handler(self, operation: Operation, command_error: pt.CommandError):
         error_type = "WARNING" if command_error.is_warning else "FAILURE"
 
         message = "%s: Operation %s failed.\n  Error type %i (%s)\n  Message: %s" % (error_type, 
-                pt.CommandId.Name[operation.command_id],
+                pt.CommandId.Name(operation.command_id),
                 command_error.command_error_type,
-                pt.CommandErrorType.Name[command_error.command_error_type],
+                pt.CommandErrorType.Name(command_error.command_error_type),
                 command_error )
 
         print(message)
@@ -104,28 +116,6 @@ class Client:
         self.channel.close()
         self.session_id = ""
 
-    # This works
-    def get_session_sample_rate(self) -> pt.SampleRate:
-        response = self._send_sync_request(pt.CommandId.GetSessionSampleRate, None)
-
-        if response.header.status == pt.Failed:
-            print("Failed:")
-            print(response)
-        else:
-            body = json_format.Parse(response.response_body_json, pt.GetSessionSampleRateResponseBody(), 
-                ignore_unknown_fields=True)
-            return body.sample_rate
-
-    # This works
-    def get_session_audio_format(self) -> pt.FileType:
-        response = self._send_sync_request(pt.GetSessionAudioFormat, None)
-
-        if response.header.status == pt.Failed:
-            print("Failed:")
-            print(response)
-        else:
-            body = json_format.Parse(response.response_body_json, pt.GetSessionAudioFormatResponseBody())
-            return body.current_setting
 
     # This does not work 
     # Here is the error I get: https://gist.github.com/iluvcapra/fb8e2480070b0a9891076d39ed95d605
@@ -203,7 +193,7 @@ class Client:
         else:
             authorization_response = json_format.Parse(response.response_body_json, pt.AuthorizeConnectionResponseBody)
             if authorization_response.is_authorized:
-                print("Connection authorized successfully, message:" + authorization_response.message)
+                # print("Connection authorized successfully, message:" + authorization_response.message)
                 self.session_id = authorization_response.session_id
             else:
                 print("Connection did not authorize, message: " + authorization_response.message)
