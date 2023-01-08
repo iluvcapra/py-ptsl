@@ -70,5 +70,9 @@ with ptsl.open_client(sys.argv[1]) as client:
         client.run(get_playback_mode_op)
         print("Playback Modes: %s" % ",".join([pt.PM_PlaybackMode.Name(x) for x in get_playback_mode_op.playback_modes ]))
 
+        get_record_mode_op = GetRecordMode()
+        client.run(get_record_mode_op)
+        print("Record Mode: %s" % pt.RM_RecordMode.Name(get_record_mode_op.record_state))
+
     except ptsl.client.CommandError as e:
         print("Command Error:" + e)

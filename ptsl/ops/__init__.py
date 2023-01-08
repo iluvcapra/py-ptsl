@@ -16,3 +16,4 @@ from .get_session_length import GetSessionLength
 from .get_playback_mode import GetPlaybackMode
 from .get_transport_state import GetTransportState
 from .get_transport_armed import GetTransportArmed
+from .get_record_mode import GetRecordMode
