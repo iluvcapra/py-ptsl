@@ -58,5 +58,9 @@ with ptsl.open_client(sys.argv[1]) as client:
         client.run(get_session_video_pull_op)
         print("Session Video Pull Setting: %s" % pt.SessionRatePull.Name(get_session_video_pull_op.pull_rate))
 
+        get_playback_mode_op = GetPlaybackMode()
+        client.run(get_playback_mode_op)
+        print("Playback Modes: %s" % ",".join([pt.PM_PlaybackMode.Name(x) for x in get_playback_mode_op.playback_modes ]))
+
     except ptsl.client.CommandError as e:
         print("Command Error:" + e)

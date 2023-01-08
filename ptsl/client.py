@@ -85,7 +85,7 @@ class Client:
             # 
             p = operation.response_body_prototype()
             if len(response.response_body_json) > 0 and p is not None:
-                # print("Will read response body: %s" % response.response_body_json)
+                #print("Will read response body: %s" % response.response_body_json)
                 clean_json = operation.json_cleanup(response.response_body_json)
                 resp_body = json_format.Parse(clean_json, p, ignore_unknown_fields=True)
                 operation.on_response_body(resp_body)
