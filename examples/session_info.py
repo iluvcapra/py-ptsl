@@ -46,5 +46,9 @@ with ptsl.open_client(sys.argv[1]) as client:
         client.run(get_session_ff_op)
         print("Session Feet+Frames Rate: %s" % pt.SessionFeetFramesRate.Name(get_session_ff_op.rate))
 
+        get_session_audio_pull_op = GetSessionAudioPullSettings()
+        client.run(get_session_audio_pull_op)
+        print("Session Audio Pull Setting: %s" % pt.SessionRatePull.Name(get_session_audio_pull_op.pull_rate))
+
     except ptsl.client.CommandError as e:
         print("Command Error:" + e)

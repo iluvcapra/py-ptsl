@@ -10,3 +10,4 @@ from .get_session_start_time import GetSessionStartTime
 from .get_session_time_code_rate import GetSessionTimeCodeRate
 from .get_session_feet_frames_rate import GetSessionFeetFramesRate
 from .get_session_interleaved_state import GetSessionInterleavedState
+from .get_session_audio_pull_settings import GetSessionAudioPullSettings
