@@ -64,7 +64,7 @@ track_list = c.get_track_list()
 |GetSessionInterleavedState| ☑  [Bug Reported](https://duc.avid.com/showthread.php?p=2658177#post2658177) |
 |GetSessionTimeCodeRate| ☑️ |
 |GetSessionFeetFramesRate| ☑️ |
-|GetSessionAudioRatePullSettings|  |
+|GetSessionAudioRatePullSettings| ☑️ |
 |GetSessionVideoRatePullSettings|  |
 |GetSessionName| ☑️ |
 |GetSessionPath| ☑️ |
