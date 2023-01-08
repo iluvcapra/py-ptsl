@@ -4,7 +4,7 @@ from ptsl import PTSL_pb2 as pt
 
 from ptsl.ops import Operation
 
-class GetSessionAudioPullSettings(Operation):
+class GetSessionVideoPullSettings(Operation):
 
     request: None
     pull_rate: pt.SessionRatePull
@@ -14,10 +14,10 @@ class GetSessionAudioPullSettings(Operation):
         self.pull_rate = None
 
     def command_id(self):
-        return pt.GetSessionAudioRatePullSettings
+        return pt.GetSessionVideoRatePullSettings
 
     def response_body_prototype(self):
-        return pt.GetSessionAudioRatePullSettingsResponseBody()
+        return pt.GetSessionVideoRatePullSettingsResponseBody()
 
     def on_empty_response_body(self):
         pass

@@ -65,7 +65,7 @@ track_list = c.get_track_list()
 |GetSessionTimeCodeRate| ☑️ |
 |GetSessionFeetFramesRate| ☑️ |
 |GetSessionAudioRatePullSettings| ☑️ |
-|GetSessionVideoRatePullSettings|  |
+|GetSessionVideoRatePullSettings| ☑️ |
 |GetSessionName| ☑️ |
 |GetSessionPath| ☑️ |
 |GetSessionStartTime| ☑️ |
