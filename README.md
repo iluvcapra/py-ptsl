@@ -69,7 +69,7 @@ track_list = c.get_track_list()
 |GetSessionName| ☑️ |
 |GetSessionPath| ☑️ |
 |GetSessionStartTime| ☑️ |
-|GetSessionLength|  |
+|GetSessionLength| ☑️ |
 |SetSessionAudioFormat|  |
 |SetSessionBitDepth|  |
 |SetSessionInterleavedState|  |

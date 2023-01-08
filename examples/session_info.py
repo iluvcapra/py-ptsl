@@ -42,6 +42,10 @@ with ptsl.open_client(sys.argv[1]) as client:
         client.run(get_session_start_time_op)
         print("Session Start Time: %s" % get_session_start_time_op.start_time)
 
+        get_session_length_op = GetSessionLength()
+        client.run(get_session_length_op)
+        print("Session Length: %s" % get_session_length_op.session_length)
+
         get_session_ff_op = GetSessionFeetFramesRate()
         client.run(get_session_ff_op)
         print("Session Feet+Frames Rate: %s" % pt.SessionFeetFramesRate.Name(get_session_ff_op.rate))
