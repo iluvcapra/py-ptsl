@@ -15,7 +15,7 @@ to guide future development!
 
 import ptsl.client
 
-c = ptsl.client.Client("<your api key>.json")
+c = ptsl.client.Client("path/to/<your api key>.json")
 
 track_list = c.get_track_list()
 ```
