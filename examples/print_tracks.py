@@ -5,6 +5,8 @@ import ptsl
 from ptsl import PTSL_pb2 as pt
 from ptsl.ops import *
 
+print("#: %5s : %-13s : %-32s : %9s : %s" % ("ATTRS", "TYPE","NAME","COLOR","ID"))
+
 with ptsl.open_client(sys.argv[1]) as client:
     tracks_op = GetTrackList(
         page_limit=1000, 
@@ -28,7 +30,7 @@ with ptsl.open_client(sys.argv[1]) as client:
 
         mode = ''.join(mode)
 
-        print("%i: %s : %-10s : %-32s : %8s : %s" % (track.index, mode, pt.TrackType.Name(track.type)[0:10], track.name[0:32], track.color , track.id))
+        print("%i: %5s : %-13s : %-32s : %9s : %s" % (track.index, mode, pt.TrackType.Name(track.type), track.name[0:32], track.color , track.id))
 
     # for track in tracks_op.track_list:
     #     print(track)
