@@ -24,7 +24,3 @@ class GetSessionVideoPullSettings(Operation):
 
     def on_response_body(self, body):
         self.pull_rate = body.current_setting
-
-
-
-

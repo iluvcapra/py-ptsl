@@ -83,5 +83,5 @@ track_list = c.get_track_list()
 |GetPlaybackMode| ☑️ | Bug to report (see class) |
 |GetRecordMode|  |
 |GetTransportArmed|  |
-|GetTransportState|  |
+|GetTransportState| ☑️ |
 |AuthorizeConnection| ☑️ |
