@@ -17,6 +17,9 @@ class Operation:
     def response_body_prototype(self) -> Any:
         return None
 
+    def json_cleanup(self, in_json: str) -> str:
+        return in_json
+
     def on_empty_response_body(self):
         pass
 

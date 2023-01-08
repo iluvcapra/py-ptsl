@@ -61,7 +61,7 @@ track_list = c.get_track_list()
 |GetSessionAudioFormat| ☑️ |
 |GetSessionSampleRate| ☑️ |
 |GetSessionBitDepth| ☑️ |
-|GetSessionInterleavedState|  |
+|GetSessionInterleavedState| ☑  [Bug Reported](https://duc.avid.com/showthread.php?p=2658177#post2658177) |
 |GetSessionTimeCodeRate| ☑️ |
 |GetSessionFeetFramesRate| ☑️ |
 |GetSessionAudioRatePullSettings|  |

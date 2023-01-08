@@ -74,6 +74,7 @@ class Client:
         """
         response = self._send_sync_request(operation.command_id(), operation.request)
         # print("Got response")
+        # print("response body: " + response.response_body_json)
         if response.header.status == pt.Failed:
             command_error = json_format.Parse(response.response_error_json, pt.CommandError())
             self._default_error_handler(operation, command_error)
@@ -81,11 +82,12 @@ class Client:
 
         elif response.header.status == pt.Completed:
             # print("response Completed")
-            # print("response body: " + response.response_body_json)
+            # 
             p = operation.response_body_prototype()
             if len(response.response_body_json) > 0 and p is not None:
                 # print("Will read response body: %s" % response.response_body_json)
-                resp_body = json_format.Parse(response.response_body_json, p, ignore_unknown_fields=True)
+                clean_json = operation.json_cleanup(response.response_body_json)
+                resp_body = json_format.Parse(clean_json, p, ignore_unknown_fields=True)
                 operation.on_response_body(resp_body)
             else:
                 operation.on_empty_response_body()
