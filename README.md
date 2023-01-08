@@ -41,14 +41,16 @@ Record Mode: RM_Normal
 This script will print a list of every track in the currently open session.
 
 ```sh
-$ python3 examples/print_tracks.py 'path/to/<your api key>.json'  
-1:  S    : AudioTrack : A1                               : #ff2a2a2a : {00000000-2a000000-d4cbe0df-2590e43e}
-2:       : AudioTrack : A2                               : #ff2a2a2a : {00000000-2a000000-d4cbe0df-ac40203f}
-3:       : BasicFolde : Folder 1                         : #ff2a2a2a : {00000000-2a000000-de01e1df-2d2b4575}
-4: *SM   : Vca        : VCA 1                            : #ffbc1e0d : {00000000-2a000000-a301e1df-f690ac51}
-5: *     : Vca        : VCA 2                            : #ffbc1e0d : {00000000-2a000000-a301e1df-5b0aad51}
-6:       : AudioTrack : B1                               : #ff2a2a2a : {00000000-2a000000-d4cbe0df-d3ae273f}
-7:    HX : AudioTrack : B2                               : #ff2a2a2a : {00000000-2a000000-d4cbe0df-cc3b283f}
+$  python3  examples/print_tracks.py '/path/to/<your api key>.json' 
+#: ATTRS : TYPE          : NAME                             :     COLOR : ID
+1: *     : RoutingFolder : Folder 2                         : #ff2a2a2a : {00000000-2a000000-f404e1df-f298fd4b}
+2: *S    : AudioTrack    : A1                               : #ff2a2a2a : {00000000-2a000000-d4cbe0df-2590e43e}
+3: *     : AudioTrack    : A2                               : #ff2a2a2a : {00000000-2a000000-d4cbe0df-ac40203f}
+4:       : BasicFolder   : Folder 1                         : #ff2a2a2a : {00000000-2a000000-de01e1df-2d2b4575}
+5:  SM   : Vca           : VCA 1                            : #ffbc1e0d : {00000000-2a000000-a301e1df-f690ac51}
+6:       : Vca           : VCA 2                            : #ffbc1e0d : {00000000-2a000000-a301e1df-5b0aad51}
+7:       : AudioTrack    : B1                               : #ff2a2a2a : {00000000-2a000000-d4cbe0df-d3ae273f}
+8:    HX : AudioTrack    : B2                               : #ff2a2a2a : {00000000-2a000000-d4cbe0df-cc3b283f}
 ```
 
 ## API Coverage
