@@ -82,6 +82,6 @@ track_list = c.get_track_list()
 |GetPTSLVersion| ☑️ |
 |GetPlaybackMode| ☑️ | Bug to report (see class) |
 |GetRecordMode|  |
-|GetTransportArmed|  |
+|GetTransportArmed| ☑️ |
 |GetTransportState| ☑️ |
 |AuthorizeConnection| ☑️ |

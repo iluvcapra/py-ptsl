@@ -62,6 +62,10 @@ with ptsl.open_client(sys.argv[1]) as client:
         client.run(get_ts_state_op)
         print("Transport State: %s" % pt.TS_TransportState.Name(get_ts_state_op.transport_state))
 
+        get_ts_armed_op = GetTransportArmed()
+        client.run(get_ts_armed_op)
+        print("Transport Armed: %s" % ("TRUE" if get_ts_armed_op.is_transport_armed else "FALSE" ))
+
         get_playback_mode_op = GetPlaybackMode()
         client.run(get_playback_mode_op)
         print("Playback Modes: %s" % ",".join([pt.PM_PlaybackMode.Name(x) for x in get_playback_mode_op.playback_modes ]))
