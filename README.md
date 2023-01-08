@@ -24,7 +24,7 @@ track_list = c.get_track_list()
 
 |Command| Implemented |
 | ----- | :---------: |
-|CreateSession| In progress |
+|CreateSession| |
 |OpenSession|  |
 |Import|  |
 |GetTrackList| ☑️ |
