@@ -58,9 +58,9 @@ track_list = c.get_track_list()
 |GetDynamicProperties| [ ] | [ ] |
 |SetPlaybackMode| [ ] | [ ] |
 |SetRecordMode| [ ] | [ ] |
-|GetSessionAudioFormat| [ ] | [ ] |
-|GetSessionSampleRate| [ ] | [ ] |
-|GetSessionBitDepth| [ ] | [ ] |
+|GetSessionAudioFormat| [X] | [ ] |
+|GetSessionSampleRate| [X] | [ ] |
+|GetSessionBitDepth| [X] | [ ] |
 |GetSessionInterleavedState| [ ] | [ ] |
 |GetSessionTimeCodeRate| [ ] | [ ] |
 |GetSessionFeetFramesRate| [ ] | [ ] |
