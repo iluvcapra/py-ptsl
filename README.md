@@ -60,7 +60,7 @@ $  python3  examples/print_tracks.py '/path/to/<your api key>.json'
 |CreateSession| |
 |OpenSession|  |
 |Import|  |
-|GetTrackList| ☑️ |
+|GetTrackList| ☑️ | Bug to report (see class) |
 |SelectAllClipsOnTrack|  |
 |ExtendSelectionToTargetTracks|   |
 |TrimToSelection|  |

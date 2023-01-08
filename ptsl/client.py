@@ -82,7 +82,6 @@ class Client:
 
         elif response.header.status == pt.Completed:
             # print("response Completed")
-            # 
             p = operation.response_body_prototype()
             if len(response.response_body_json) > 0 and p is not None:
                 #print("Will read response body: %s" % response.response_body_json)
