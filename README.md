@@ -15,6 +15,8 @@ See the examples directory for scripts demonstrating how to use the client.
 
 ### session_info.py
 
+This script will print a list of gettable properties from the currently open session.
+
 ```sh
 $ python3 examples/session_info.py '/path/to/<your api key>.json'  
 PTSL Version: 1
@@ -34,14 +36,19 @@ Transport Armed: FALSE
 Playback Modes: PM_Normal
 Record Mode: RM_Normal
 ```
+### print_tracks.py
 
-```python
+This script will print a list of every track in the currently open session.
 
-import ptsl.client
-
-c = ptsl.client.Client("path/to/<your api key>.json")
-
-track_list = c.get_track_list()
+```sh
+$ python3 examples/print_tracks.py '/Users/jamiehardt/src/ptsl/Pro Tools Scripting SDK_jamiehardt@me.com.json'  
+1:  S    : AudioTrack : A1                               : #ff2a2a2a : {00000000-2a000000-d4cbe0df-2590e43e}
+2:       : AudioTrack : A2                               : #ff2a2a2a : {00000000-2a000000-d4cbe0df-ac40203f}
+3:       : BasicFolde : Folder 1                         : #ff2a2a2a : {00000000-2a000000-de01e1df-2d2b4575}
+4: *SM   : Vca        : VCA 1                            : #ffbc1e0d : {00000000-2a000000-a301e1df-f690ac51}
+5: *     : Vca        : VCA 2                            : #ffbc1e0d : {00000000-2a000000-a301e1df-5b0aad51}
+6:       : AudioTrack : B1                               : #ff2a2a2a : {00000000-2a000000-d4cbe0df-d3ae273f}
+7:    HX : AudioTrack : B2                               : #ff2a2a2a : {00000000-2a000000-d4cbe0df-cc3b283f}
 ```
 
 ## API Coverage
