@@ -11,6 +11,30 @@ to guide future development!
 
 ## Example
 
+See the examples directory for scripts demonstrating how to use the client.
+
+### session_info.py
+
+```sh
+$ python3 examples/session_info.py '/path/to/<your api key>.json'  
+PTSL Version: 1
+Session Name: Untitled
+Session Path: Macintosh HD:Users:jamiehardt:Desktop:Untitled:Untitled.ptx
+Session Sample Rate: SR_48000
+Session Audio Format: FT_WAVE
+Session Interleaved: TRUE
+Session Timecode Rate: STCR_Fps23976
+Session Start Time: 00:57:00:00.00
+Session Length: 24:00:00:00
+Session Feet+Frames Rate: SFFR_Fps23976
+Session Audio Pull Setting: SRP_None
+Session Video Pull Setting: SRP_None
+Transport State: TS_TransportStopped
+Transport Armed: FALSE
+Playback Modes: PM_Normal
+Record Mode: RM_Normal
+```
+
 ```python
 
 import ptsl.client
