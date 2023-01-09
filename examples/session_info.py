@@ -75,4 +75,5 @@ with ptsl.open_client(sys.argv[1]) as client:
         print("Record Mode: %s" % pt.RM_RecordMode.Name(get_record_mode_op.record_state))
 
     except ptsl.client.CommandError as e:
-        print("Command Error:" + e)
+        print("Command Error, exiting")
+        

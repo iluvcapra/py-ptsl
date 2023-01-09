@@ -46,6 +46,8 @@ class Client:
             get_v = GetPTSLVersion()
             self.run(get_v, ptsl_version=1)
             self.ptsl_version = get_v.version
+        else:
+            self.close()
 
 
     def _send_sync_request(self, command_id, request_body, task_id="") -> pt.Response:
@@ -106,12 +108,13 @@ class Client:
         error_type = "WARNING" if command_error.is_warning else "FAILURE"
 
         message = "%s: Operation %s failed.\n  Error type %i (%s)\n  Message: %s" % (error_type, 
-                pt.CommandId.Name(operation.command_id),
+                pt.CommandId.Name(operation.command_id()),
                 command_error.command_error_type,
                 pt.CommandErrorType.Name(command_error.command_error_type),
-                command_error )
+                command_error.command_error_message )
 
         print(message)
+
 
     def close(self):
         """
