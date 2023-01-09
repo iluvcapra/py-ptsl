@@ -1,3 +1,4 @@
 venv/
 *.pyc
 ptsl.egg-info/*
+.DS_Store
