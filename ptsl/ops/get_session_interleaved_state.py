@@ -22,7 +22,7 @@ class GetSessionInterleavedState(Operation):
         return pt.GetSessionInterleavedStateResponseBody()
 
     # Reported https://duc.avid.com/showthread.php?t=423087
-    def json_cleanup(self, in_json: str) -> str:
+    def json_cleanup(self, in_json: str, ptsl_version) -> str:
         decoder = json.decoder.JSONDecoder()
         parsed = decoder.decode(in_json)
         parsed["possible_settings"] = [True, False]

@@ -9,7 +9,7 @@ from google.protobuf import json_format
 from . import PTSL_pb2_grpc
 from . import PTSL_pb2 as pt
 
-from .ops import Operation
+from .ops import Operation, GetPTSLVersion
 
 PTSL_VERSION=1
 
@@ -35,6 +35,7 @@ class Client:
     channel: grpc.Channel
     raw_client: PTSL_pb2_grpc.PTSLStub
     session_id: str
+    ptsl_version: int
 
     def __init__(self, api_key_path: str, address: str = 'localhost:31416') -> None:
         self.channel = grpc.insecure_channel(address)
@@ -42,6 +43,9 @@ class Client:
         self.session_id = ""
         if self._primitive_check_if_ready():
             self._authorize_connection(api_key_path)
+            get_v = GetPTSLVersion()
+            self.run(get_v, ptsl_version=1)
+            self.ptsl_version = get_v.version
 
 
     def _send_sync_request(self, command_id, request_body, task_id="") -> pt.Response:
@@ -65,7 +69,7 @@ class Client:
         return response
 
 
-    def run(self, operation: Operation):
+    def run(self, operation: Operation, ptsl_version = None):
         """
         Run an operation on the client.
 
@@ -85,7 +89,7 @@ class Client:
             p = operation.response_body_prototype()
             if len(response.response_body_json) > 0 and p is not None:
                 #print("Will read response body: %s" % response.response_body_json)
-                clean_json = operation.json_cleanup(response.response_body_json)
+                clean_json = operation.json_cleanup(response.response_body_json, ptsl_version or self.ptsl_version)
                 resp_body = json_format.Parse(clean_json, p, ignore_unknown_fields=True)
                 operation.on_response_body(resp_body)
             else:

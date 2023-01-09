@@ -23,7 +23,7 @@ class GetTrackList(Operation):
     # FIXME: There is a bug here in the host's response JSON: when there are no
     # tracks, the response contains an empty dict in the "track_list" slot when
     # it should be returning an empty list
-    def json_cleanup(self, in_json: str) -> str:
+    def json_cleanup(self, in_json: str, ptsl_version) -> str:
 
         def empty_dict_to_empty_list(dct):
             if 'track_list' in dct and dct['track_list'] == {}:

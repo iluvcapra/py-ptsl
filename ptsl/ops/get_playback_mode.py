@@ -21,7 +21,7 @@ class GetPlaybackMode(Operation):
 
     # FIXME: This is a bug that needs to be reported, the protobuf says this should
     # be integers from an enum but the server is returning string values
-    def json_cleanup(self, in_json: str) -> str:
+    def json_cleanup(self, in_json: str, ptsl_version) -> str:
 
         def xform(x):
             return pt.PM_PlaybackMode.Value(x)
