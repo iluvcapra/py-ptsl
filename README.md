@@ -87,7 +87,7 @@ $  python3  examples/print_tracks.py '/path/to/<your api key>.json'
 |PasteSpecial|  |
 |ExportMix|  |
 |Spot|  |
-|ExportSessionInfoAsText|  |
+|ExportSessionInfoAsText| ☑️ |
 |GetDynamicProperties|  |
 |SetPlaybackMode|  |
 |SetRecordMode|  |
