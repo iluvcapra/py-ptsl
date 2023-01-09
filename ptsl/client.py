@@ -61,6 +61,7 @@ class Client:
             request_body_json = ""
         else:
             request_body_json = json_format.MessageToJson(operation.request, 
+                including_default_value_fields=True,
                 preserving_proto_field_name=True)
 
         request_body_json = operation.json_messup(request_body_json, ptsl_version or self.ptsl_version)

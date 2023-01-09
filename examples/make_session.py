@@ -1,8 +1,8 @@
-import sys
-
 import ptsl
 from ptsl import PTSL_pb2 as pt
 from ptsl.ops import *
+
+import sys
 
 with ptsl.open_client(sys.argv[1]) as client:
     op = CreateSession(
@@ -10,8 +10,8 @@ with ptsl.open_client(sys.argv[1]) as client:
         create_from_template=False,
         template_group=None,
         template_name=None,
-        file_type=pt.FT_WAVE,
-        sample_rate=pt.SR_48000,
+        file_type=pt.FT_AIFF,
+        sample_rate=pt.SR_96000,
         input_output_settings=pt.IO_Last,
         is_interleaved=True,
         session_location="Macintosh HD:Users:jamie:",
