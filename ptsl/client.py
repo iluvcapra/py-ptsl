@@ -42,7 +42,7 @@ class Client:
         self.raw_client = PTSL_pb2_grpc.PTSLStub(self.channel) 
         self.session_id = ""
         if self._primitive_check_if_ready():
-            self._authorize_connection(api_key_path)
+            self._primitive_authorize_connection(api_key_path)
             get_v = GetPTSLVersion()
             self.run(get_v, ptsl_version=1)
             self.ptsl_version = get_v.version
@@ -159,7 +159,7 @@ class Client:
             return True
 
 
-    def _authorize_connection(self, api_key_path) -> Optional[str]:
+    def _primitive_authorize_connection(self, api_key_path) -> Optional[str]:
         """
         Authorizes the client's connection to the Pro Tools RPC server.
 
