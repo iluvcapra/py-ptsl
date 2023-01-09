@@ -18,5 +18,3 @@ class CreateSession(Operation):
     def on_response_body(self, _body):
         pass
 
-
-
