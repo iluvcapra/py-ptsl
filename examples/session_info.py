@@ -1,5 +1,4 @@
 import sys
-import os.path
 
 import ptsl
 from ptsl import PTSL_pb2 as pt
@@ -76,4 +75,3 @@ with ptsl.open_client(sys.argv[1]) as client:
 
     except ptsl.client.CommandError as e:
         print("Command Error, exiting")
-        

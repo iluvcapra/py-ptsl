@@ -17,7 +17,10 @@ class Operation:
     def response_body_prototype(self) -> Any:
         return None
 
-    def json_cleanup(self, in_json: str, _version = 1) -> str:
+    def json_messup(self, in_json: str, version = 1) -> str:
+        return in_json
+
+    def json_cleanup(self, in_json: str, version = 1) -> str:
         return in_json
 
     def on_empty_response_body(self):
