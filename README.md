@@ -57,7 +57,7 @@ $  python3  examples/print_tracks.py '/path/to/<your api key>.json'
 
 |Command| Implemented | Notes |
 | ----- | :---------: | ----- |
-|CreateSession| |
+|CreateSession| ☑️ |
 |OpenSession|  |
 |Import|  |
 |GetTrackList| ☑️ | Bug to report (see class) |
