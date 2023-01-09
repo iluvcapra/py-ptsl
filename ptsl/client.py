@@ -123,7 +123,6 @@ class Client:
 
 
     # This does not work 
-    # Here is the error I get: https://gist.github.com/iluvcapra/fb8e2480070b0a9891076d39ed95d605
     def create_session(self, name, session_location, 
         file_type : pt.FileType = pt.FT_WAVE, 
         sample_rate: pt.SampleRate = pt.SR_48000, 
