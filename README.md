@@ -57,10 +57,10 @@ $  python3  examples/print_tracks.py '/path/to/<your api key>.json'
 
 |Command| Implemented | Notes |
 | ----- | :---------: | ----- |
-|CreateSession| ☑️ |
+|CreateSession| ☑️ | Bug to report |
 |OpenSession|  |
 |Import|  |
-|GetTrackList| ☑️ | Bug to report (see class) |
+|GetTrackList| ☑️ | Bug to report |
 |SelectAllClipsOnTrack|  |
 |ExtendSelectionToTargetTracks|   |
 |TrimToSelection|  |
@@ -113,7 +113,7 @@ $  python3  examples/print_tracks.py '/path/to/<your api key>.json'
 |SetSessionStartTime|  |
 |SetSessionLength|  |
 |GetPTSLVersion| ☑️ |
-|GetPlaybackMode| ☑️ | Bug to report (see class) |
+|GetPlaybackMode| ☑️ | Bug to report |
 |GetRecordMode| ☑️ |
 |GetTransportArmed| ☑️ |
 |GetTransportState| ☑️ |

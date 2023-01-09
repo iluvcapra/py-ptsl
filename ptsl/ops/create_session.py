@@ -9,6 +9,8 @@ class CreateSession(Operation):
 
     request: pt.CreateSessionRequestBody
 
+    # FIXME: This does not fail if you ask it to create a new session on top 
+    # of an old one
     def __init__(self, *args, **kwargs) -> None:
         self.request = pt.CreateSessionRequestBody(**kwargs)
 
