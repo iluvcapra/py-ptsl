@@ -143,25 +143,6 @@ class Client:
             print("Failed:")
             print(response)
 
-    # This fails if there are zero tracks, the JSON returned from Pro Tools in the response
-    # body has a strange format
-    #
-    # Here is the error I get: https://gist.github.com/iluvcapra/90601ade487b245510e08b9c68650925
-    def get_track_list(self, filters : List[pt.TrackListInvertibleFilter] = 
-            [pt.TrackListInvertibleFilter(filter=pt.All, is_inverted=False)]):
-
-        req_body = pt.GetTrackListRequestBody(page_limit=24, 
-            track_filter_list=filters, 
-            is_filter_list_additive=False)
-
-        response = self._send_sync_request(pt.GetTrackList, req_body)
-
-        if response.header.status == pt.Failed:
-            print("Failed:")
-            print(response)
-        else:
-            resp_body = json_format.Parse(response.response_body_json, pt.GetTrackListResponseBody())
-            return resp_body.track_list
 
     # This works
     def _primitive_check_if_ready(self) -> bool:
