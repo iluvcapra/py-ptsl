@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Any
 
 from ptsl import PTSL_pb2 as pt
 
@@ -8,8 +8,6 @@ class Operation:
 
     The client runs `Operation`s with the Client.run() method. 
     """
-    request: Any
-    status: pt.TaskStatus
 
     def __init__(self) -> None:
         self.request = None
