@@ -63,10 +63,10 @@ $  python3  examples/print_tracks.py '/path/to/<your api key>.json'
 |GetTrackList| ☑️ | Bug to report |
 |SelectAllClipsOnTrack|  |
 |ExtendSelectionToTargetTracks|   |
-|TrimToSelection|  |
+|TrimToSelection| ☑️ |
 |CreateFadesBasedOnPreset|  |
 |RenameTargetTrack|  |
-|ConsolidateClip|  |
+|ConsolidateClip| ☑️ |
 |ExportClipsAsFiles|  |
 |ExportSelectedTracksAsAAFOMF|  |
 |GetTaskStatus|  |

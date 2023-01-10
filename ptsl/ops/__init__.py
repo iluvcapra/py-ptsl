@@ -20,3 +20,12 @@ from .get_record_mode import GetRecordMode
 from .get_track_list import GetTrackList
 from .create_session import CreateSession
 from .export_session_info_as_text import ExportSessionInfoAsText
+from .cut import Cut
+from .copy import Copy
+from .paste import Paste
+from .clear import Clear
+from .save_session import SaveSession
+from .close_session import CloseSession
+from .trim_to_selection import TrimToSelection
+from .consolidate_clip import ConsolidateClip
+
