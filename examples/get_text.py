@@ -19,6 +19,6 @@ with ptsl.open_client(sys.argv[1]) as client:
 
     client.run(op)
 
-    print(op.session_info)
+    #print(op.response.session_info)
 
     

@@ -6,18 +6,9 @@ from ptsl import PTSL_pb2 as pt
 from ptsl.ops import Operation
 
 class GetTrackList(Operation):
-
-    @staticmethod
-    def request_body():
-        return pt.GetTrackListRequestBody
-
-    @staticmethod
-    def response_body():
-        return pt.GetTrackListResponseBody
-
-    @staticmethod
-    def command_id():
-        return pt.GetTrackList
+    REQUEST_BODY=pt.GetTrackListRequestBody
+    RESPONSE_BODY=pt.GetTrackListResponseBody
+    COMMAND_ID=pt.GetTrackList
 
     def __init__(self, **kwargs) -> None:
         self.track_list : List[pt.Track] = []
@@ -42,7 +33,7 @@ class GetTrackList(Operation):
         self.track_list = []
 
     def on_response_body(self, body: pt.GetTrackListResponseBody):
-        self.track_list = body.track_list
+        self.track_list.extend(body.track_list)
 
 
 

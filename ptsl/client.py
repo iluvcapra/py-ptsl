@@ -45,7 +45,7 @@ class Client:
             self._authorize_connection(api_key_path)
             get_v = GetPTSLVersion()
             self.run(get_v, ptsl_version=1)
-            self.ptsl_version = get_v.version
+            self.ptsl_version = get_v.response.version
         else:
             self.close()
 
@@ -66,7 +66,7 @@ class Client:
 
         request_body_json = operation.json_messup(request_body_json, ptsl_version or self.ptsl_version)
         
-        response = self._send_sync_request(operation.command_id(), request_body_json)
+        response = self._send_sync_request(operation.COMMAND_ID, request_body_json)
 
         operation.status = response.header.status
 
@@ -76,7 +76,7 @@ class Client:
             raise CommandError(command_error)
 
         elif response.header.status == pt.Completed:
-            p = operation.response_body()
+            p = operation.RESPONSE_BODY
             if len(response.response_body_json) > 0 and p is not None:
                 clean_json = operation.json_cleanup(response.response_body_json, ptsl_version or self.ptsl_version)
                 resp_body = json_format.Parse(clean_json, p(), ignore_unknown_fields=True)

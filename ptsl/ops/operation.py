@@ -1,6 +1,8 @@
-from typing import Any
+from typing import TypeVar, Optional
 
 from ptsl import PTSL_pb2 as pt
+
+
 
 class Operation:
     """
@@ -9,38 +11,18 @@ class Operation:
     The client runs `Operation`s with the Client.run() method. 
     """
 
-    @staticmethod
-    def request_body():
-        """
-        The class of this command's request body.
-        """
-        return None
-
-    @staticmethod
-    def response_body():
-        """
-        The class of this command's response body.
-        """
-        return None
-
-    @staticmethod
-    def command_id(self):
-        """
-        Subclasses override this to return the `pt.CommandId` for this operation.
-        """
-        return -1
+    REQUEST_BODY = None
+    RESPONSE_BODY = None
+    COMMAND_ID: pt.CommandId = -1
 
     def __init__(self, *args, **kwargs) -> None:
-        if self.request_body():
-            self.request = self.request_body()(**kwargs)
+        if self.REQUEST_BODY:
+            self.request = self.REQUEST_BODY(**kwargs)
         else:
             self.request = None
         
+        self.response = None
         self.status = None
-
-
-    # def response_body_prototype(self) -> Any:
-    #     return None
 
     def json_messup(self, in_json: str, version = 1) -> str:
         """
@@ -70,8 +52,8 @@ class Operation:
         """
         pass
 
-    def on_response_body(self, _):
+    def on_response_body(self, response_body):
         """
         The client calls this when the server responds with a JSON `pt.ResponseBody`.
         """
-        pass
+        self.response = response_body

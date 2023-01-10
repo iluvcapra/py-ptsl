@@ -6,21 +6,9 @@ from ptsl.ops import Operation
 
 class GetPlaybackMode(Operation):
 
-    @staticmethod
-    def request_body():
-        return None
-
-    @staticmethod
-    def response_body():
-        return pt.GetPlaybackModeResponseBody
-
-    @staticmethod
-    def command_id():
-        return pt.GetPlaybackMode
-
-    def __init__(self, *args, **kwargs) -> None:
-        self.playback_modes = None
-        super().__init__(*args, **kwargs)
+    REQUEST_BODY=None
+    RESPONSE_BODY=pt.GetPlaybackModeResponseBody
+    COMMAND_ID=pt.GetPlaybackMode
 
     # FIXME: This is a bug that needs to be reported, the protobuf says this should
     # be integers from an enum but the server is returning string values
@@ -35,13 +23,8 @@ class GetPlaybackMode(Operation):
         decoded['possible_settings'] = [xform(x) for x in decoded['possible_settings']]
         encoder = json.JSONEncoder()
         encoded = encoder.encode(decoded)
-        #print("Fixed playback mode:" + encoded)
+
         return encoded 
-
-
-    def on_response_body(self, body: pt.GetPlaybackModeResponseBody):
-        self.playback_modes = body.current_settings
-
 
 
 
