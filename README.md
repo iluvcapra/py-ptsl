@@ -94,13 +94,13 @@ $  python3  examples/print_tracks.py '/path/to/<your api key>.json'
 |GetSessionAudioFormat| ☑️ |
 |GetSessionSampleRate| ☑️ |
 |GetSessionBitDepth| ☑️ |
-|GetSessionInterleavedState| ☑ | Bug Reported [PT-296475](https://duc.avid.com/showthread.php?p=2658177#post2658177) |
+|GetSessionInterleavedState| ☑ | Bug reported |
 |GetSessionTimeCodeRate| ☑️ |
 |GetSessionFeetFramesRate| ☑️ |
 |GetSessionAudioRatePullSettings| ☑️ |
 |GetSessionVideoRatePullSettings| ☑️ |
 |GetSessionName| ☑️ |
-|GetSessionPath| ☑️ |
+|GetSessionPath| ☑️ | Bug Reported [PT-296475](https://duc.avid.com/showthread.php?p=2658177#post2658177) |
 |GetSessionStartTime| ☑️ |
 |GetSessionLength| ☑️ |
 |SetSessionAudioFormat|  |
