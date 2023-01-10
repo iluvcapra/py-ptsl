@@ -74,13 +74,13 @@ $  python3  examples/print_tracks.py '/path/to/<your api key>.json'
 |RefreshTargetAudioFiles|  |
 |RefreshAllModifiedAudioFiles|   |
 |GetFileLocation|  |
-|CloseSession|  |
-|SaveSession|  |
+|CloseSession| ☑️ |
+|SaveSession| ☑️ |
 |SaveSessionAs|  |
-|Cut|  |
-|Copy|  |
-|Paste|  |
-|Clear|  |
+|Cut| ☑️ |
+|Copy| ☑️ |
+|Paste| ☑️ |
+|Clear| ☑ |
 |CutSpecial|  |
 |CopySpecial|  |
 |ClearSpecial|  |
