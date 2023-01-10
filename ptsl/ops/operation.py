@@ -11,10 +11,16 @@ class Operation:
 
     @staticmethod
     def request_body():
+        """
+        The class of this command's request body.
+        """
         return None
 
     @staticmethod
     def response_body():
+        """
+        The class of this command's response body.
+        """
         return None
 
     @staticmethod
