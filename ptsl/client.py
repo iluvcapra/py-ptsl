@@ -67,19 +67,17 @@ class Client:
         request_body_json = operation.json_messup(request_body_json, ptsl_version or self.ptsl_version)
         
         response = self._send_sync_request(operation.command_id(), request_body_json)
-        # print("Got response")
-        # print("response body: " + response.response_body_json)
+
+        operation.status = response.header.status
+
         if response.header.status == pt.Failed:
             command_error = json_format.Parse(response.response_error_json, pt.CommandError())
             self._default_error_handler(operation, command_error)
             raise CommandError(command_error)
 
         elif response.header.status == pt.Completed:
-            # print("response Completed")
-            # print(response)
             p = operation.response_body_prototype()
             if len(response.response_body_json) > 0 and p is not None:
-                #print("Will read response body: %s" % response.response_body_json)
                 clean_json = operation.json_cleanup(response.response_body_json, ptsl_version or self.ptsl_version)
                 resp_body = json_format.Parse(clean_json, p, ignore_unknown_fields=True)
                 operation.on_response_body(resp_body)
