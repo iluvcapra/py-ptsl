@@ -9,18 +9,32 @@ class Operation:
     The client runs `Operation`s with the Client.run() method. 
     """
 
-    def __init__(self) -> None:
-        self.request = None
-        self.status = None
+    @staticmethod
+    def request_body():
+        return None
 
+    @staticmethod
+    def response_body():
+        return None
+
+    @staticmethod
     def command_id(self):
         """
         Subclasses override this to return the `pt.CommandId` for this operation.
         """
         return -1
 
-    def response_body_prototype(self) -> Any:
-        return None
+    def __init__(self, *args, **kwargs) -> None:
+        if self.request_body():
+            self.request = self.request_body()(**kwargs)
+        else:
+            self.request = None
+        
+        self.status = None
+
+
+    # def response_body_prototype(self) -> Any:
+    #     return None
 
     def json_messup(self, in_json: str, version = 1) -> str:
         """

@@ -7,18 +7,21 @@ from ptsl.ops import Operation
 
 class GetTrackList(Operation):
 
-    request: pt.GetTrackListRequestBody
-    track_list: List[pt.Track]
+    @staticmethod
+    def request_body():
+        return pt.GetTrackListRequestBody
 
-    def __init__(self, **kwargs) -> None:
-        self.request = pt.GetTrackListRequestBody(**kwargs)
-        self.track_list = []
+    @staticmethod
+    def response_body():
+        return pt.GetTrackListResponseBody
 
-    def command_id(self):
+    @staticmethod
+    def command_id():
         return pt.GetTrackList
 
-    def response_body_prototype(self):
-        return pt.GetTrackListResponseBody()
+    def __init__(self, **kwargs) -> None:
+        self.track_list : List[pt.Track] = []
+        super().__init__(**kwargs)
 
     # FIXME: There is a bug here in the host's response JSON: when there are no
     # tracks, the response contains an empty dict in the "track_list" slot when

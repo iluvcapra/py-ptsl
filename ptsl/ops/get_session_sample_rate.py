@@ -6,18 +6,22 @@ from ptsl.ops import Operation
 
 class GetSessionSampleRate(Operation):
 
-    request: None
-    sample_rate_raw: pt.SampleRate
+    @staticmethod
+    def request_body():
+        return None
 
-    def __init__(self) -> None:
+    @staticmethod
+    def response_body():
+        return pt.GetSessionSampleRateResponseBody
+
+    @staticmethod
+    def command_id():
+        return pt.GetSessionSampleRate
+    
+    def __init__(self, *args, **kwargs) -> None:
         self.request = None
         self.sample_rate_raw = None
-
-    def command_id(self):
-        return pt.GetSessionSampleRate
-
-    def response_body_prototype(self):
-        return pt.GetSessionSampleRateResponseBody()
+        super().__init__(*args, **kwargs)
 
     def on_empty_response_body(self):
         pass

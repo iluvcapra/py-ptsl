@@ -6,18 +6,21 @@ from ptsl.ops import Operation
 
 class GetPTSLVersion(Operation):
 
-    request: None
-    version: int
+    @staticmethod
+    def request_body():
+        return None
 
-    def __init__(self) -> None:
-        self.request = None
-        self.version = None
+    @staticmethod
+    def response_body():
+        return pt.GetPTSLVersionResponseBody
 
-    def command_id(self):
+    @staticmethod
+    def command_id():
         return pt.GetPTSLVersion
 
-    def response_body_prototype(self):
-        return pt.GetPTSLVersionResponseBody()
+    def __init__(self, *args, **kwargs) -> None:
+        self.version = None
+        super().__init__(*args, **kwargs)
 
     def on_empty_response_body(self):
         pass

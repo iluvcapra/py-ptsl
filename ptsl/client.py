@@ -76,10 +76,10 @@ class Client:
             raise CommandError(command_error)
 
         elif response.header.status == pt.Completed:
-            p = operation.response_body_prototype()
+            p = operation.response_body()
             if len(response.response_body_json) > 0 and p is not None:
                 clean_json = operation.json_cleanup(response.response_body_json, ptsl_version or self.ptsl_version)
-                resp_body = json_format.Parse(clean_json, p, ignore_unknown_fields=True)
+                resp_body = json_format.Parse(clean_json, p(), ignore_unknown_fields=True)
                 operation.on_response_body(resp_body)
             else:
                 operation.on_empty_response_body()

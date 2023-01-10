@@ -6,15 +6,21 @@ from ptsl.ops import Operation
 
 class GetSessionFeetFramesRate(Operation):
 
-    request: None
-    rate: pt.SessionFeetFramesRate
+    @staticmethod
+    def request_body():
+        return None
 
-    def __init__(self) -> None:
-        self.rate = None
-        super().__init__()
+    @staticmethod
+    def response_body():
+        return pt.GetSessionFeetFramesRateResponseBody
 
-    def command_id(self):
+    @staticmethod
+    def command_id():
         return pt.GetSessionFeetFramesRate
+
+    def __init__(self, *args, **kwargs) -> None:
+        self.rate = None
+        super().__init__(*args, **kwargs)
 
     def response_body_prototype(self):
         return pt.GetSessionFeetFramesRateResponseBody()

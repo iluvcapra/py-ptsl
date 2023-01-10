@@ -8,21 +8,21 @@ from ptsl.ops import Operation
 
 class GetTransportArmed(Operation):
 
-    request: None
-    is_transport_armed: bool
+    @staticmethod
+    def request_body():
+        return None
+
+    @staticmethod
+    def response_body():
+        return pt.GetTransportArmedResponseBody
+
+    @staticmethod
+    def command_id():
+        return pt.GetTransportArmed
 
     def __init__(self) -> None:
         self.request = None
         self.is_transport_armed = None
-
-    def command_id(self):
-        return pt.GetTransportArmed
-
-    def response_body_prototype(self):
-        return pt.GetTransportArmedResponseBody()
-
-    def on_empty_response_body(self):
-        pass
 
     def on_response_body(self, body: pt.GetTransportArmedResponseBody):
         self.is_transport_armed = body.is_transport_armed

@@ -6,18 +6,21 @@ from ptsl.ops import Operation
 
 class GetSessionAudioFormat(Operation):
 
-    request: None
-    audio_format: pt.FileType
+    @staticmethod
+    def request_body():
+        return None
 
-    def __init__(self) -> None:
-        self.audio_format = None
-        super().__init__()
+    @staticmethod
+    def response_body():
+        return pt.GetSessionAudioFormatResponseBody
 
-    def command_id(self):
+    @staticmethod
+    def command_id():
         return pt.GetSessionAudioFormat
 
-    def response_body_prototype(self):
-        return pt.GetSessionAudioFormatResponseBody()
+    def __init__(self, **kwargs) -> None:
+        self.audio_format = None
+        super().__init__(**kwargs)
 
     def on_empty_response_body(self):
         pass

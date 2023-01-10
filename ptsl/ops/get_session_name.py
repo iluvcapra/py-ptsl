@@ -6,21 +6,21 @@ from ptsl.ops import Operation
 
 class GetSessionName(Operation):
 
-    request: None
-    session_name: str
+    @staticmethod
+    def request_body():
+        return None
 
-    def __init__(self) -> None:
-        self.request = None
-        self.session_name = None
+    @staticmethod
+    def response_body():
+        return pt.GetSessionNameResponseBody
 
-    def command_id(self):
+    @staticmethod
+    def command_id():
         return pt.GetSessionName
 
-    def response_body_prototype(self):
-        return pt.GetSessionNameResponseBody()
-
-    def on_empty_response_body(self):
-        pass
+    def __init__(self, *args, **kwargs) -> None:
+        self.session_name = None
+        super().__init__(*args, **kwargs)
 
     def on_response_body(self, body):
         body: pt.GetSessionNameResponseBody

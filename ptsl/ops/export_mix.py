@@ -7,18 +7,15 @@ from ptsl.ops import Operation
 
 class ExportMix(Operation):
 
-    request: pt.ExportMixRequestBody
+    @staticmethod
+    def request_body():
+        return pt.ExportMixRequestBody
 
-    # FIXME: This does not fail if you ask it to create a new session on top 
-    # of an old one
-    def __init__(self, *args, **kwargs) -> None:
-        self.request = pt.ExportMixRequestBody(**kwargs)
+    @staticmethod
+    def response_body():
+        return None
 
-    def command_id(self):
+    @staticmethod
+    def command_id():
         return pt.ExportMix
 
-    def on_empty_response_body(self):
-        pass
-
-    def on_response_body(self, _body):
-        pass
