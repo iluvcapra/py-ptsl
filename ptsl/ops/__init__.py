@@ -10,8 +10,8 @@ from .get_session_start_time import GetSessionStartTime
 from .get_session_time_code_rate import GetSessionTimeCodeRate
 from .get_session_feet_frames_rate import GetSessionFeetFramesRate
 from .get_session_interleaved_state import GetSessionInterleavedState
-from .get_session_audio_pull_settings import GetSessionAudioPullSettings
-from .get_session_video_pull_settings import GetSessionVideoPullSettings
+from .get_session_audio_rate_pull_settings import GetSessionAudioRatePullSettings
+from .get_session_video_rate_pull_settings import GetSessionVideoRatePullSettings
 from .get_session_length import GetSessionLength
 from .get_playback_mode import GetPlaybackMode
 from .get_transport_state import GetTransportState

@@ -6,10 +6,7 @@ from ptsl import PTSL_pb2 as pt
 from ptsl.ops import Operation
 
 class GetTrackList(Operation):
-    REQUEST_BODY=pt.GetTrackListRequestBody
-    RESPONSE_BODY=pt.GetTrackListResponseBody
-    COMMAND_ID=pt.GetTrackList
-
+    
     def __init__(self, **kwargs) -> None:
         self.track_list : List[pt.Track] = []
         super().__init__(**kwargs)

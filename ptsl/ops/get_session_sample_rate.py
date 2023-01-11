@@ -6,10 +6,6 @@ from ptsl.ops import Operation
 
 class GetSessionSampleRate(Operation):
 
-    REQUEST_BODY=None
-    RESPONSE_BODY=pt.GetSessionSampleRateResponseBody
-    COMMAND_ID=pt.GetSessionSampleRate
-
     def sample_rate(self) -> Optional[float]:
         if self.response.sample_rate == pt.SR_192000:
             return 192000.0

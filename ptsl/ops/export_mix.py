@@ -6,6 +6,4 @@ from ptsl.ops import Operation
 
 
 class ExportMix(Operation):
-    REQUEST_BODY=pt.ExportMixRequestBody
-    COMMAND_ID=pt.ExportMix
-
+    pass

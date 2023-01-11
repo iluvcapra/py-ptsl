@@ -48,11 +48,11 @@ with ptsl.open_client(sys.argv[1]) as client:
         client.run(get_session_ff_op)
         print("Session Feet+Frames Rate: %s" % pt.SessionFeetFramesRate.Name(get_session_ff_op.response.current_setting))
 
-        get_session_audio_pull_op = GetSessionAudioPullSettings()
+        get_session_audio_pull_op = GetSessionAudioRatePullSettings()
         client.run(get_session_audio_pull_op)
         print("Session Audio Pull Setting: %s" % pt.SessionRatePull.Name(get_session_audio_pull_op.response.current_setting))
 
-        get_session_video_pull_op = GetSessionVideoPullSettings()
+        get_session_video_pull_op = GetSessionVideoRatePullSettings()
         client.run(get_session_video_pull_op)
         print("Session Video Pull Setting: %s" % pt.SessionRatePull.Name(get_session_video_pull_op.response.current_setting))
 

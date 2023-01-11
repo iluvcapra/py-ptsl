@@ -11,13 +11,23 @@ class Operation:
     The client runs `Operation`s with the Client.run() method. 
     """
 
-    REQUEST_BODY = None
-    RESPONSE_BODY = None
-    COMMAND_ID: pt.CommandId = -1
+    @classmethod
+    def request_body(cls):
+        return getattr(pt, cls.__name__ + "RequestBody", None)
+
+    @classmethod
+    def response_body(cls):
+        return getattr(pt, cls.__name__ + "ResponseBody", None)
+
+    @classmethod
+    def command_id(cls):
+        return getattr(pt, cls.__name__, -1)
+
 
     def __init__(self, *args, **kwargs) -> None:
-        if self.REQUEST_BODY:
-            self.request = self.REQUEST_BODY(**kwargs)
+        rq = self.__class__.request_body()
+        if rq:
+            self.request = rq(**kwargs)
         else:
             self.request = None
         

@@ -8,5 +8,4 @@ from ptsl.ops import Operation
 # of an old one
 class CreateSession(Operation):
     REQUEST_BODY=pt.CreateSessionRequestBody
-    COMMAND_ID=pt.CreateSession
 

@@ -10,6 +10,6 @@ from ptsl.ops import Operation
 class ExportSessionInfoAsText(Operation):
 
     #FIXME: Pro Tools doesn't seem to return a response body
-    REQUEST_BODY=pt.ExportSessionInfoAsTextRequestBody
-    RESPONSE_BODY=None #pt.ExportSessionInfoAsTextResponseBody
-    COMMAND_ID=pt.ExportSessionInfoAsText
+    @classmethod
+    def response_body(cls):
+        return None
