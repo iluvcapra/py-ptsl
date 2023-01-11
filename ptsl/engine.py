@@ -9,6 +9,11 @@ import ptsl.PTSL_pb2 as pt
 
 @contextmanager
 def open_engine(**kwargs):
+    """
+    Open a ptsl engine. Engine will close with the context.
+
+    :param **kwargs: These are passed to `Engine.__init__()`
+    """
     engine = Engine(**kwargs)
 
     try:
@@ -23,30 +28,49 @@ class Engine:
     client: ptsl.client.Client
 
     def __init__(self, api_key_path: str, address='localhost:31416') -> None:
+        """
+        Open the engine.
+
+        :param api_key_path: Path to developer json key file.
+        :param address: server\:port to connect the engine to.
+        """
         self.client = ptsl.client.Client(api_key_path=api_key_path, address=address)
 
     def close(self):
+        """
+        Close the engine.
+        """
         self.client.close()
 
     def ptsl_version(self) -> int:
+        """
+        PTSL version number.
+        """
         op = ops.GetPTSLVersion()
         self.client.run(op)
         return op.response.version
 
 
     def session_name(self) -> str:
+        """
+        Name of the current open session.
+        """
         op = ops.GetSessionName()
         self.client.run(op)
         return op.response.session_name
 
-
     def session_path(self) -> str:
+        """
+        Path to the current open session.
+        """
         op = ops.GetSessionPath()
         self.client.run(op)
         return op.response.session_path.path
 
-
     def session_sample_rate(self) -> Optional[int]:
+        """
+        Open session sample rate.
+        """
         op = ops.GetSessionSampleRate()
         self.client.run(op)
         map_dict = {
@@ -58,8 +82,10 @@ class Engine:
         }
         return map_dict.get(op.response.sample_rate, None)
 
-
     def session_audio_format(self) -> Optional[str]:
+        """
+        Open session audio format. Either "WAVE" or "AIFF".
+        """
         op = ops.GetSessionAudioFormat()
         self.client.run(op)
         map_dict = {
@@ -68,14 +94,18 @@ class Engine:
         }
         return map_dict[op.response.current_setting]
 
-
     def session_interleaved_state(self) -> bool:
+        """
+        Session audio file interleaved state.
+        """
         op = ops.GetSessionInterleavedState()
         self.client.run(op)
         return op.response.current_setting
 
     def session_timecode_rate(self) -> Tuple[int, int, bool]:
         """
+        Session timecode rate.
+
         :returns: a Tuple of (`quanta_per_second`, `quanta_per_frame`, `is_drop_frame`)
         """
         op = ops.GetSessionTimeCodeRate()
@@ -104,6 +134,9 @@ class Engine:
         return map_dict[op.response.current_setting]
 
     def session_start_time(self) -> str:
+        """
+        Session start time.
+        """
         op = ops.GetSessionStartTime()
         self.client.run(op)
         return op.response.session_start_time
