@@ -46,3 +46,13 @@ from .save_session_as import SaveSessionAs
 from .set_playback_mode import SetPlaybackMode
 from .set_record_mode import SetRecordMode
 from .spot import Spot
+from .authorize_connection import AuthorizeConnection
+from .set_session_audio_format import SetSessionAudioFormat
+from .set_session_audio_rate_pull_settings import SetSessionAudioRatePullSettings
+from .set_session_bit_depth import SetSessionBitDepth
+from .set_session_feet_frames_rate import SetSessionFeetFramesRate
+from .set_session_interleaved_state import SetSessionInterleavedState
+from .set_session_length import SetSessionLength
+from .set_session_start_time import SetSessionStartTime
+from .set_session_time_code_rate import SetSessionTimeCodeRate
+from .set_session_video_rate_pull_settings import SetSessionVideoRatePullSettings
