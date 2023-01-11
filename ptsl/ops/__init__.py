@@ -28,4 +28,5 @@ from .save_session import SaveSession
 from .close_session import CloseSession
 from .trim_to_selection import TrimToSelection
 from .consolidate_clip import ConsolidateClip
+from .import_command import Import
 
