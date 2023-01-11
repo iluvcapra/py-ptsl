@@ -26,7 +26,7 @@ with ptsl.open_client(sys.argv[1]) as client:
 
         get_session_audio_format_op = GetSessionAudioFormat()
         client.run(get_session_audio_format_op)
-        print("Session Audio Format: %s" % pt.FileType.Name(get_session_audio_format_op.response.current_setting))
+        print("Session Audio Format: %s" % pt.SessionAudioFormat.Name(get_session_audio_format_op.response.current_setting))
 
         get_session_interleaved_state_op = GetSessionInterleavedState()
         client.run(get_session_interleaved_state_op)
