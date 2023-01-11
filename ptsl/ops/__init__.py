@@ -29,4 +29,20 @@ from .close_session import CloseSession
 from .trim_to_selection import TrimToSelection
 from .consolidate_clip import ConsolidateClip
 from .import_command import Import
-
+from .clear_special import ClearSpecial
+from .copy_special import CopySpecial
+from .cut_special import CutSpecial
+from .export_clips_as_files import ExportClipsAsFiles
+from .export_selected_tracks_as_aaf_omf import ExportSelectedTracksAsAAFOMF
+from .get_dyamic_properties import GetDynamicProperties
+from .get_file_location import GetFileLocation
+from .get_task_status import GetTaskStatus
+from .host_ready_check import HostReadyCheck
+from .paste_special import PasteSpecial
+from .refresh_all_modified_audio_files import RefreshAllModifiedAudioFiles
+from .refresh_target_audio_files import RefreshTargetAudioFiles
+from .rename_target_track import RenameTargetTrack
+from .save_session_as import SaveSessionAs
+from .set_playback_mode import SetPlaybackMode
+from .set_record_mode import SetRecordMode
+from .spot import Spot
