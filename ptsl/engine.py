@@ -1,4 +1,4 @@
-from typing import Optional, Tuple
+from typing import Optional, Tuple, List
 
 from contextlib import contextmanager
 
@@ -8,13 +8,13 @@ import ptsl.PTSL_pb2 as pt
 
 
 @contextmanager
-def open_engine(**kwargs):
+def open_engine(*args, **kwargs):
     """
     Open a ptsl engine. Engine will close with the context.
 
     :param **kwargs: These are passed to `Engine.__init__()`
     """
-    engine = Engine(**kwargs)
+    engine = Engine(*args, **kwargs)
 
     try:
         yield engine
@@ -196,7 +196,7 @@ class Engine:
 
     def playback_modes(self) -> Tuple[bool, bool, bool]:
         """
-        :returns: A Tuple if (`is_normal`, `is_loop`, `is_dynamic_transport`)
+        :returns: A Tuple of (`is_normal`, `is_loop`, `is_dynamic_transport`)
         """
         op = ops.GetPlaybackMode()
         self.client.run(op)
@@ -209,6 +209,14 @@ class Engine:
         self.client.run(op)
         return pt.RM_RecordMode.Name(op.response.current_setting)
 
+    def track_list(self, filters = [pt.TrackListInvertibleFilter(filter=pt.AllTracks, is_inverted=False)]) -> List[pt.Track]:
+        op = ops.GetTrackList(
+            page_limit=1000, 
+            track_filter_list=filters
+        )
 
+        self.client.run(op)
+
+        return op.track_list
 
 
