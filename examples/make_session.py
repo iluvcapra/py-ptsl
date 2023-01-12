@@ -1,26 +1,14 @@
 import ptsl
 from ptsl import PTSL_pb2 as pt
-from ptsl.ops import *
+from ptsl import open_engine
 
 import sys
 
-with ptsl.open_client(sys.argv[1]) as client:
-    op = CreateSession(
-        session_name="New Session",
-        create_from_template=False,
-        template_group=None,
-        template_name=None,
-        file_type=pt.FT_AIFF,
-        sample_rate=pt.SR_96000,
-        input_output_settings=pt.IO_Last,
-        is_interleaved=True,
-        session_location="Macintosh HD:Users:jamie:",
-        is_cloud_project=False, 
-        create_from_aaf=False,
-        path_to_aaf=None,
-        bit_depth=pt.Bit24   
-    )
+if len(sys.argv) < 4:
+    print("Usage: %s <json-dev-key> <path> <session-name>" % sys.argv[0])
 
-    client.run(op)
+with ptsl.open_engine(sys.argv[1]) as e:
+    e.create_session(name=sys.argv[3], path=sys.argv[2])
+
 
     

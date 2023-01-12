@@ -50,6 +50,50 @@ class Engine:
         return op.response.version
 
 
+    def create_session(self, 
+        name: str, 
+        path: str,
+        file_type: pt.SessionAudioFormat = pt.SAF_WAVE, 
+        sample_rate: pt.SampleRate = pt.SR_48000,
+        bit_depth: pt.BitDepth = pt.Bit24, 
+        io_setting: pt.IOSettings = pt.IO_Last, 
+        ) -> None:
+        """
+        Create a new Pro Tools session.
+
+        :param name: Session Name
+        :param path: Path to the new session (use colon-delimited paths on MacOS)
+        :param file_type: file type
+        :param sample_rate: sample rate
+        :param bit_depth: bit depth
+        :param io_setting: The IO Setting to use
+        """
+
+        op = ops.CreateSession(
+            session_name=name,
+            create_from_template=False,
+            template_group=None,
+            template_name=None,
+            file_type=file_type,
+            sample_rate=sample_rate,
+            input_output_settings=io_setting,
+            is_interleaved=True,
+            session_location=path,
+            is_cloud_project=False, 
+            create_from_aaf=False,
+            path_to_aaf=None,
+            bit_depth=bit_depth   
+        )
+
+        self.client.run(op)
+
+    def create_session_from_template(self) -> None:
+        pass
+
+    def create_session_from_aaf(self) -> None:
+        pass
+
+
     def session_name(self) -> str:
         """
         Name of the current open session.
