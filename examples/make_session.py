@@ -1,3 +1,7 @@
+# make_session.py
+#
+# This example demonstrates how to create a new file with the `Engine` class
+
 import ptsl
 from ptsl import PTSL_pb2 as pt
 from ptsl import open_engine
