@@ -1,5 +1,3 @@
-from typing import TypeVar, Optional
-
 from ptsl import PTSL_pb2 as pt
 
 

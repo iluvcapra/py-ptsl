@@ -1,4 +1,4 @@
-from .operation import Operation
+from ptsl.ops import Operation
 
 class RenameTargetTrack(Operation):
     pass
