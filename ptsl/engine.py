@@ -22,7 +22,6 @@ def open_engine(*args, **kwargs):
         engine.close()
 
 
-
 class Engine:
 
     client: ptsl.client.Client
@@ -190,6 +189,9 @@ class Engine:
         return pt.TS_TransportState.Name(op.response.current_setting)
 
     def transport_armed(self) -> bool:
+        """
+        :returns: The transport's record arm state.
+        """
         op = ops.GetTransportArmed()
         self.client.run(op)
         return op.response.is_transport_armed
@@ -205,11 +207,18 @@ class Engine:
                 pt.PM_DynamicTransport in op.response.current_settings)
 
     def record_mode(self) -> str:
+        """
+        :returns: The active record mode.
+        """
         op = ops.GetRecordMode()
         self.client.run(op)
         return pt.RM_RecordMode.Name(op.response.current_setting)
 
     def track_list(self, filters = [pt.TrackListInvertibleFilter(filter=pt.AllTracks, is_inverted=False)]) -> List[pt.Track]:
+        """
+        :param filters: a list of `TrackListInvertibleFilter`s
+        :returns: list of tracks
+        """
         op = ops.GetTrackList(
             page_limit=1000, 
             track_filter_list=filters
@@ -218,5 +227,6 @@ class Engine:
         self.client.run(op)
 
         return op.track_list
+
 
 
