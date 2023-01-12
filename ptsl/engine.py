@@ -1,4 +1,4 @@
-from typing import Optional, Tuple, List
+from typing import Optional, Tuple, List, Set
 
 from contextlib import contextmanager
 
@@ -314,5 +314,37 @@ class Engine:
 
         return op.track_list
 
+    def set_playback_mode(self, new_mode: pt.PM_PlaybackMode):
+        op = ops.SetPlaybackMode(playback_mode=new_mode)
+        self.client.run(op)
+
+    def set_record_mode(self, new_mode: pt.RM_RecordMode, record_arm_transport: bool):
+        op = ops.SetRecordMode(record_mode=new_mode, 
+            record_arm_transport=record_arm_transport)
+        self.client.run(op)
+
+    # FIXME: This seems to work but it doesn't update the session setup window
+    def set_bit_depth(self, new_bit_depth: pt.BitDepth):
+        op = ops.SetSessionBitDepth(bit_depth=new_bit_depth)
+        self.client.run(op)
+
+    # FIXME: This seems to work but it doesn't update the session setup window
+    def set_audio_format(self, new_audio_format: pt.SessionAudioFormat):
+        op = ops.SetSessionAudioFormat(audio_format=new_audio_format)
+        self.client.run(op)
+
+    def set_session_start_time(self, new_start: str, 
+        track_offset_opts: pt.TrackOffsetOptions, 
+        maintain_relative: bool):
+        op = ops.SetSessionStartTime(session_start_time=new_start,
+            track_offset_opts=track_offset_opts,
+            maintain_relative_position=maintain_relative)
+
+        self.client.run(op)
+
+    # FIXME: This seems to work but it doesn't update the session setup window
+    def set_session_length(self, new_length: str):
+        op = ops.SetSessionLength(session_length=new_length)
+        self.client.run(op)
 
 
