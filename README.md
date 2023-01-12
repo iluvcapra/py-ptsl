@@ -11,7 +11,7 @@ to guide future development!
 
 ## Example
 
-See the examples directory for scripts demonstrating how to use the client.
+See the [examples directory](examples) for scripts demonstrating how to use the client.
 
 ### Sending Commands To Pro Tools with the `Engine` class
 
@@ -29,8 +29,12 @@ with open_engine(api_key_path) as engine:
 
 This script will print a list of gettable properties from the currently open session.
 
+_Note:_ All of the examples in the examples directory look at the `PTSL_KEY` environment
+variable to get a path to your PTSL developer key file.
+
+
 ```sh
-$ python3 examples/session_info.py '/path/to/<your api key>.json'  
+$ python3 examples/session_info.py
 PTSL Version: 1
 Session Name: New Session
 Session Path: Macintosh HD:Users:jamie:New Session:New Session.ptx
@@ -52,7 +56,7 @@ Record Mode: RM_Normal
 This script will print a list of every track in the currently open session.
 
 ```sh
-$  python3  examples/print_tracks.py '/path/to/<your api key>.json' 
+$  python3 examples/print_tracks.py
 #: ATTRS : TYPE          : NAME                             :     COLOR : ID
 1: *     : RoutingFolder : Folder 2                         : #ff2a2a2a : {00000000-2a000000-f404e1df-f298fd4b}
 2: *S    : AudioTrack    : A1                               : #ff2a2a2a : {00000000-2a000000-d4cbe0df-2590e43e}

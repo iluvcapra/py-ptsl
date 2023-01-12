@@ -2,15 +2,14 @@
 #
 # This example demonstrates getting a list of tracks.
 
-import sys
-import os.path
+import os
 
 from ptsl import open_engine
 from ptsl import PTSL_pb2 as pt
 
 print("#: %5s : %-13s : %-32s : %9s : %s" % ("ATTRS", "TYPE","NAME","COLOR","ID"))
 
-with open_engine(sys.argv[1]) as engine:
+with open_engine(os.getenv('PTSL_KEY')) as engine:
 
     track_list = engine.track_list()
 
