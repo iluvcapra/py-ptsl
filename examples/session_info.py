@@ -1,3 +1,8 @@
+# session_info.py
+# 
+# This example demonstrates various getter methods of the `ptsl.Engine`
+# class.
+
 import sys
 
 from ptsl import open_engine, CommandError

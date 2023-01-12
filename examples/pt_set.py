@@ -1,7 +1,7 @@
 # pt_set.py
 # 
-# This example demonstrates some of the "set_*" functions of the
-# `Engine`.
+# This example demonstrates some of the set_* functions of the
+# `ptsl.Engine`.
 
 import optparse
 from ptsl import open_engine

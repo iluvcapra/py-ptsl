@@ -1,3 +1,7 @@
+# print_tracks.py
+#
+# This example demonstrates getting a list of tracks.
+
 import sys
 import os.path
 
@@ -26,6 +30,3 @@ with open_engine(sys.argv[1]) as engine:
         mode = ''.join(mode)
 
         print("%i: %5s : %-13s : %-32s : %9s : %s" % (track.index, mode, pt.TrackType.Name(track.type), track.name[0:32], track.color , track.id))
-
-    # for track in tracks_op.track_list:
-    #     print(track)
