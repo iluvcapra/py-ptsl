@@ -1,7 +1,6 @@
 import sys
 
-from ptsl.engine import open_engine
-from ptsl import CommandError
+from ptsl import open_engine, CommandError
 from ptsl.PTSL_pb2 import PT_NoOpenedSession
 
 with open_engine(api_key_path=sys.argv[1]) as engine:

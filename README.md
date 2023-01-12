@@ -13,6 +13,18 @@ to guide future development!
 
 See the examples directory for scripts demonstrating how to use the client.
 
+### Sending Commands To Pro Tools with the `Engine` class
+
+The `Engine` class exposes `ptsl` commands with a simple function call interface.
+
+```python
+from ptsl import open_engine
+
+with open_engine(api_key_path) as engine:
+    session_name = engine.session_name()
+
+```
+
 ### session_info.py
 
 This script will print a list of gettable properties from the currently open session.
@@ -20,20 +32,19 @@ This script will print a list of gettable properties from the currently open ses
 ```sh
 $ python3 examples/session_info.py '/path/to/<your api key>.json'  
 PTSL Version: 1
-Session Name: Untitled
-Session Path: Macintosh HD:Users:jamiehardt:Desktop:Untitled:Untitled.ptx
-Session Sample Rate: SR_48000
-Session Audio Format: FT_WAVE
-Session Interleaved: TRUE
-Session Timecode Rate: STCR_Fps23976
-Session Start Time: 00:57:00:00.00
+Session Name: New Session
+Session Path: Macintosh HD:Users:jamie:New Session:New Session.ptx
+Session Sample Rate: 96000
+Session Audio Format: WAVE
+Session Audio Interlaved: TRUE
+Session Timecode Rate: 29.970 Non-Drop
+Session Start Time: 00:57:03:16.00
 Session Length: 24:00:00:00
-Session Feet+Frames Rate: SFFR_Fps23976
-Session Audio Pull Setting: SRP_None
-Session Video Pull Setting: SRP_None
-Transport State: TS_TransportStopped
-Transport Armed: FALSE
-Playback Modes: PM_Normal
+Session feet+frames rate: 23.976
+-------------------------------
+Transport State: TS_TransportStopped 
+Transport Arm: SAFE
+Playback Modes: Loop
 Record Mode: RM_Normal
 ```
 ### print_tracks.py
