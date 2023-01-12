@@ -1,14 +1,15 @@
 import ptsl
 from ptsl import PTSL_pb2 as pt
 from ptsl import open_engine
-
+import os
 import sys
 
-if len(sys.argv) < 4:
-    print("Usage: %s <json-dev-key> <path> <session-name>" % sys.argv[0])
+api_key = os.getenv('PTSL_KEY', default=None)
 
-with ptsl.open_engine(sys.argv[1]) as e:
-    e.create_session(name=sys.argv[3], path=sys.argv[2])
+if len(sys.argv) < 3 or api_key is None:
+    print("Usage: %s <path> <session-name>" % sys.argv[0])
+    print("env vairable PTSL_KEY must be set to the path to your developer key")
+    exit(-1)
 
-
-    
+with ptsl.open_engine(api_key) as e:
+    e.create_session(name=sys.argv[2], path=sys.argv[1])
