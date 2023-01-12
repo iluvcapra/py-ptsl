@@ -2,6 +2,7 @@ import sys
 
 from ptsl import open_engine, CommandError
 from ptsl.PTSL_pb2 import PT_NoOpenedSession
+import ptsl.PTSL_pb2 as pt
 
 with open_engine(api_key_path=sys.argv[1]) as engine:
     
@@ -10,21 +11,27 @@ with open_engine(api_key_path=sys.argv[1]) as engine:
         print("Session Name: %s" % engine.session_name())
         print("Session Path: %s" % engine.session_path())
         print("Session Sample Rate: %i" % engine.session_sample_rate())
-        print("Session Audio Format: %s" % engine.session_audio_format())
+        print("Session Audio Format: %s" % 
+            pt.SessionAudioFormat.Name(engine.session_audio_format()))
+
         print("Session Audio Interlaved: %s" % "TRUE" if engine.session_interleaved_state() else "FALSE")
 
         tc = engine.session_timecode_rate()
-        print("Session Timecode Rate: %.03f %s" % (float(tc[0]) / float(tc[1]), "Drop" if tc[2] else "Non-Drop"))
+        print("Session Timecode Rate: %s" % 
+            pt.SessionTimeCodeRate.Name(engine.session_timecode_rate()))
 
         print("Session Start Time: %s" % engine.session_start_time())
         print("Session Length: %s" % engine.session_length())
 
         ff = engine.session_feet_frames_rate()
-        print("Session feet+frames rate: %.03f" % (float(ff[0]) / float(ff[1])))
+        print("Session feet+frames rate: %s" % 
+        pt.SessionFeetFramesRate.Name(engine.session_feet_frames_rate()))
 
-        # FIXME: print these out maybe
-        ap = engine.session_audio_pull()
-        vp = engine.session_video_pull()
+        print("Session Audio Rate Pull: %s" % 
+            pt.SessionRatePull.Name(engine.session_audio_pull()))
+        
+        print("Session Video Rate Pull: %s" %
+            pt.SessionRatePull.Name(engine.session_video_pull()))
 
         print("-------------------------------")
         print("Transport State: %s " % engine.transport_state())
