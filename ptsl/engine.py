@@ -35,11 +35,13 @@ class Engine:
         """
         self.client = ptsl.client.Client(api_key_path=api_key_path, address=address)
 
+
     def close(self):
         """
         Close the engine.
         """
         self.client.close()
+
 
     def ptsl_version(self) -> int:
         """
@@ -56,8 +58,8 @@ class Engine:
         file_type: pt.SessionAudioFormat = pt.SAF_WAVE, 
         sample_rate: pt.SampleRate = pt.SR_48000,
         bit_depth: pt.BitDepth = pt.Bit24, 
-        io_setting: pt.IOSettings = pt.IO_Last, 
-        ) -> None:
+        io_setting: pt.IOSettings = pt.IO_Last,
+        is_interleaved: bool = True) -> None:
         """
         Create a new Pro Tools session.
 
@@ -71,27 +73,67 @@ class Engine:
 
         op = ops.CreateSession(
             session_name=name,
-            create_from_template=False,
-            template_group=None,
-            template_name=None,
             file_type=file_type,
             sample_rate=sample_rate,
             input_output_settings=io_setting,
-            is_interleaved=True,
+            is_interleaved=is_interleaved,
             session_location=path,
-            is_cloud_project=False, 
-            create_from_aaf=False,
-            path_to_aaf=None,
-            bit_depth=bit_depth   
+            bit_depth=bit_depth,
         )
 
         self.client.run(op)
 
-    def create_session_from_template(self) -> None:
-        pass
 
-    def create_session_from_aaf(self) -> None:
-        pass
+    def create_session_from_template(self,
+        template_group: str,
+        template_name: str,
+        name: str, 
+        path: str,
+        file_type: pt.SessionAudioFormat = pt.SAF_WAVE, 
+        sample_rate: pt.SampleRate = pt.SR_48000,
+        bit_depth: pt.BitDepth = pt.Bit24, 
+        io_setting: pt.IOSettings = pt.IO_Last, 
+        is_interleaved: bool = True) -> None:
+
+        op = ops.CreateSession(
+            session_name=name,
+            create_from_template=True,
+            template_group=template_group,
+            template_name=template_name,
+            file_type=file_type,
+            sample_rate=sample_rate,
+            input_output_settings=io_setting,
+            is_interleaved=is_interleaved,
+            session_location=path,
+            bit_depth=bit_depth
+        )
+
+        self.client.run(op)
+
+
+    def create_session_from_aaf(self,
+        name: str, 
+        path: str,
+        aaf_path: str,
+        file_type: pt.SessionAudioFormat = pt.SAF_WAVE, 
+        sample_rate: pt.SampleRate = pt.SR_48000,
+        bit_depth: pt.BitDepth = pt.Bit24, 
+        io_setting: pt.IOSettings = pt.IO_Last, 
+        is_interleaved: bool = True) -> None:
+
+        op = ops.CreateSession(
+            session_name=name,
+            file_type=file_type,
+            sample_rate=sample_rate,
+            input_output_settings=io_setting,
+            is_interleaved=is_interleaved,
+            session_location=path,
+            bit_depth=bit_depth,
+            create_from_aaf=True,
+            path_to_aaf=aaf_path
+        )
+
+        self.client.run(op)
 
 
     def session_name(self) -> str:
