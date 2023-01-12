@@ -25,7 +25,7 @@ with open_engine(api_key_path) as engine:
 
 ```
 
-### session_info.py
+### Script: [session_info.py](examples/session_info.py)
 
 This script will print a list of gettable properties from the currently open session.
 
@@ -51,7 +51,9 @@ Transport Arm: SAFE
 Playback Modes: Loop
 Record Mode: RM_Normal
 ```
-### print_tracks.py
+
+
+### Script: [print_tracks.py](examples/print_tracks.py)
 
 This script will print a list of every track in the currently open session.
 
