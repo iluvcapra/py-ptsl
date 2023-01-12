@@ -4,9 +4,9 @@ Native Python client for the Pro Tools scripting RPC interface
 
 ## Work In Progress
 
-This project is in the very early phases of development (almost nothing works). The 
+This project is in an early phases of developmen. The 
 client successfully connects to Pro Tools, will authorize your connection with your
-developer key and a few commands are exposed. PRs and issue submissions are welcome
+developer key and a few commands are exposed through the `Engine` interface. PRs and issue submissions are welcome
 to guide future development!
 
 ## Example
