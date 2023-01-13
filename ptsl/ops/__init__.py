@@ -24,6 +24,7 @@ from .open_session import OpenSession
 from .export_session_info_as_text import ExportSessionInfoAsText
 from .select_all_clips_on_track import SelectAllClipsOnTrack
 from .extend_selection_to_target_tracks import ExtendSelectionToTargetTracks
+from .create_fades_based_on_preset import CreateFadesBasedOnPreset
 from .cut import Cut
 from .copy import Copy
 from .paste import Paste

@@ -11,7 +11,7 @@
 	SelectAllClipsOnTrack   			select_all_clips_on_track
 	ExtendSelectionToTargetTracks		extend_selection_to_target_tracks
 	TrimToSelection
-	CreateFadesBasedOnPreset
+	CreateFadesBasedOnPreset			create_batch_fades
 	RenameTargetTrack					rename_target_track
 	ConsolidateClip
 	ExportClipsAsFiles

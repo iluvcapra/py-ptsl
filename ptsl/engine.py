@@ -171,6 +171,12 @@ class Engine:
         op = ops.ExtendSelectionToTargetTracks(tracks_to_extend_to=tracks)
         self.client.run(op)
 
+    def create_batch_fades(self, preset_name: str, adjust_bounds: bool):
+        op = ops.CreateFadesBasedOnPreset(
+            preset_name=preset_name, 
+            auto_adjust_bounds=adjust_bounds)
+        self.client.run(op)
+
     def rename_target_track(self, old_name: str, new_name: str):
         op = ops.RenameTargetTrack(track_id=old_name, new_name=new_name)
         self.client.run(op)
