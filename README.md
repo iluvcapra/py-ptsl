@@ -15,7 +15,7 @@ See the [examples directory](examples) for scripts demonstrating how to use the 
 
 ### Sending Commands To Pro Tools with the `Engine` class
 
-The `Engine` class exposes `ptsl` commands with a simple function call interface.
+The `Engine` class exposes `ptsl` commands with a method call interface.
 
 ```python
 from ptsl import open_engine
