@@ -346,3 +346,35 @@ class Engine:
         self.client.run(op)
 
 
+    def cut(self, special = None):
+        if special is not None:
+            op = ops.CutSpecial(automation_data_option=special)
+        else:
+            op = ops.Cut()
+
+        self.client.run(op)
+
+    def copy(self, special = None):
+        if special is not None:
+            op = ops.CopySpecial(automation_data_option=special)
+        else:
+            op = ops.Copy()
+
+        self.client.run(op)
+
+    # FIXME: Paste-to-current doesn't seem to work when you call it
+    def paste(self, special = None):
+        if special is not None:
+            op = ops.PasteSpecial(paste_special_option=special)
+        else:
+            op = ops.Paste()
+        
+        self.client.run(op)
+
+    def clear(self, special = None):
+        if special is not None:
+            op = ops.ClearSpecial(automation_data_option=special)
+        else:
+            op = ops.Clear()
+
+        self.client.run(op)
