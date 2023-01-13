@@ -151,6 +151,17 @@ class Engine:
 
         self.client.run(op)
 
+    def select_all_clips_on_track(self, track_name: str):
+        op = ops.SelectAllClipsOnTrack(track_name=track_name)
+        self.client.run(op)
+
+    def extend_selection_to_target_tracks(self, tracks = List[str]):
+        op = ops.ExtendSelectionToTargetTracks(tracks_to_extend_to=tracks)
+        self.client.run(op)
+
+    def rename_target_track(self, old_name: str, new_name: str):
+        op = ops.RenameTargetTrack(track_id=old_name, new_name=new_name)
+        self.client.run(op)
 
     def session_name(self) -> str:
         """

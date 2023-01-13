@@ -22,6 +22,8 @@ from .get_track_list import GetTrackList
 from .create_session import CreateSession
 from .open_session import OpenSession
 from .export_session_info_as_text import ExportSessionInfoAsText
+from .select_all_clips_on_track import SelectAllClipsOnTrack
+from .extend_selection_to_target_tracks import ExtendSelectionToTargetTracks
 from .cut import Cut
 from .copy import Copy
 from .paste import Paste

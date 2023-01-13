@@ -78,7 +78,7 @@ class Client:
         request_body_json = self._prepare_operation_request_json(operation, ptsl_version)
         response = self._send_sync_request(operation.command_id(), request_body_json)
         operation.status = response.header.status
-
+    
         if response.header.status == pt.Failed:
             # FIXME: Pro Tools returns a string error_type (instead of an int like it's
             # supposed to when you call SetSessionLength with a value less than 6 hours.

@@ -1,18 +1,18 @@
 .. table:: Engine Implementation
     :widths: auto
 
-    =================================   =============================
+    =================================   ==================================
     Command                             `Engine` method
-    =================================   =============================
+    =================================   ==================================
     CreateSession                       create_session
 	OpenSession							open_session
 	Import								import_data
 	GetTrackList                        track_list                        
-	SelectAllClipsOnTrack   
-	ExtendSelectionToTargetTracks
+	SelectAllClipsOnTrack   			select_all_clips_on_track
+	ExtendSelectionToTargetTracks		extend_selection_to_target_tracks
 	TrimToSelection
 	CreateFadesBasedOnPreset
-	RenameTargetTrack
+	RenameTargetTrack					rename_target_track
 	ConsolidateClip
 	ExportClipsAsFiles
 	ExportSelectedTracksAsAAFOMF
@@ -65,4 +65,4 @@
 	GetTransportArmed                   transport_armed
 	GetTransportState                   transport_state
 	AuthorizeConnection
-    =================================   =============================
+    =================================   ==================================
