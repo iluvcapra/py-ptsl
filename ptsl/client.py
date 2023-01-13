@@ -1,8 +1,7 @@
 import io
-import asyncio
 from contextlib import contextmanager
 
-from typing import Optional, List
+from typing import Optional
 
 import grpc
 from google.protobuf import json_format
