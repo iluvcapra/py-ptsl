@@ -1,4 +1,5 @@
 import io
+import asyncio
 from contextlib import contextmanager
 
 from typing import Optional, List
@@ -91,6 +92,28 @@ class Client:
             # FIXME: dump out for now, will be on the lookout for when this happens
             assert False, "Unexpected response code %i (%s)" % (response.header.status, 
                 pt.TaskStatus.Name(response.header.status))
+
+
+    # This is an in-progress feature 
+    def __launch_test(self, operation: Operation):
+        request_body_json = self._prepare_operation_request_json(operation, self.ptsl_version)
+
+        request = pt.Request(
+            header=pt.RequestHeader(
+                task_id="",
+                session_id=self.session_id,
+                command=operation.command_id(),
+                version=PTSL_VERSION
+            ),
+            request_body_json=request_body_json
+        )
+
+        response_iter = self.raw_client.SendGrpcStreamingRequest(request)
+
+        initial = next(response_iter)
+        operation.task_id = initial.header.task_id
+
+        return response_iter
 
 
     def _handle_completed_response(self, operation, ptsl_version, response):

@@ -35,6 +35,7 @@ class Operation:
         
         self.response = None
         self.status = None
+        self.task_id = ""
 
     def json_messup(self, in_json: str, version = 1) -> str:
         """

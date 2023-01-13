@@ -34,6 +34,7 @@ from .copy_special import CopySpecial
 from .cut_special import CutSpecial
 from .export_clips_as_files import ExportClipsAsFiles
 from .export_selected_tracks_as_aaf_omf import ExportSelectedTracksAsAAFOMF
+from .export_mix import ExportMix
 from .get_dyamic_properties import GetDynamicProperties
 from .get_file_location import GetFileLocation
 from .get_task_status import GetTaskStatus
