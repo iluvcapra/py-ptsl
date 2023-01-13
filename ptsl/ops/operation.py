@@ -1,7 +1,6 @@
 from ptsl import PTSL_pb2 as pt
 
 
-
 class Operation:
     """
     An operation composes a `CommandId` with its request and response type.
@@ -66,7 +65,7 @@ class Operation:
         """
         The client calls this when the server reponds.
         """
-        pass
+        self.response = None
 
     def on_response_body(self, response_body):
         """
