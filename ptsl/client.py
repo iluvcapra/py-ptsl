@@ -45,15 +45,52 @@ class Client:
             self._primitive_authorize_connection(api_key_path)
             get_v = GetPTSLVersion()
             self.run(get_v, ptsl_version=1)
-            self.ptsl_version = get_v.version
-
-
-    def _send_sync_request(self, command_id, request_body, task_id="") -> pt.Response:
-        if request_body is not None:
-            request_body_json = json_format.MessageToJson(request_body, preserving_proto_field_name=True)
+            self.ptsl_version = get_v.response.version
         else:
-            request_body_json = "" 
+            self.close()
 
+
+    def run(self, operation: Operation, ptsl_version = None):
+        """
+        Run an operation on the client.
+
+        :raises: `CommandError` if the server returns an error
+        
+        """
+        if operation.request is None:
+            request_body_json = ""
+        else:
+            request_body_json = json_format.MessageToJson(operation.request, 
+                including_default_value_fields=True,
+                preserving_proto_field_name=True)
+
+        request_body_json = operation.json_messup(request_body_json, ptsl_version or self.ptsl_version)
+        
+        response = self._send_sync_request(operation.command_id(), request_body_json)
+
+        operation.status = response.header.status
+
+        if response.header.status == pt.Failed:
+            command_error = json_format.Parse(response.response_error_json, pt.CommandError())
+            self._default_error_handler(operation, command_error)
+            raise CommandError(command_error)
+
+        elif response.header.status == pt.Completed:
+            p = operation.__class__.response_body()
+            if len(response.response_body_json) > 0 and p is not None:
+                clean_json = operation.json_cleanup(response.response_body_json, ptsl_version or self.ptsl_version)
+                resp_body = json_format.Parse(clean_json, p(), ignore_unknown_fields=True)
+                operation.on_response_body(resp_body)
+            else:
+                operation.on_empty_response_body()
+
+            return None
+        else:
+            # FIXME: dump out for now, will be on the lookout for when this happens
+            assert False, "Unexpected response code %i (%s)" % (response.header.status, 
+                pt.TaskStatus.Name(response.header.status))
+
+    def _send_sync_request(self, command_id, request_body_json, task_id="") -> pt.Response:
         request = pt.Request(
             header=pt.RequestHeader(
                 task_id=task_id,
@@ -69,49 +106,17 @@ class Client:
         return response
 
 
-    def run(self, operation: Operation, ptsl_version = None):
-        """
-        Run an operation on the client.
-
-        :raises: `CommandError` if the server returns an error
-        
-        """
-        response = self._send_sync_request(operation.command_id(), operation.request)
-        # print("Got response")
-        # print("response body: " + response.response_body_json)
-        if response.header.status == pt.Failed:
-            command_error = json_format.Parse(response.response_error_json, pt.CommandError())
-            self._default_error_handler(operation, command_error)
-            raise CommandError(command_error)
-
-        elif response.header.status == pt.Completed:
-            # print("response Completed")
-            p = operation.response_body_prototype()
-            if len(response.response_body_json) > 0 and p is not None:
-                #print("Will read response body: %s" % response.response_body_json)
-                clean_json = operation.json_cleanup(response.response_body_json, ptsl_version or self.ptsl_version)
-                resp_body = json_format.Parse(clean_json, p, ignore_unknown_fields=True)
-                operation.on_response_body(resp_body)
-            else:
-                operation.on_empty_response_body()
-
-            return None
-        else:
-            # FIXME: dump out for now, will be on the lookout for when this happens
-            assert False, "Unexpected response code %i (%s)" % (response.header.status, 
-                pt.TaskStatus.Name(response.header.status))
-
-
     def _default_error_handler(self, operation: Operation, command_error: pt.CommandError):
         error_type = "WARNING" if command_error.is_warning else "FAILURE"
 
         message = "%s: Operation %s failed.\n  Error type %i (%s)\n  Message: %s" % (error_type, 
-                pt.CommandId.Name(operation.command_id),
+                pt.CommandId.Name(operation.command_id()),
                 command_error.command_error_type,
                 pt.CommandErrorType.Name(command_error.command_error_type),
-                command_error )
+                command_error.command_error_message )
 
         print(message)
+
 
     def close(self):
         """
@@ -122,34 +127,13 @@ class Client:
         self.session_id = ""
 
 
-    # This does not work 
-    def create_session(self, name, session_location, 
-        file_type : pt.FileType = pt.FT_WAVE, 
-        sample_rate: pt.SampleRate = pt.SR_48000, 
-        io_settings: pt.IOSettings = pt.IO_Last,
-        is_interleaved = True,
-        is_cloud_project = False,
-        bit_depth: pt.BitDepth = pt.Bit24
-        ):
-
-        req_body = pt.CreateSessionRequestBody(session_name=name,file_type=file_type, sample_rate=sample_rate,
-            input_output_settings=io_settings, is_interleaved=is_interleaved, 
-            session_location=session_location, bit_depth=bit_depth, is_cloud_project=is_cloud_project)
-
-        response = self._send_sync_request(pt.CreateSession, req_body)
-
-        if response.header.status == pt.Failed:
-            print("Failed:")
-            print(response)
-
-
     # This works
     def _primitive_check_if_ready(self) -> bool:
         """
         Checks if the Pro Tools RPC server is listening. The server will respond
         to this command even if the client is not yet authenticated.
         """
-        response = self._send_sync_request(pt.CommandId.HostReadyCheck, None)
+        response = self._send_sync_request(pt.CommandId.HostReadyCheck, "")
 
         if response.header.status == pt.Failed:
             print("Pro Tools Not Ready")
@@ -169,8 +153,10 @@ class Client:
 
         with io.FileIO(api_key_path) as f:
             api_token = f.readall().decode(encoding=KEY_FILE_ENCODING)
-
-        response = self._send_sync_request(pt.CommandId.AuthorizeConnection, pt.AuthorizeConnectionRequestBody(auth_string=api_token))
+        
+        req = pt.AuthorizeConnectionRequestBody(auth_string=api_token)
+        req_json = json_format.MessageToJson(req, preserving_proto_field_name=True) 
+        response = self._send_sync_request(pt.CommandId.AuthorizeConnection, req_json)
 
         if response.header.status == pt.Failed:
             print("An error occurred")

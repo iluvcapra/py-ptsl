@@ -1,21 +1,19 @@
-import sys
-import os.path
+# print_tracks.py
+#
+# This example demonstrates getting a list of tracks.
 
-import ptsl
+import os
+
+from ptsl import open_engine
 from ptsl import PTSL_pb2 as pt
-from ptsl.ops import *
 
 print("#: %5s : %-13s : %-32s : %9s : %s" % ("ATTRS", "TYPE","NAME","COLOR","ID"))
 
-with ptsl.open_client(sys.argv[1]) as client:
-    tracks_op = GetTrackList(
-        page_limit=1000, 
-        track_filter_list=[pt.TrackListInvertibleFilter(filter=pt.AllTracks, is_inverted=False)]
-        )
+with open_engine(os.getenv('PTSL_KEY')) as engine:
 
-    client.run(tracks_op)
+    track_list = engine.track_list()
 
-    for track in tracks_op.track_list:
+    for track in track_list:
         mode = list("     ")
         if track.track_attributes.is_selected:
             mode[0] = "*"
@@ -31,6 +29,3 @@ with ptsl.open_client(sys.argv[1]) as client:
         mode = ''.join(mode)
 
         print("%i: %5s : %-13s : %-32s : %9s : %s" % (track.index, mode, pt.TrackType.Name(track.type), track.name[0:32], track.color , track.id))
-
-    # for track in tracks_op.track_list:
-    #     print(track)
