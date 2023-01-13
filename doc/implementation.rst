@@ -52,11 +52,11 @@
 	GetSessionLength                    session_length
 	SetSessionAudioFormat               set_audio_format
 	SetSessionBitDepth                  set_bit_depth
-	SetSessionInterleavedState          
-	SetSessionTimeCodeRate
-	SetSessionFeetFramesRate
-	SetSessionAudioRatePullSettings
-	SetSessionVideoRatePullSettings
+	SetSessionInterleavedState          set_session_interleaved_state
+	SetSessionTimeCodeRate				set_session_time_code_rate
+	SetSessionFeetFramesRate			set_session_feet_frames_rate
+	SetSessionAudioRatePullSettings		set_session_audio_rate_pull
+	SetSessionVideoRatePullSettings		set_session_video_rate_pull
 	SetSessionStartTime                 set_session_start_time
 	SetSessionLength                    set_session_length
 	GetPTSLVersion                      ptsl_version

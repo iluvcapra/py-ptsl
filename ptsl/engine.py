@@ -345,6 +345,25 @@ class Engine:
         op = ops.SetSessionLength(session_length=new_length)
         self.client.run(op)
 
+    def set_session_interleaved_state(self, new_state: bool):
+        op = ops.SetSessionInterleavedState(interleaved_state=new_state)
+        self.client.run(op)
+
+    def set_session_time_code_rate(self, tc_rate: pt.SessionTimeCodeRate):
+        op = ops.SetSessionTimeCodeRate(time_code_rate=tc_rate)
+        self.client.run(op)
+
+    def set_session_feet_frames_rate(self, ff_rate: pt.SessionFeetFramesRate):
+        op = ops.SetSessionFeetFramesRate(feet_frames_rate=ff_rate)
+        self.client.run(op)
+
+    def set_session_audio_rate_pull(self, pull_rate: pt.SessionRatePull):
+        op = ops.SetSessionAudioRatePullSettings(audio_rate_pull=pull_rate)
+        self.client.run(op)
+
+    def set_session_video_rate_pull(self, pull_rate: pt.SessionRatePull):
+        op = ops.SetSessionVideoRatePullSettings(video_rate_pull=pull_rate)
+        self.client.run(op)
 
     def cut(self, special = None):
         if special is not None:
