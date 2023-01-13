@@ -1,9 +1,9 @@
 .. table:: Engine Implementation
     :widths: auto
 
-    =================================   =========================
+    =================================   =============================
     Command                             `Engine` method
-    =================================   =========================
+    =================================   =============================
     CreateSession                       create_session
 	OpenSession
 	Import
@@ -65,4 +65,4 @@
 	GetTransportArmed                   transport_armed
 	GetTransportState                   transport_state
 	AuthorizeConnection
-    =================================   =========================
+    =================================   =============================
