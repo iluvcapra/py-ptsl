@@ -190,7 +190,26 @@ class Engine:
 
         return op.response.file_locations
 
-        
+    def export_mix(self, base_name: str, 
+        file_type: pt.EM_FileType,
+        path_list: List[pt.EM_SourceInfo],
+        audio_info: pt.EM_AudioInfo,
+        video_info: pt.EM_VideoInfo,
+        location_info: pt.EM_LocationInfo,
+        dolby_atmos_info: pt.EM_DolbyAtmosInfo,
+        offline_bounce=pt.TripleBool
+        ):
+        op = ops.ExportMix(
+            file_name=base_name,
+            file_type=file_type,
+            files_list=path_list,
+            audio_info=audio_info,
+            video_info=video_info,
+            location_info=location_info,
+            dolby_atmos_info=dolby_atmos_info,
+            offline_bounce=pt.TB_True
+            )
+        self.client.run(op) 
 
     def session_name(self) -> str:
         """

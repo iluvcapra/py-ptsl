@@ -32,7 +32,7 @@
 	CopySpecial                         copy
 	ClearSpecial                        clear
 	PasteSpecial                        paste
-	ExportMix
+	ExportMix							export_mix
 	Spot
 	ExportSessionInfoAsText
 	GetDynamicProperties
