@@ -1,8 +1,10 @@
 # bounce.py
 #
-# This is me taking a look at the streaming RPC. At this time the "progress"
-# field is not being updated so I don't see any reason to continue to develop
-# this feature at this time. 
+# This is Jamie taking a look at the streaming RPC. At this time the "progress"
+# field in GetTaskStatus is not being updated by Pro Tools so I don't see any 
+# reason to continue to develop this feature at this time. 
+#
+# I've posted about this bug at https://duc.avid.com/showthread.php?p=2658650#post2658650
 
 import os
 
