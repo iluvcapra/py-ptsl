@@ -55,7 +55,6 @@ class Client:
     channel: grpc.Channel
     raw_client: PTSL_pb2_grpc.PTSLStub
     session_id: str
-    ptsl_version: int
 
     def __init__(self, api_key_path: str, address: str = 'localhost:31416') -> None:
         self.channel = grpc.insecure_channel(address)
@@ -63,9 +62,7 @@ class Client:
         self.session_id = ""
         if self._primitive_check_if_ready():
             self._primitive_authorize_connection(api_key_path)
-            get_v = GetPTSLVersion()
-            self.run(get_v, ptsl_version=1)
-            self.ptsl_version = get_v.response.version
+
         else:
             self.close()
 
@@ -118,7 +115,7 @@ class Client:
     def _handle_completed_response(self, operation, ptsl_version, response):
         p = operation.__class__.response_body()
         if len(response.response_body_json) > 0 and p is not None:
-            clean_json = operation.json_cleanup(response.response_body_json, ptsl_version or self.ptsl_version)
+            clean_json = operation.json_cleanup(response.response_body_json, ptsl_version or PTSL_VERSION)
             resp_body = json_format.Parse(clean_json, p(), ignore_unknown_fields=True)
             operation.on_response_body(resp_body)
         else:
@@ -133,7 +130,7 @@ class Client:
                 including_default_value_fields=True,
                 preserving_proto_field_name=True)
 
-        request_body_json = operation.json_messup(request_body_json, ptsl_version or self.ptsl_version)
+        request_body_json = operation.json_messup(request_body_json, ptsl_version or PTSL_VERSION)
         return request_body_json
 
 
