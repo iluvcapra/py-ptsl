@@ -40,7 +40,7 @@
 	SetRecordMode                       set_record_mode
 	GetSessionAudioFormat               session_audio_format
 	GetSessionSampleRate                session_sample_rate
-	GetSessionBitDepth
+	GetSessionBitDepth					session_bit_depth	
 	GetSessionInterleavedState          session_interleaved_state
 	GetSessionTimeCodeRate              session_timecode_rate
 	GetSessionFeetFramesRate            session_feet_frames_rate
@@ -50,8 +50,8 @@
 	GetSessionPath                      session_path
 	GetSessionStartTime                 session_start_time
 	GetSessionLength                    session_length
-	SetSessionAudioFormat               set_audio_format
-	SetSessionBitDepth                  set_bit_depth
+	SetSessionAudioFormat               set_session_audio_format
+	SetSessionBitDepth                  set_session_bit_depth
 	SetSessionInterleavedState          set_session_interleaved_state
 	SetSessionTimeCodeRate				set_session_time_code_rate
 	SetSessionFeetFramesRate			set_session_feet_frames_rate

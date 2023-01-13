@@ -22,6 +22,9 @@ with open_engine(api_key_path=key_path) as engine:
         print("Session Audio Format: %s" % 
             pt.SessionAudioFormat.Name(engine.session_audio_format()))
 
+        print("Session Bit Depth: %s" % 
+            pt.BitDepth.Name(engine.session_bit_depth()))
+            
         print("Session Audio Interlaved: %s" % "TRUE" if engine.session_interleaved_state() else "FALSE")
 
         tc = engine.session_timecode_rate()

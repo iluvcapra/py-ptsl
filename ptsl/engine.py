@@ -179,6 +179,11 @@ class Engine:
         # }
         return op.response.current_setting
 
+    def session_bit_depth(self) -> pt.BitDepth:
+        op = ops.GetSessionBitDepth()
+        self.client.run(op)
+        return op.response.current_setting
+
     def session_interleaved_state(self) -> bool:
         """
         Session audio file interleaved state.
@@ -322,12 +327,12 @@ class Engine:
         self.client.run(op)
 
     # FIXME: This seems to work but it doesn't update the session setup window
-    def set_bit_depth(self, new_bit_depth: pt.BitDepth):
+    def set_session_bit_depth(self, new_bit_depth: pt.BitDepth):
         op = ops.SetSessionBitDepth(bit_depth=new_bit_depth)
         self.client.run(op)
 
     # FIXME: This seems to work but it doesn't update the session setup window
-    def set_audio_format(self, new_audio_format: pt.SessionAudioFormat):
+    def set_session_audio_format(self, new_audio_format: pt.SessionAudioFormat):
         op = ops.SetSessionAudioFormat(audio_format=new_audio_format)
         self.client.run(op)
 

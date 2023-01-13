@@ -54,8 +54,8 @@ assert api_key is not None, "No developer key file provided"
 with open_engine(api_key_path=api_key) as e:
     process_option(options, 'playback_mode', pt.PM_PlaybackMode, e.set_playback_mode)
     process_option(options, 'record_mode', pt.RM_RecordMode, lambda x: e.set_record_mode(x, False))
-    process_option(options, 'bit_depth', pt.BitDepth, e.set_bit_depth)
-    process_option(options, 'audio_format', pt.SessionAudioFormat, e.set_audio_format)
+    process_option(options, 'bit_depth', pt.BitDepth, e.set_session_bit_depth)
+    process_option(options, 'audio_format', pt.SessionAudioFormat, e.set_session_audio_format)
 
     def simple_set_start(t):
         e.set_session_start_time(t, pt.TimeCode, True)
