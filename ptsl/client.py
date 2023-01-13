@@ -1,5 +1,6 @@
 import io
 from contextlib import contextmanager
+import json
 
 from typing import Optional
 
@@ -79,7 +80,14 @@ class Client:
         operation.status = response.header.status
 
         if response.header.status == pt.Failed:
-            command_error = json_format.Parse(response.response_error_json, pt.CommandError())
+            # FIXME: Pro Tools returns a string error_type (instead of an int like it's
+            # supposed to when you call SetSessionLength with a value less than 6 hours.
+            # The error type it returns is "PT_InvalidParameter" which doesn't have a 
+            # corresponding enum value.
+            # print(response.response_error_json)
+            cleaned_response_error_json = self._response_error_json_cleanup(response.response_error_json)
+            # print(cleaned_response_error_json)
+            command_error = json_format.Parse(cleaned_response_error_json, pt.CommandError())
             raise CommandError(command_error)
 
         elif response.header.status == pt.Completed:
@@ -88,6 +96,20 @@ class Client:
             # FIXME: dump out for now, will be on the lookout for when this happens
             assert False, "Unexpected response code %i (%s)" % (response.header.status, 
                 pt.TaskStatus.Name(response.header.status))
+
+
+    def _response_error_json_cleanup(self, json_in: str) -> str:
+        error_dict = json.loads(json_in)
+        old_val = error_dict['command_error_type']
+        if isinstance(old_val, str):
+            if old_val.isdigit():
+                error_dict['command_error_type'] = int(old_val)
+            elif old_val in pt.CommandErrorType.keys():
+                error_dict['command_error_type'] = pt.CommandErrorType.Value(old_val)
+            else:
+                error_dict['command_error_type'] = pt.PT_UnknownError
+
+        return json.dumps(error_dict)
 
 
     # This is an in-progress feature 
