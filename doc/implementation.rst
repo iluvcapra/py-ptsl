@@ -5,8 +5,8 @@
     Command                             `Engine` method
     =================================   =============================
     CreateSession                       create_session
-	OpenSession
-	Import
+	OpenSession							open_session
+	Import								import_data
 	GetTrackList                        track_list                        
 	SelectAllClipsOnTrack   
 	ExtendSelectionToTargetTracks

@@ -135,6 +135,22 @@ class Engine:
 
         self.client.run(op)
 
+    def open_session(self, path: str):
+        op = ops.OpenSession(session_path=path)
+        self.engine.run(op)
+
+    def import_data(self, session_path: str, 
+        import_type: pt.ImportType,
+        session_data: pt.SessionData,
+        audio_data: pt.AudioData):
+        
+        op = ops.Import(session_path=session_path,
+            import_type=import_type,
+            session_data=session_data,
+            audio_data=audio_data)
+
+        self.client.run(op)
+
 
     def session_name(self) -> str:
         """

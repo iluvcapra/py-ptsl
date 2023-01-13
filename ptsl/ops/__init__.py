@@ -20,6 +20,7 @@ from .get_transport_armed import GetTransportArmed
 from .get_record_mode import GetRecordMode
 from .get_track_list import GetTrackList
 from .create_session import CreateSession
+from .open_session import OpenSession
 from .export_session_info_as_text import ExportSessionInfoAsText
 from .cut import Cut
 from .copy import Copy
