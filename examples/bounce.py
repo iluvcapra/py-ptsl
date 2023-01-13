@@ -35,7 +35,7 @@ with open_engine(os.getenv('PTSL_KEY')) as engine:
         offline_bounce=pt.TB_True
     )
 
-    r = client.__launch_test(op)
+    r = client.launch_test_DO_NOT_USE(op)
     print(op)
     print(op.task_id)
 

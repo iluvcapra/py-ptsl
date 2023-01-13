@@ -94,7 +94,7 @@ class Client:
 
 
     # This is an in-progress feature 
-    def __launch_test(self, operation: Operation):
+    def launch_test_DO_NOT_USE(self, operation: Operation):
         request_body_json = self._prepare_operation_request_json(operation, self.ptsl_version)
 
         request = pt.Request(
