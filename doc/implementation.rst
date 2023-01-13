@@ -20,10 +20,10 @@
 	HostReadyCheck
 	RefreshTargetAudioFiles
 	RefreshAllModifiedAudioFiles
-	GetFileLocation
-	CloseSession
-	SaveSession
-	SaveSessionAs
+	GetFileLocation						get_file_location
+	CloseSession						close_session
+	SaveSession							save_session
+	SaveSessionAs						save_session_as
 	Cut                                 cut
 	Copy                                copy
 	Paste                               paste

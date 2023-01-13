@@ -139,6 +139,18 @@ class Engine:
         op = ops.OpenSession(session_path=path)
         self.engine.run(op)
 
+    def close_session(self, save_on_close : bool):
+        op = ops.CloseSession(save_on_close=save_on_close)
+        self.engine.run(op)
+
+    def save_session(self):
+        op = ops.SaveSession()
+        self.engine.run(op)
+
+    def save_session_as(self, path: str, name: str):
+        op = ops.SaveSessionAs(session_name=name, session_location=path)
+        self.engine.run(op)
+
     def import_data(self, session_path: str, 
         import_type: pt.ImportType,
         session_data: pt.SessionData,
@@ -155,13 +167,24 @@ class Engine:
         op = ops.SelectAllClipsOnTrack(track_name=track_name)
         self.client.run(op)
 
-    def extend_selection_to_target_tracks(self, tracks = List[str]):
+    def extend_selection_to_target_tracks(self, tracks: List[str]):
         op = ops.ExtendSelectionToTargetTracks(tracks_to_extend_to=tracks)
         self.client.run(op)
 
     def rename_target_track(self, old_name: str, new_name: str):
         op = ops.RenameTargetTrack(track_id=old_name, new_name=new_name)
         self.client.run(op)
+
+    def get_file_location(self, 
+        filters = [pt.Audio_Files] ) -> List[pt.FileLocation]:
+        op = ops.GetFileLocation(
+            page_limit=10000,
+            file_filters=filters)
+        self.client.run(op)
+
+        return op.response.file_locations
+
+        
 
     def session_name(self) -> str:
         """
