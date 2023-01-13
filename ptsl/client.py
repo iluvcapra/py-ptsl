@@ -20,6 +20,26 @@ class CommandError(RuntimeError):
         self.error_response = error_response
         super().__init__()
 
+    @property
+    def is_warning(self) -> bool:
+        return self.error_response.is_warning
+
+    @property
+    def error_type(self) -> pt.CommandErrorType:
+        return self.error_response.command_error_type
+
+    @property
+    def error_name(self) -> Optional[str]:
+        if self.error_type in pt.CommandErrorType.values():
+            return pt.CommandErrorType.Name(self.error_type)
+        else:
+            return None
+
+    @property
+    def message(self) -> str:
+        return self.error_response.command_error_message
+
+
 
 @contextmanager
 def open_client(*args, **kwargs):
@@ -49,7 +69,7 @@ class Client:
         else:
             self.close()
 
-
+    
     def run(self, operation: Operation, ptsl_version = None):
         """
         Run an operation on the client.
@@ -57,6 +77,33 @@ class Client:
         :raises: `CommandError` if the server returns an error
         
         """
+        request_body_json = self._prepare_operation_request_json(operation, ptsl_version)
+        response = self._send_sync_request(operation.command_id(), request_body_json)
+        operation.status = response.header.status
+
+        if response.header.status == pt.Failed:
+            command_error = json_format.Parse(response.response_error_json, pt.CommandError())
+            raise CommandError(command_error)
+
+        elif response.header.status == pt.Completed:
+            self._handle_completed_response(operation, ptsl_version, response)
+        else:
+            # FIXME: dump out for now, will be on the lookout for when this happens
+            assert False, "Unexpected response code %i (%s)" % (response.header.status, 
+                pt.TaskStatus.Name(response.header.status))
+
+
+    def _handle_completed_response(self, operation, ptsl_version, response):
+        p = operation.__class__.response_body()
+        if len(response.response_body_json) > 0 and p is not None:
+            clean_json = operation.json_cleanup(response.response_body_json, ptsl_version or self.ptsl_version)
+            resp_body = json_format.Parse(clean_json, p(), ignore_unknown_fields=True)
+            operation.on_response_body(resp_body)
+        else:
+            operation.on_empty_response_body()
+
+
+    def _prepare_operation_request_json(self, operation, ptsl_version):
         if operation.request is None:
             request_body_json = ""
         else:
@@ -65,30 +112,8 @@ class Client:
                 preserving_proto_field_name=True)
 
         request_body_json = operation.json_messup(request_body_json, ptsl_version or self.ptsl_version)
-        
-        response = self._send_sync_request(operation.command_id(), request_body_json)
+        return request_body_json
 
-        operation.status = response.header.status
-
-        if response.header.status == pt.Failed:
-            command_error = json_format.Parse(response.response_error_json, pt.CommandError())
-            self._default_error_handler(operation, command_error)
-            raise CommandError(command_error)
-
-        elif response.header.status == pt.Completed:
-            p = operation.__class__.response_body()
-            if len(response.response_body_json) > 0 and p is not None:
-                clean_json = operation.json_cleanup(response.response_body_json, ptsl_version or self.ptsl_version)
-                resp_body = json_format.Parse(clean_json, p(), ignore_unknown_fields=True)
-                operation.on_response_body(resp_body)
-            else:
-                operation.on_empty_response_body()
-
-            return None
-        else:
-            # FIXME: dump out for now, will be on the lookout for when this happens
-            assert False, "Unexpected response code %i (%s)" % (response.header.status, 
-                pt.TaskStatus.Name(response.header.status))
 
     def _send_sync_request(self, command_id, request_body_json, task_id="") -> pt.Response:
         request = pt.Request(
@@ -104,18 +129,6 @@ class Client:
         response = self.raw_client.SendGrpcRequest(request)
 
         return response
-
-
-    def _default_error_handler(self, operation: Operation, command_error: pt.CommandError):
-        error_type = "WARNING" if command_error.is_warning else "FAILURE"
-
-        message = "%s: Operation %s failed.\n  Error type %i (%s)\n  Message: %s" % (error_type, 
-                pt.CommandId.Name(operation.command_id()),
-                command_error.command_error_type,
-                pt.CommandErrorType.Name(command_error.command_error_type),
-                command_error.command_error_message )
-
-        print(message)
 
 
     def close(self):
