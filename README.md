@@ -40,10 +40,6 @@ set -Ux PTSL_KEY /path/to/your/cert.json
 
 This script will print a list of gettable properties from the currently open session.
 
-_Note:_ All of the examples in the examples directory look at the `PTSL_KEY` environment
-variable to get a path to your PTSL developer key file.
-
-
 ```sh
 $ python3 examples/session_info.py
 PTSL Version: 1
