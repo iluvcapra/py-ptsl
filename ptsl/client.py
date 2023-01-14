@@ -10,36 +10,9 @@ from google.protobuf import json_format
 from . import PTSL_pb2_grpc
 from . import PTSL_pb2 as pt
 
-from .ops import Operation, GetPTSLVersion
+PTSL_VERSION = 1
 
-PTSL_VERSION=1
-
-class CommandError(RuntimeError):
-    error_response: pt.CommandError
-
-    def __init__(self, error_response: pt.CommandError) -> None:
-        self.error_response = error_response
-        super().__init__()
-
-    @property
-    def is_warning(self) -> bool:
-        return self.error_response.is_warning
-
-    @property
-    def error_type(self) -> pt.CommandErrorType:
-        return self.error_response.command_error_type
-
-    @property
-    def error_name(self) -> Optional[str]:
-        if self.error_type in pt.CommandErrorType.values():
-            return pt.CommandErrorType.Name(self.error_type)
-        else:
-            return None
-
-    @property
-    def message(self) -> str:
-        return self.error_response.command_error_message
-
+from .ops import Operation
 
 
 @contextmanager
@@ -73,7 +46,6 @@ class Client:
         Run an operation on the client.
 
         :raises: `CommandError` if the server returns an error
-        
         """
         request_body_json = self._prepare_operation_request_json(operation, ptsl_version)
         response = self._send_sync_request(operation.command_id(), request_body_json)

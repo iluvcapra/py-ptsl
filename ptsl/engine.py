@@ -1,4 +1,4 @@
-from typing import Optional, Tuple, List, Set
+from typing import Optional, Tuple, List
 
 from contextlib import contextmanager
 
