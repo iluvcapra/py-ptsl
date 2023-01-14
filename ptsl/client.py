@@ -9,7 +9,7 @@ from google.protobuf import json_format
 
 from . import PTSL_pb2_grpc
 from . import PTSL_pb2 as pt
-from . import CommandError
+from .errors import CommandError
 
 PTSL_VERSION = 1
 

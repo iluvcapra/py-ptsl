@@ -43,20 +43,23 @@ This script will print a list of gettable properties from the currently open ses
 ```sh
 $ python3 examples/session_info.py
 PTSL Version: 1
-Session Name: New Session
-Session Path: Macintosh HD:Users:jamie:New Session:New Session.ptx
-Session Sample Rate: 96000
-Session Audio Format: WAVE
+Session Name: Test2
+Session Path: Macintosh HD:Users:jamie:Test2:Test2.ptx
+Session Sample Rate: 48000
+Session Audio Format: SAF_WAVE
+Session Bit Depth: Bit24
 Session Audio Interlaved: TRUE
-Session Timecode Rate: 29.970 Non-Drop
-Session Start Time: 00:57:03:16.00
-Session Length: 24:00:00:00
-Session feet+frames rate: 23.976
+Session Timecode Rate: STCR_Fps2997
+Session Start Time: 01:58:00:00.00
+Session Length: 20:00:00:00
+Session feet+frames rate: SFFR_Fps23976
+Session Audio Rate Pull: SRP_None
+Session Video Rate Pull: SRP_None
 -------------------------------
 Transport State: TS_TransportStopped 
 Transport Arm: SAFE
-Playback Modes: Loop
-Record Mode: RM_Normal
+Playback Modes: Normal
+Record Mode: RM_Loop
 ```
 
 
