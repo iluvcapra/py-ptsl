@@ -6,9 +6,7 @@ from ptsl.ops import Operation
 #
 # https://duc.avid.com/showthread.php?t=422971
 class ExportSessionInfoAsText(Operation):
-
-    #FIXME: Pro Tools doesn't seem to return a response body
-    # despite one specced in the proto
+ 
     @classmethod
     def response_body(cls):
         return None

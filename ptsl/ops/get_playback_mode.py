@@ -6,8 +6,6 @@ from ptsl.ops import Operation
 
 class GetPlaybackMode(Operation):
 
-    # FIXME: This is a bug that needs to be reported, the protobuf says this should
-    # be integers from an enum but the server is returning string values
     def json_cleanup(self, in_json: str, ptsl_version) -> str:
 
         def xform(x):

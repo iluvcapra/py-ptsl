@@ -401,12 +401,10 @@ class Engine:
             record_arm_transport=record_arm_transport)
         self.client.run(op)
 
-    # FIXME: This seems to work but it doesn't update the session setup window
     def set_session_bit_depth(self, new_bit_depth: pt.BitDepth):
         op = ops.SetSessionBitDepth(bit_depth=new_bit_depth)
         self.client.run(op)
 
-    # FIXME: This seems to work but it doesn't update the session setup window
     def set_session_audio_format(self, new_audio_format: pt.SessionAudioFormat):
         op = ops.SetSessionAudioFormat(audio_format=new_audio_format)
         self.client.run(op)
@@ -420,7 +418,6 @@ class Engine:
 
         self.client.run(op)
 
-    # FIXME: This seems to work but it doesn't update the session setup window
     def set_session_length(self, new_length: str):
         op = ops.SetSessionLength(session_length=new_length)
         self.client.run(op)
@@ -461,7 +458,6 @@ class Engine:
 
         self.client.run(op)
 
-    # FIXME: Paste-to-current doesn't seem to work when you call it
     def paste(self, special = None):
         if special is not None:
             op = ops.PasteSpecial(paste_special_option=special)

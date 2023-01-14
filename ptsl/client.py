@@ -9,6 +9,7 @@ from google.protobuf import json_format
 
 from . import PTSL_pb2_grpc
 from . import PTSL_pb2 as pt
+from . import CommandError
 
 PTSL_VERSION = 1
 
@@ -51,11 +52,7 @@ class Client:
         response = self._send_sync_request(operation.command_id(), request_body_json)
         operation.status = response.header.status
     
-        if response.header.status == pt.Failed:
-            # FIXME: Pro Tools returns a string error_type (instead of an int like it's
-            # supposed to when you call SetSessionLength with a value less than 6 hours.
-            # The error type it returns is "PT_InvalidParameter" which doesn't have a 
-            # corresponding enum value.
+        if response.header.status == pt.Failed: 
             # print(response.response_error_json)
             cleaned_response_error_json = self._response_error_json_cleanup(response.response_error_json)
             # print(cleaned_response_error_json)
