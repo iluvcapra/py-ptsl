@@ -99,6 +99,7 @@ PTSL Observed Errata
     Pro Tools should return an empty list value for this value.
 
 ---
+
 :Command:
     GetTaskStatus
 
@@ -107,3 +108,7 @@ PTSL Observed Errata
     accurate `status` value of `InProgress` but `progress` stays at 0 and never
     progressively increases, it remains at zero through the entire life of the 
     task.
+
+:Expected Behavior:
+    The `progress` field should advance and reflect the task's percentage 
+    completion.
