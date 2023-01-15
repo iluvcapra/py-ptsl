@@ -9,7 +9,7 @@ class GetSessionInterleavedState(Operation):
     # 
     # Pro Tools is returning the "possible_settings" list as
     # a list of strings and not a list of bools
-    def json_cleanup(self, in_json: str, ptsl_version) -> str:
+    def json_cleanup(self, in_json: str) -> str:
         decoder = json.decoder.JSONDecoder()
         parsed = decoder.decode(in_json)
         parsed["possible_settings"] = [True, False]

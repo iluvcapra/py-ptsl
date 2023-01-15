@@ -6,7 +6,7 @@ from ptsl.ops import Operation
 
 class GetPlaybackMode(Operation):
 
-    def json_cleanup(self, in_json: str, ptsl_version) -> str:
+    def json_cleanup(self, in_json: str) -> str:
 
         def xform(x):
             return pt.PM_PlaybackMode.Value(x)
