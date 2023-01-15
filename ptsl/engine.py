@@ -402,6 +402,7 @@ class Engine:
 
     def transport_state(self) -> str:
         """
+        Current transport state.
         """
         op = ops.GetTransportState()
         self.client.run(op)
@@ -449,12 +450,14 @@ class Engine:
 
     def set_playback_mode(self, new_mode: 'pt.PM_PlaybackMode'):
         """
+        Set the playback mode.
         """
         op = ops.SetPlaybackMode(playback_mode=new_mode)
         self.client.run(op)
 
-    def set_record_mode(self, new_mode: pt.RM_RecordMode, record_arm_transport: bool):
+    def set_record_mode(self, new_mode: 'pt.RM_RecordMode', record_arm_transport: bool):
         """
+        Set the record mode.
         """
         op = ops.SetRecordMode(record_mode=new_mode, 
             record_arm_transport=record_arm_transport)
@@ -548,6 +551,7 @@ class Engine:
     def paste(self, special = None):
         """
         Execute an Edit > Paste.
+
         :param special: A :class:`PasteSpecialOption` value.
         """
         if special is not None:
