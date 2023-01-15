@@ -37,7 +37,7 @@ class Operation:
         self.status = None
         self.task_id = ""
 
-    def json_messup(self, in_json: str, version = 1) -> str:
+    def json_messup(self, in_json: str) -> str:
         """
         A shim that can be overriden by subclasses to adapt the json the 
         Protobuf machinery creates into what Pro Tools expects. Necessary 
@@ -49,7 +49,7 @@ class Operation:
         """
         return in_json
 
-    def json_cleanup(self, in_json: str, version = 1) -> str:
+    def json_cleanup(self, in_json: str) -> str:
         """
         A shim that can be overriden by subclases to adapt the json Pro 
         Tools generates in response to what Protobuf expects. Necessary if 

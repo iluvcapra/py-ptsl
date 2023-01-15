@@ -1,6 +1,7 @@
 import io
 from contextlib import contextmanager
 import json
+import sys
 
 from typing import Optional
 
@@ -30,37 +31,36 @@ class Client:
     channel: grpc.Channel
     raw_client: PTSL_pb2_grpc.PTSLStub
     session_id: str
+    audit_mode: bool
 
     def __init__(self, api_key_path: str, address: str = 'localhost:31416') -> None:
         self.channel = grpc.insecure_channel(address)
         self.raw_client = PTSL_pb2_grpc.PTSLStub(self.channel) 
         self.session_id = ""
+        self.audit_mode = False
         if self._primitive_check_if_ready():
             self._primitive_authorize_connection(api_key_path)
-
         else:
             self.close()
 
-    
-    def run(self, operation: Operation, ptsl_version = None):
+    def run(self, operation: Operation):
         """
         Run an operation on the client.
 
         :raises: `CommandError` if the server returns an error
         """
-        request_body_json = self._prepare_operation_request_json(operation, ptsl_version)
+        request_body_json = self._prepare_operation_request_json(operation, PTSL_VERSION)
         response = self._send_sync_request(operation.command_id(), request_body_json)
         operation.status = response.header.status
     
         if response.header.status == pt.Failed: 
-            # print(response.response_error_json)
-            cleaned_response_error_json = self._response_error_json_cleanup(response.response_error_json)
-            # print(cleaned_response_error_json)
+            cleaned_response_error_json = self._response_error_json_cleanup(
+                response.response_error_json)
             command_error = json_format.Parse(cleaned_response_error_json, pt.CommandError())
             raise CommandError(command_error)
 
         elif response.header.status == pt.Completed:
-            self._handle_completed_response(operation, ptsl_version, response)
+            self._handle_completed_response(operation, response)
         else:
             # FIXME: dump out for now, will be on the lookout for when this happens
             assert False, "Unexpected response code %i (%s)" % (response.header.status, 
@@ -103,10 +103,10 @@ class Client:
         return response_iter
 
 
-    def _handle_completed_response(self, operation, ptsl_version, response):
+    def _handle_completed_response(self, operation, response):
         p = operation.__class__.response_body()
         if len(response.response_body_json) > 0 and p is not None:
-            clean_json = operation.json_cleanup(response.response_body_json, ptsl_version or PTSL_VERSION)
+            clean_json = operation.json_cleanup(response.response_body_json, PTSL_VERSION)
             resp_body = json_format.Parse(clean_json, p(), ignore_unknown_fields=True)
             operation.on_response_body(resp_body)
         else:
