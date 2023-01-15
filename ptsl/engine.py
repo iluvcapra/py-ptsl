@@ -29,11 +29,12 @@ class Engine:
 
     client: ptsl.client.Client
 
-    def __init__(self, certificate_path: Optional[str] = None, address='localhost:31416') -> None:
+    def __init__(self, certificate_path: Optional[str] = None, address='localhost:31416'):
         """
         Open the engine.
 
-        :param certificate_path: Path to developer json key file.
+        :param certificate_path: Path to developer json key file. Pass :py:class:`None`
+            and the engine will read a path in from the "PTSL_KEY" environment variable.
         :param address: server\:port to connect the engine to.
         """
         certificate_path = certificate_path or os.getenv('PTSL_KEY')
@@ -69,10 +70,11 @@ class Engine:
 
         :param name: Session Name
         :param path: Path to the new session (use colon-delimited paths on MacOS)
-        :param file_type: file type
-        :param sample_rate: sample rate
-        :param bit_depth: bit depth
-        :param io_setting: The IO Setting to use
+        :param file_type: file type, defaults to ``SAF_WAVE``
+        :param sample_rate: sample rate, defaults to ``SR_48000``
+        :param bit_depth: bit depth, defaults to ``Bit24``
+        :param io_setting: The IO Setting to use, defaults to ``IO_Last``
+        :param is_interelaved: Interleaved state
         """
 
         op = ops.CreateSession(

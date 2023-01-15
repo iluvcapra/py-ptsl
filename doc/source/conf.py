@@ -31,7 +31,16 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
     "sphinx.ext.intersphinx",
+    #"sphinx_autodoc_defaultargs"
 ]
+
+# for sphinx_autodoc_defaultargs 
+
+rst_prolog = """
+.. |default| raw:: html
+
+    <div class="default-value-section">""" + \
+    ' <span class="default-value-label">Default:</span>'
 
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3/", None),
