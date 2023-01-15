@@ -39,10 +39,10 @@ with open_engine(api_key_path=key_path) as engine:
         pt.SessionFeetFramesRate.Name(engine.session_feet_frames_rate()))
 
         print("Session Audio Rate Pull: %s" % 
-            pt.SessionRatePull.Name(engine.session_audio_pull()))
+            pt.SessionRatePull.Name(engine.session_audio_rate_pull()))
         
         print("Session Video Rate Pull: %s" %
-            pt.SessionRatePull.Name(engine.session_video_pull()))
+            pt.SessionRatePull.Name(engine.session_video_rate_pull()))
 
         print("-------------------------------")
         print("Transport State: %s " % engine.transport_state())

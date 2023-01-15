@@ -1,4 +1,4 @@
- Configuration file for the Sphinx documentation builder.
+# Configuration file for the Sphinx documentation builder.
 #
 # This file only contains a selection of the most common options. For a full
 # list see the documentation:
@@ -12,14 +12,14 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.abspath('../..'))
 
 
 # -- Project information -----------------------------------------------------
 
 project = "py-ptsl: Pro Tools Scripting Library for Pythong"
-copyright = "2023, Jamie Hardt MPSE"
-author = "Jamie Hardt MPSE"
+copyright = "2023, Jamie Hardt"
+author = "Jamie Hardt"
 
 
 # -- General configuration ---------------------------------------------------

@@ -55,10 +55,10 @@ class Engine:
     def create_session(self, 
         name: str, 
         path: str,
-        file_type: pt.SessionAudioFormat = pt.SAF_WAVE, 
-        sample_rate: pt.SampleRate = pt.SR_48000,
-        bit_depth: pt.BitDepth = pt.Bit24, 
-        io_setting: pt.IOSettings = pt.IO_Last,
+        file_type: 'pt.SessionAudioFormat' = pt.SAF_WAVE, 
+        sample_rate: 'pt.SampleRate' = pt.SR_48000,
+        bit_depth: 'pt.BitDepth' = pt.Bit24, 
+        io_setting: 'pt.IOSettings' = pt.IO_Last,
         is_interleaved: bool = True) -> None:
         """
         Create a new Pro Tools session.
@@ -89,11 +89,14 @@ class Engine:
         template_name: str,
         name: str, 
         path: str,
-        file_type: pt.SessionAudioFormat = pt.SAF_WAVE, 
-        sample_rate: pt.SampleRate = pt.SR_48000,
-        bit_depth: pt.BitDepth = pt.Bit24, 
-        io_setting: pt.IOSettings = pt.IO_Last, 
+        file_type: 'pt.SessionAudioFormat' = pt.SAF_WAVE, 
+        sample_rate: 'pt.SampleRate' = pt.SR_48000,
+        bit_depth: 'pt.BitDepth' = pt.Bit24, 
+        io_setting: 'pt.IOSettings' = pt.IO_Last, 
         is_interleaved: bool = True) -> None:
+        """
+        Create a new session with an installed template.
+        """
 
         op = ops.CreateSession(
             session_name=name,
@@ -115,11 +118,14 @@ class Engine:
         name: str, 
         path: str,
         aaf_path: str,
-        file_type: pt.SessionAudioFormat = pt.SAF_WAVE, 
-        sample_rate: pt.SampleRate = pt.SR_48000,
-        bit_depth: pt.BitDepth = pt.Bit24, 
-        io_setting: pt.IOSettings = pt.IO_Last, 
+        file_type: 'pt.SessionAudioFormat' = pt.SAF_WAVE, 
+        sample_rate: 'pt.SampleRate' = pt.SR_48000,
+        bit_depth: 'pt.BitDepth' = pt.Bit24, 
+        io_setting: 'pt.IOSettings' = pt.IO_Last, 
         is_interleaved: bool = True) -> None:
+        """
+        Create a session from an AAF.
+        """
 
         op = ops.CreateSession(
             session_name=name,
@@ -136,25 +142,42 @@ class Engine:
         self.client.run(op)
 
     def open_session(self, path: str):
+        """
+        Open a session.
+        """
         op = ops.OpenSession(session_path=path)
         self.engine.run(op)
 
     def close_session(self, save_on_close : bool):
+        """
+        Close the currently-open session.
+        """
         op = ops.CloseSession(save_on_close=save_on_close)
         self.engine.run(op)
 
     def save_session(self):
+        """
+        Save the currently-open session.
+        """
         op = ops.SaveSession()
         self.engine.run(op)
 
     def save_session_as(self, path: str, name: str):
+        """
+        Save the currently-open session as a new name toa different path.
+        :param path: Path to the new session
+        :param name: New name for the session
+        """
         op = ops.SaveSessionAs(session_name=name, session_location=path)
         self.engine.run(op)
 
     def import_data(self, session_path: str, 
-        import_type: pt.ImportType,
-        session_data: pt.SessionData,
-        audio_data: pt.AudioData):
+        import_type: 'pt.ImportType',
+        session_data: 'pt.SessionData',
+        audio_data: 'pt.AudioData'):
+        """
+        Import session data into the currently-open session.
+        """
         
         op = ops.Import(session_path=session_path,
             import_type=import_type,
@@ -164,25 +187,43 @@ class Engine:
         self.client.run(op)
 
     def select_all_clips_on_track(self, track_name: str):
+        """
+        Select all clips on track.
+        :param track_name: Name of the track to select all clips on.
+        """
         op = ops.SelectAllClipsOnTrack(track_name=track_name)
         self.client.run(op)
 
     def extend_selection_to_target_tracks(self, tracks: List[str]):
+        """
+        Extend selection to target tracks.
+        :param tracks: A list of track names to extend the selection to.
+        """
         op = ops.ExtendSelectionToTargetTracks(tracks_to_extend_to=tracks)
         self.client.run(op)
 
     def create_batch_fades(self, preset_name: str, adjust_bounds: bool):
+        """
+        """
         op = ops.CreateFadesBasedOnPreset(
             preset_name=preset_name, 
             auto_adjust_bounds=adjust_bounds)
         self.client.run(op)
 
     def rename_target_track(self, old_name: str, new_name: str):
+        """
+        Renames a track in the currently-open session.
+
+        :param old_name: The name of the track to rename.
+        :param new_name: The new name to give the track.
+        """
         op = ops.RenameTargetTrack(track_id=old_name, new_name=new_name)
         self.client.run(op)
 
     def get_file_location(self, 
         filters = [pt.Audio_Files] ) -> List[pt.FileLocation]:
+        """
+        """
         op = ops.GetFileLocation(
             page_limit=10000,
             file_filters=filters)
@@ -199,6 +240,8 @@ class Engine:
         dolby_atmos_info: pt.EM_DolbyAtmosInfo,
         offline_bounce=pt.TripleBool
         ):
+        """
+        """
         op = ops.ExportMix(
             file_name=base_name,
             file_type=file_type,
@@ -207,7 +250,7 @@ class Engine:
             video_info=video_info,
             location_info=location_info,
             dolby_atmos_info=dolby_atmos_info,
-            offline_bounce=pt.TB_True
+            offline_bounce=offline_bounce
             )
         self.client.run(op) 
 
@@ -305,11 +348,15 @@ class Engine:
         return op.response.session_start_time
 
     def session_length(self) -> str:
+        """
+        """
         op = ops.GetSessionLength()
         self.client.run(op)
         return op.response.session_length
 
     def session_feet_frames_rate(self) -> Tuple[int, int]:
+        """
+        """
         op = ops.GetSessionFeetFramesRate()
         self.client.run(op)
         # map_dict = {
@@ -331,23 +378,29 @@ class Engine:
     #     pt.SRP_Up4Down01: (1, -1),
     # }
 
-    def session_audio_pull(self) -> pt.SessionRatePull:
+    def session_audio_rate_pull(self) -> 'pt.SessionRatePull':
         """
-        
+        Audio pull setting of the currently-open session.
+
+        :returns: a :class:`SessionRatePull` enum.
         """
         op = ops.GetSessionAudioRatePullSettings()
         self.client.run(op)
         return op.response.current_setting
 
-    def session_video_pull(self) -> pt.SessionRatePull:
+    def session_video_rate_pull(self) -> 'pt.SessionRatePull':
         """
-        
+        Video pull setting of the currently-open session.
+
+        :returns: a :class:`SessionRatePull` enum.
         """
         op = ops.GetSessionVideoRatePullSettings()
         self.client.run(op)
         return op.response.current_setting
 
     def transport_state(self) -> str:
+        """
+        """
         op = ops.GetTransportState()
         self.client.run(op)
         return pt.TS_TransportState.Name(op.response.current_setting)
@@ -392,26 +445,36 @@ class Engine:
 
         return op.track_list
 
-    def set_playback_mode(self, new_mode: pt.PM_PlaybackMode):
+    def set_playback_mode(self, new_mode: 'pt.PM_PlaybackMode'):
+        """
+        """
         op = ops.SetPlaybackMode(playback_mode=new_mode)
         self.client.run(op)
 
     def set_record_mode(self, new_mode: pt.RM_RecordMode, record_arm_transport: bool):
+        """
+        """
         op = ops.SetRecordMode(record_mode=new_mode, 
             record_arm_transport=record_arm_transport)
         self.client.run(op)
 
-    def set_session_bit_depth(self, new_bit_depth: pt.BitDepth):
+    def set_session_bit_depth(self, new_bit_depth: 'pt.BitDepth'):
+        """
+        """
         op = ops.SetSessionBitDepth(bit_depth=new_bit_depth)
         self.client.run(op)
 
-    def set_session_audio_format(self, new_audio_format: pt.SessionAudioFormat):
+    def set_session_audio_format(self, new_audio_format: 'pt.SessionAudioFormat'):
+        """
+        """
         op = ops.SetSessionAudioFormat(audio_format=new_audio_format)
         self.client.run(op)
 
     def set_session_start_time(self, new_start: str, 
-        track_offset_opts: pt.TrackOffsetOptions, 
+        track_offset_opts: 'pt.TrackOffsetOptions', 
         maintain_relative: bool):
+        """
+        """
         op = ops.SetSessionStartTime(session_start_time=new_start,
             track_offset_opts=track_offset_opts,
             maintain_relative_position=maintain_relative)
@@ -419,30 +482,47 @@ class Engine:
         self.client.run(op)
 
     def set_session_length(self, new_length: str):
+        """
+        """
         op = ops.SetSessionLength(session_length=new_length)
         self.client.run(op)
 
     def set_session_interleaved_state(self, new_state: bool):
+        """
+        """
         op = ops.SetSessionInterleavedState(interleaved_state=new_state)
         self.client.run(op)
 
-    def set_session_time_code_rate(self, tc_rate: pt.SessionTimeCodeRate):
+    def set_session_time_code_rate(self, tc_rate: 'pt.SessionTimeCodeRate'):
+        """
+        """
         op = ops.SetSessionTimeCodeRate(time_code_rate=tc_rate)
         self.client.run(op)
 
-    def set_session_feet_frames_rate(self, ff_rate: pt.SessionFeetFramesRate):
+    def set_session_feet_frames_rate(self, ff_rate: 'pt.SessionFeetFramesRate'):
+        """
+        """
         op = ops.SetSessionFeetFramesRate(feet_frames_rate=ff_rate)
         self.client.run(op)
 
-    def set_session_audio_rate_pull(self, pull_rate: pt.SessionRatePull):
+    def set_session_audio_rate_pull(self, pull_rate: 'pt.SessionRatePull'):
+        """
+        """
         op = ops.SetSessionAudioRatePullSettings(audio_rate_pull=pull_rate)
         self.client.run(op)
 
-    def set_session_video_rate_pull(self, pull_rate: pt.SessionRatePull):
+    def set_session_video_rate_pull(self, pull_rate: 'pt.SessionRatePull'):
+        """
+        """
         op = ops.SetSessionVideoRatePullSettings(video_rate_pull=pull_rate)
         self.client.run(op)
 
     def cut(self, special = None):
+        """
+        Execute an Edit > Cut.
+
+        :param special: An :class:`AutomationDataOptions` value.
+        """
         if special is not None:
             op = ops.CutSpecial(automation_data_option=special)
         else:
@@ -451,6 +531,11 @@ class Engine:
         self.client.run(op)
 
     def copy(self, special = None):
+        """
+        Execute an Edit > Copy.
+
+        :param special: An :class:`AutomationDataOptions` value.
+        """
         if special is not None:
             op = ops.CopySpecial(automation_data_option=special)
         else:
@@ -459,6 +544,10 @@ class Engine:
         self.client.run(op)
 
     def paste(self, special = None):
+        """
+        Execute an Edit > Paste.
+        :param special: A :class:`PasteSpecialOption` value.
+        """
         if special is not None:
             op = ops.PasteSpecial(paste_special_option=special)
         else:
@@ -467,6 +556,11 @@ class Engine:
         self.client.run(op)
 
     def clear(self, special = None):
+        """
+        Execute an Edit > Clear.
+
+        :param special: An :class:`AutomationDataOptions` value.
+        """
         if special is not None:
             op = ops.ClearSpecial(automation_data_option=special)
         else:
