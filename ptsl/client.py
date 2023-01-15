@@ -81,28 +81,6 @@ class Client:
         return json.dumps(error_dict)
 
 
-    # This is an in-progress feature 
-    def launch_test_DO_NOT_USE(self, operation: Operation):
-        request_body_json = self._prepare_operation_request_json(operation, self.ptsl_version)
-
-        request = pt.Request(
-            header=pt.RequestHeader(
-                task_id="",
-                session_id=self.session_id,
-                command=operation.command_id(),
-                version=PTSL_VERSION
-            ),
-            request_body_json=request_body_json
-        )
-
-        response_iter = self.raw_client.SendGrpcStreamingRequest(request)
-
-        initial = next(response_iter)
-        operation.task_id = initial.header.task_id
-
-        return response_iter
-
-
     def _handle_completed_response(self, operation, response):
         p = operation.__class__.response_body()
         if len(response.response_body_json) > 0 and p is not None:
