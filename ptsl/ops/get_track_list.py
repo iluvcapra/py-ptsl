@@ -11,7 +11,7 @@ class GetTrackList(Operation):
         self.track_list : List[pt.Track] = []
         super().__init__(**kwargs)
 
-    def json_cleanup(self, in_json: str, ptsl_version) -> str:
+    def json_cleanup(self, in_json: str) -> str:
 
         def empty_dict_to_empty_list(dct):
             if 'track_list' in dct and dct['track_list'] == {}:
