@@ -67,16 +67,25 @@ class Client:
     raw_client: PTSL_pb2_grpc.PTSLStub
     session_id: str
     auditor: Auditor
+    is_open: bool
 
     def __init__(self, certificate_path: str, address: str = 'localhost:31416') -> None:
         self.channel = grpc.insecure_channel(address)
         self.raw_client = PTSL_pb2_grpc.PTSLStub(self.channel) 
         self.session_id = ""
         self.auditor = Auditor(enabled=False)
-        if self._primitive_check_if_ready():
+        try:
+            self._primitive_check_if_ready()
             self._primitive_authorize_connection(certificate_path)
-        else:
+            self.is_open = True
+        except grpc.RpcError as e:
+            if e.code() == grpc.StatusCode.UNAVAILABLE:
+                print("gRPC endpoint was unavailable, Pro Tools may not be running.", file=sys.stderr)
+            else:
+                raise e
+        finally:
             self.close()
+
 
     def run(self, operation: Operation):
         """
@@ -166,6 +175,7 @@ class Client:
         """
         Closes the client.
         """
+        self.is_open = False
         self.raw_client = None
         self.channel.close()
         self.session_id = ""
