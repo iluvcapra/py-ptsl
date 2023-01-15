@@ -20,15 +20,15 @@ The `Engine` class exposes `ptsl` commands with a method call interface.
 ```python
 from ptsl import open_engine
 
-with open_engine(api_key_path) as engine:
+with open_engine(cert_path) as engine:
     session_name = engine.session_name()
 
 ```
 
 _Note:_ A PTSL connection to Pro Tools must be authorized with a developer 
-certificate, this process is handled automatically by the client at on opening.
+certificate, this process is handled automatically by the client on opening.
 By default the `Engine` class will look for a path to your developer 
-certificate in the `PTSL_KEY` environment variable. You should set this in your
+certificate in the `PTSL_KEY` environment variable. You can set this in your
 shell, for example in the fish shell...
 
 ```fish
