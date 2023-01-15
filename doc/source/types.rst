@@ -179,6 +179,63 @@ Importing
     .. attribute:: video_options
         :type: VideoMediaOptions
 
+    .. attribute:: match_options
+        :type: MatchTrackOptions
+
+    .. attribute:: playlist_options
+        :type: MainPlaylistOptions
+
+    .. attribute:: track_data_to_import
+        :type: TrackDataToImport
+
+    .. attribute:: timecode_mapping_units
+        :type: TimeCodeMappingOptions
+
+    .. attribute:: adjust_session_start_time_to_match_source
+        :type: bool
+
+
+.. class:: MatchTrackOptions
+
+	.. attribute:: MT_None
+		:value: 0
+	.. attribute:: MT_MatchTracks
+		:value: 1
+	.. attribute:: MT_ImportAsNewTrack
+		:value: 2
+
+
+.. class:: MainPlaylistOptions
+
+	.. attribute:: ImportReplaceExistingPlaylists
+		:value: 0
+	.. attribute:: ImportOverlayNewOnExistingPlaylists
+		:value: 1
+	.. attribute:: DoNotImport
+		:value: 2
+
+
+.. class:: TrackDataToImport
+
+	.. attribute:: track_data_preset_path
+		:type: str
+	.. attribute:: clip_gain
+		:type: bool
+	.. attribute:: clips_and_media
+		:type: bool
+	.. attribute:: volume_automation
+		:type: bool
+
+
+.. class:: TimeCodeMappingOptions
+
+	.. attribute:: MaintainAbsoluteTimeCodeValues
+		:value: 0
+	.. attribute:: MaintainRelativeTimeCodeValues
+		:value: 1
+	.. attribute:: MapStartTimeCodeTo
+		:value: 2
+
 
 .. py:class:: AudioMediaOptions
 
@@ -236,24 +293,32 @@ File Locations
     Defines a set of predicates for use with the :py:meth:`~ptsl.Engine.get_file_location`
     method.
 
-    .. attribute:: All_Files
-    .. attribute:: OnTimeline_Files
-    .. attribute:: NotOnTimeline_Files
-    .. attribute:: Online_File
-    .. attribute:: Offline_Files
-    .. attribute:: Audio_Files
-    .. attribute:: Video_Files
-    .. attribute:: Rendered_Files
-
-    .. attribute:: SelecteClipsTimeline
-    .. attribute:: SelectedClipsClipsList
+	.. attribute:: All_Files
+		:value: 0
+	.. attribute:: OnTimeline_Files
+		:value: 1
+	.. attribute:: NotOnTimeline_Files
+		:value: 2
+	.. attribute:: Online_Files
+		:value: 3
+	.. attribute:: Offline_Files
+		:value: 4
+	.. attribute:: Audio_Files
+		:value: 5
+	.. attribute:: Video_Files
+		:value: 6
+	.. attribute:: Rendered_Files
+		:value: 7
+	.. attribute:: SelectedClipsTimeline
+		:value: 101
+	.. attribute:: SelectedClipsClipsList
+		:value: 102
 
 
 .. class:: FileLocation
 
     .. attribute:: path
         :type: str
-
     .. attribute:: info
         :type: FileLocationInfo
 
@@ -319,19 +384,14 @@ Exporting Mixes
 
     .. attribute:: compression_type
         :type: CompressionType
-
     .. attribute:: export_format
         :type: ExportFormat
-
     .. attribute:: bit_depth
         :type: BitDepth
-
     .. attribute:: sample_rate
         :type: SampleRate
-
     .. attribute:: pad_to_frame_boundary
         :type: TripleBool
-
     .. attribute:: delivery_format
         :type: EM_DeliveryFormat
 
@@ -410,21 +470,115 @@ Exporting Mixes
 	.. attribute:: VE_Transcode
 		:value: 2
 
+
 .. class:: EM_ImportOptions
 
     .. attribute:: import_destination
         :type: MediaDestination
-
     .. attribute:: import_location
         :type: MediaLocation
-
-
 
 
 .. class:: EM_CodecInfo
 
     .. attribute:: codec_name
         :type: str
-
     .. attribute:: property_list
         :type: List[PropertyContainer]
+
+Getting Tracks
+--------------
+
+.. class:: TrackAttributes
+
+    A list of these objects are returned by :py:meth:`~ptsl.Engine.track_list`.
+
+	.. attribute:: is_inactive
+		:type: TrackAttributeState
+	.. attribute:: is_hidden
+		:type: TrackAttributeState
+	.. attribute:: is_selected
+		:type: TrackAttributeState
+	.. attribute:: contains_clips
+		:type: bool
+	.. attribute:: contains_automation
+		:type: bool
+	.. attribute:: is_soloed
+		:type: bool
+	.. attribute:: is_record_enabled
+		:type: bool
+	.. attribute:: is_input_monitoring_on
+		:type: TrackAttributeState
+	.. attribute:: is_smart_dsp_on
+		:type: bool
+	.. attribute:: is_locked
+		:type: bool
+	.. attribute:: is_muted
+		:type: bool
+	.. attribute:: is_frozen
+		:type: bool
+	.. attribute:: is_open
+		:type: bool
+	.. attribute:: is_online
+		:type: bool
+
+
+.. class:: TrackAttributeState
+
+	.. attribute:: None
+		:value: 0
+	.. attribute:: SetExplicitly
+		:value: 1
+	.. attribute:: SetImplicitly
+		:value: 2
+	.. attribute:: SetExplicitlyAndImplicitly
+		:value: 3
+
+
+.. class:: TrackListInvertibleFilter
+
+    A list of these objects is used as arguments to 
+    :py:meth:`~ptsl.Engine.track_list` as predicates
+    for a track search.
+
+	.. attribute:: filter
+		:type: TrackListFilter
+	.. attribute:: is_inverted
+		:type: bool
+
+.. class:: TrackListFilter
+
+	.. attribute:: All
+		:value: 0
+	.. attribute:: Selected
+		:value: 1
+	.. attribute:: SelectedExplicitly
+		:value: 2
+	.. attribute:: SelectedImplicitly
+		:value: 3
+	.. attribute:: WithClipsOnMainPlaylist
+		:value: 4
+	.. attribute:: WithAutomationOnMainPlaylist
+		:value: 5
+	.. attribute:: Inactive
+		:value: 6
+	.. attribute:: InactiveExplicitly
+		:value: 7
+	.. attribute:: InactiveImplicitly
+		:value: 8
+	.. attribute:: Hidden
+		:value: 9
+	.. attribute:: HiddenExplicitly
+		:value: 10
+	.. attribute:: HiddenImplicitly
+		:value: 11
+	.. attribute:: Locked
+		:value: 12
+	.. attribute:: Muted
+		:value: 13
+	.. attribute:: Frozen
+		:value: 14
+	.. attribute:: Open
+		:value: 15
+	.. attribute:: Online
+		:value: 16
