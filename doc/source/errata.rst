@@ -1,19 +1,23 @@
 PTSL Observed Errata
 ====================
 
+.. currentmodule:: ptsl
+
 :Command:
     SetSessionLength
 
 :Observed Behavior:
     When trying to set a session length less than "06:00:00:00", Pro Tools
-    returns an Response with an `response_error_json` with a `command_error`
-    value of "PT_InvalidParameter", a string. An error by this name does not 
-    exist in the `CommandErrorType` enumeration, and it is a string, and not
-    an integer as required by the proto.
+    returns an Response with an :py:attr:`response_error_json` with a 
+    :py:attr:`command_error` value of "PT_InvalidParameter", a string. An error 
+    by this name does not exist in the :py:class:`CommandErrorType` 
+    enumeration, and it is a string, and not an integer as required by the 
+    proto.
 
 :Expected Behavior:
-    Pro Tools should return a `response_error_json` with a numeric 
-    `command_error` whose value exists in the `CommandErrorType` enumeration.
+    Pro Tools should return a :py:attr:`response_error_json` with a numeric 
+    :py:attr:`command_error` whose value exists in the 
+    :py:class:`CommandErrorType` enumeration.
 
 ---
 
@@ -21,7 +25,9 @@ PTSL Observed Errata
     SetSessionBitDepth
     SetSessionAudioFormat
     SetSessionLength
-    (possibly others)
+    SetSessionAudioPullRateSetting
+    SetSessionVideoPullRateSetting
+    
 
 :Observed Behavior:
     Using these commands does not change the settings in the session setup 
