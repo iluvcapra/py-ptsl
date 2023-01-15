@@ -6,6 +6,7 @@ from contextlib import contextmanager
 import ptsl
 import ptsl.ops as ops
 import ptsl.PTSL_pb2 as pt
+from ptsl.PTSL_pb2 import SessionAudioFormat, SampleRate, BitDepth, IOSettings
 
 
 @contextmanager
@@ -55,10 +56,10 @@ class Engine:
     def create_session(self, 
         name: str, 
         path: str,
-        file_type: 'pt.SessionAudioFormat' = pt.SAF_WAVE, 
-        sample_rate: 'pt.SampleRate' = pt.SR_48000,
-        bit_depth: 'pt.BitDepth' = pt.Bit24, 
-        io_setting: 'pt.IOSettings' = pt.IO_Last,
+        file_type: 'SessionAudioFormat' = pt.SAF_WAVE, 
+        sample_rate: 'SampleRate' = pt.SR_48000,
+        bit_depth: 'BitDepth' = pt.Bit24, 
+        io_setting: 'IOSettings' = pt.IO_Last,
         is_interleaved: bool = True) -> None:
         """
         Create a new Pro Tools session.
@@ -189,6 +190,7 @@ class Engine:
     def select_all_clips_on_track(self, track_name: str):
         """
         Select all clips on track.
+
         :param track_name: Name of the track to select all clips on.
         """
         op = ops.SelectAllClipsOnTrack(track_name=track_name)
@@ -197,6 +199,7 @@ class Engine:
     def extend_selection_to_target_tracks(self, tracks: List[str]):
         """
         Extend selection to target tracks.
+
         :param tracks: A list of track names to extend the selection to.
         """
         op = ops.ExtendSelectionToTargetTracks(tracks_to_extend_to=tracks)
@@ -204,6 +207,11 @@ class Engine:
 
     def create_batch_fades(self, preset_name: str, adjust_bounds: bool):
         """
+        Create batch fades for the timeline selection based on a preset.
+
+        :param preset_name: Name of the batch fades preset to use.
+        :param adjust_bounds: Auto-adjust clip boundaries to accomodate
+            fades.
         """
         op = ops.CreateFadesBasedOnPreset(
             preset_name=preset_name, 
@@ -241,7 +249,7 @@ class Engine:
         offline_bounce='pt.TripleBool'
         ):
         """
-        Export mixes or "Bounce to Disk" busses in the currently-open session.
+        Export mixes/"Bounce to Disk" busses in the currently-open session.
 
         *Note: This method runs synchronously and will not return until the
         bounce has completed.*
@@ -412,6 +420,8 @@ class Engine:
 
     def transport_armed(self) -> bool:
         """
+        Transport record-arm state.
+
         :returns: The transport's record arm state.
         """
         op = ops.GetTransportArmed()
@@ -420,6 +430,8 @@ class Engine:
 
     def playback_modes(self) -> Tuple[bool, bool, bool]:
         """
+        Transport's current set of playback modes.
+
         :returns: A Tuple of (`is_normal`, `is_loop`, `is_dynamic_transport`)
         """
         op = ops.GetPlaybackMode()
@@ -430,6 +442,8 @@ class Engine:
 
     def record_mode(self) -> str:
         """
+        Transport's current record mode.
+
         :returns: The active record mode.
         """
         op = ops.GetRecordMode()
@@ -438,6 +452,8 @@ class Engine:
 
     def track_list(self, filters = [pt.TrackListInvertibleFilter(filter=pt.AllTracks, is_inverted=False)]) -> List[pt.Track]:
         """
+        Get a list of the tracks in the current session.
+
         :param filters: a list of `TrackListInvertibleFilter`s
         :returns: list of tracks
         """

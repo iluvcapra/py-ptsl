@@ -13,6 +13,7 @@ Welcome to py-ptsl's documentation!
    :caption: Notes:
 
    engine
+   enums
    implementation
    errata
    ptsl_versions

@@ -1,7 +1,6 @@
 Engine Class
 ============
 
-
 .. automethod:: ptsl.engine.open_engine
 
 .. autoclass:: ptsl.Engine
