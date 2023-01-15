@@ -6,7 +6,10 @@ from contextlib import contextmanager
 import ptsl
 import ptsl.ops as ops
 import ptsl.PTSL_pb2 as pt
-from ptsl.PTSL_pb2 import SessionAudioFormat, SampleRate, BitDepth, IOSettings
+from ptsl.PTSL_pb2 import SessionAudioFormat, SampleRate, BitDepth, \
+    IOSettings, ImportType, SessionData, AudioData, FileLocation, \
+    EM_FileType, EM_SourceInfo, EM_AudioInfo, EM_VideoInfo, \
+    EM_LocationInfo, EM_DolbyAtmosInfo, TripleBool
 
 
 @contextmanager
@@ -90,10 +93,10 @@ class Engine:
         template_name: str,
         name: str, 
         path: str,
-        file_type: 'pt.SessionAudioFormat' = pt.SAF_WAVE, 
-        sample_rate: 'pt.SampleRate' = pt.SR_48000,
-        bit_depth: 'pt.BitDepth' = pt.Bit24, 
-        io_setting: 'pt.IOSettings' = pt.IO_Last, 
+        file_type: 'SessionAudioFormat' = pt.SAF_WAVE, 
+        sample_rate: 'SampleRate' = pt.SR_48000,
+        bit_depth: 'BitDepth' = pt.Bit24, 
+        io_setting: 'IOSettings' = pt.IO_Last, 
         is_interleaved: bool = True) -> None:
         """
         Create a new session with an installed template.
@@ -119,10 +122,10 @@ class Engine:
         name: str, 
         path: str,
         aaf_path: str,
-        file_type: 'pt.SessionAudioFormat' = pt.SAF_WAVE, 
-        sample_rate: 'pt.SampleRate' = pt.SR_48000,
-        bit_depth: 'pt.BitDepth' = pt.Bit24, 
-        io_setting: 'pt.IOSettings' = pt.IO_Last, 
+        file_type: 'SessionAudioFormat' = pt.SAF_WAVE, 
+        sample_rate: 'SampleRate' = pt.SR_48000,
+        bit_depth: 'BitDepth' = pt.Bit24, 
+        io_setting: 'IOSettings' = pt.IO_Last, 
         is_interleaved: bool = True) -> None:
         """
         Create a session from an AAF.
@@ -173,9 +176,9 @@ class Engine:
         self.engine.run(op)
 
     def import_data(self, session_path: str, 
-        import_type: 'pt.ImportType',
-        session_data: 'pt.SessionData',
-        audio_data: 'pt.AudioData'):
+        import_type: 'ImportType',
+        session_data: 'SessionData',
+        audio_data: 'AudioData'):
         """
         Import session data into the currently-open session.
         """
@@ -229,8 +232,12 @@ class Engine:
         self.client.run(op)
 
     def get_file_location(self, 
-        filters = [pt.Audio_Files] ) -> List[pt.FileLocation]:
+        filters = [pt.Audio_Files] ) -> List['FileLocation']:
         """
+        Get a list of file locations meeting a set of criteria.
+
+        :param filters: a List of :py:class:`~ptsl.FileLocationTypeFilter`
+        :returns: a List of :py:class:`~ptsl.FileLocation`
         """
         op = ops.GetFileLocation(
             page_limit=10000,
@@ -240,19 +247,27 @@ class Engine:
         return op.response.file_locations
 
     def export_mix(self, base_name: str, 
-        file_type: 'pt.EM_FileType',
-        path_list: List['pt.EM_SourceInfo'],
-        audio_info: 'pt.EM_AudioInfo',
-        video_info: 'pt.EM_VideoInfo',
-        location_info: 'pt.EM_LocationInfo',
-        dolby_atmos_info: 'pt.EM_DolbyAtmosInfo',
-        offline_bounce='pt.TripleBool'
+        file_type: 'EM_FileType',
+        path_list: List['EM_SourceInfo'],
+        audio_info: 'EM_AudioInfo',
+        video_info: 'EM_VideoInfo',
+        location_info: 'EM_LocationInfo',
+        dolby_atmos_info: 'EM_DolbyAtmosInfo',
+        offline_bounce: 'TripleBool'
         ):
         """
         Export mixes/"Bounce to Disk" busses in the currently-open session.
 
         *Note: This method runs synchronously and will not return until the
         bounce has completed.*
+
+        :param file_type: Export file type as a :py:class:`~ptsl.EM_FileType`
+        :param path_list: Busses to bounce, a List of :py:class:`~ptsl.EM_SourceInfo`
+        :param audio_info: Audio options, a :py:class:`~ptsl.EM_AudioInfo`
+        :param video_info: Video options, a :py:class:`~ptsl.EM_VideoInfo`
+        :param location_info: Output folder settings, a :py:class:`~ptsl.EM_LocationInfo`
+        :param dolby_atmos_info: Dolby Atmos output settings
+        :param offline_bounce: Will bounce offline if this is :py:attr:`~ptsl.TripleBool.TB_True`
         """
         op = ops.ExportMix(
             file_name=base_name,
