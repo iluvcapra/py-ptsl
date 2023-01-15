@@ -145,12 +145,14 @@ class Engine:
 
         self.client.run(op)
 
+
     def open_session(self, path: str):
         """
         Open a session.
         """
         op = ops.OpenSession(session_path=path)
         self.engine.run(op)
+
 
     def close_session(self, save_on_close : bool):
         """
@@ -159,12 +161,14 @@ class Engine:
         op = ops.CloseSession(save_on_close=save_on_close)
         self.engine.run(op)
 
+
     def save_session(self):
         """
         Save the currently-open session.
         """
         op = ops.SaveSession()
         self.engine.run(op)
+
 
     def save_session_as(self, path: str, name: str):
         """
@@ -174,6 +178,7 @@ class Engine:
         """
         op = ops.SaveSessionAs(session_name=name, session_location=path)
         self.engine.run(op)
+
 
     def import_data(self, session_path: str, 
         import_type: 'ImportType',
@@ -190,6 +195,7 @@ class Engine:
 
         self.client.run(op)
 
+
     def select_all_clips_on_track(self, track_name: str):
         """
         Select all clips on track.
@@ -199,6 +205,7 @@ class Engine:
         op = ops.SelectAllClipsOnTrack(track_name=track_name)
         self.client.run(op)
 
+
     def extend_selection_to_target_tracks(self, tracks: List[str]):
         """
         Extend selection to target tracks.
@@ -207,6 +214,15 @@ class Engine:
         """
         op = ops.ExtendSelectionToTargetTracks(tracks_to_extend_to=tracks)
         self.client.run(op)
+
+
+    def trim_to_selection(self):
+        """
+        Trim selected clips to the edit selection range.
+        """
+        op = ops.TrimToSelection()
+        self.client.run(op)
+
 
     def create_batch_fades(self, preset_name: str, adjust_bounds: bool):
         """
