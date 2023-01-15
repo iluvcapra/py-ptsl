@@ -26,11 +26,10 @@ with open_engine(api_key_path) as engine:
 ```
 
 _Note:_ A PTSL connection to Pro Tools must be authorized with a developer 
-certificate, this is handled automatically by the client, you just need to
-provide a path to your developer cert to `open_engine()`. All of the scripts
-in the examples folder will look for this in the `PTSL_KEY` environment 
-variable, you should set and export this variable to a path to your certificate 
-json file. For example in the fish shell you would do this with `set`...
+certificate, this process is handled automatically by the client at on opening.
+By default the `Engine` class will look for a path to your developer 
+certificate in the `PTSL_KEY` environment variable. You should set this in your
+shell, for example in the fish shell...
 
 ```fish
 set -Ux PTSL_KEY /path/to/your/cert.json

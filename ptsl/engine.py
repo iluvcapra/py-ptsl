@@ -1,4 +1,5 @@
 from typing import Optional, Tuple, List
+import os
 
 from contextlib import contextmanager
 
@@ -24,14 +25,15 @@ class Engine:
 
     client: ptsl.client.Client
 
-    def __init__(self, api_key_path: str, address='localhost:31416') -> None:
+    def __init__(self, certificate_path: Optional[str] = None, address='localhost:31416') -> None:
         """
         Open the engine.
 
-        :param api_key_path: Path to developer json key file.
+        :param certificate_path: Path to developer json key file.
         :param address: server\:port to connect the engine to.
         """
-        self.client = ptsl.client.Client(api_key_path=api_key_path, address=address)
+        certificate_path = certificate_path or os.getenv('PTSL_KEY')
+        self.client = ptsl.client.Client(certificate_path=certificate_path, address=address)
 
 
     def close(self):

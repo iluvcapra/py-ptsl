@@ -68,13 +68,13 @@ class Client:
     session_id: str
     auditor: Auditor
 
-    def __init__(self, api_key_path: str, address: str = 'localhost:31416') -> None:
+    def __init__(self, certificate_path: str, address: str = 'localhost:31416') -> None:
         self.channel = grpc.insecure_channel(address)
         self.raw_client = PTSL_pb2_grpc.PTSLStub(self.channel) 
         self.session_id = ""
         self.auditor = Auditor(enabled=False)
         if self._primitive_check_if_ready():
-            self._primitive_authorize_connection(api_key_path)
+            self._primitive_authorize_connection(certificate_path)
         else:
             self.close()
 
