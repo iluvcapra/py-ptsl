@@ -11,8 +11,6 @@ import ptsl.PTSL_pb2 as pt
 def open_engine(*args, **kwargs):
     """
     Open a ptsl engine. Engine will close with the context.
-
-    :param **kwargs: These are passed to `Engine.__init__()`
     """
     engine = Engine(*args, **kwargs)
 
@@ -232,15 +230,19 @@ class Engine:
         return op.response.file_locations
 
     def export_mix(self, base_name: str, 
-        file_type: pt.EM_FileType,
-        path_list: List[pt.EM_SourceInfo],
-        audio_info: pt.EM_AudioInfo,
-        video_info: pt.EM_VideoInfo,
-        location_info: pt.EM_LocationInfo,
-        dolby_atmos_info: pt.EM_DolbyAtmosInfo,
-        offline_bounce=pt.TripleBool
+        file_type: 'pt.EM_FileType',
+        path_list: List['pt.EM_SourceInfo'],
+        audio_info: 'pt.EM_AudioInfo',
+        video_info: 'pt.EM_VideoInfo',
+        location_info: 'pt.EM_LocationInfo',
+        dolby_atmos_info: 'pt.EM_DolbyAtmosInfo',
+        offline_bounce='pt.TripleBool'
         ):
         """
+        Export mixes or "Bounce to Disk" busses in the currently-open session.
+
+        *Note: This method runs synchronously and will not return until the
+        bounce has completed.*
         """
         op = ops.ExportMix(
             file_name=base_name,
@@ -285,7 +287,7 @@ class Engine:
         }
         return map_dict.get(op.response.sample_rate, None)
 
-    def session_audio_format(self) -> pt.SessionAudioFormat:
+    def session_audio_format(self) -> 'pt.SessionAudioFormat':
         """
         Open session audio format.
         """
@@ -297,7 +299,7 @@ class Engine:
         # }
         return op.response.current_setting
 
-    def session_bit_depth(self) -> pt.BitDepth:
+    def session_bit_depth(self) -> 'pt.BitDepth':
         op = ops.GetSessionBitDepth()
         self.client.run(op)
         return op.response.current_setting
@@ -310,7 +312,7 @@ class Engine:
         self.client.run(op)
         return op.response.current_setting
 
-    def session_timecode_rate(self) -> pt.SessionTimeCodeRate:
+    def session_timecode_rate(self) -> 'pt.SessionTimeCodeRate':
         """
         Session timecode rate.
         """
@@ -354,7 +356,7 @@ class Engine:
         self.client.run(op)
         return op.response.session_length
 
-    def session_feet_frames_rate(self) -> Tuple[int, int]:
+    def session_feet_frames_rate(self) -> 'pt.SessionFeetFramesRate':
         """
         """
         op = ops.GetSessionFeetFramesRate()
