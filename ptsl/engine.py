@@ -53,7 +53,8 @@ class Engine:
 
     def ptsl_version(self) -> int:
         """
-        PTSL version number.
+        Requests the current PTSL version running on the server and returns the
+        reponse value.
         """
         op = ops.GetPTSLVersion()
         self.client.run(op)
@@ -73,10 +74,10 @@ class Engine:
 
         :param name: Session Name
         :param path: Path to the new session (use colon-delimited paths on MacOS)
-        :param file_type: file type, defaults to ``SAF_WAVE``
-        :param sample_rate: sample rate, defaults to ``SR_48000``
-        :param bit_depth: bit depth, defaults to ``Bit24``
-        :param io_setting: The IO Setting to use, defaults to ``IO_Last``
+        :param file_type: file type, defaults to :attr:`~ptsl.PTSL_pb2.SessionAudioFormat.SAF_WAVE`
+        :param sample_rate: sample rate, defaults to :attr:`~ptsl.PTSL_pb2.SampleRate.SR_48000`
+        :param bit_depth: bit depth, defaults to :attr:`~ptsl.PTSL_pb2.BitDepth.Bit24`
+        :param io_setting: The IO Setting to use, defaults to :attr:`~ptsl.PTSL_pb2.IOSettings.IO_Last`
         :param is_interelaved: Interleaved state
         """
 
