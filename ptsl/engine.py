@@ -12,7 +12,7 @@ from ptsl.PTSL_pb2 import SessionAudioFormat, SampleRate, BitDepth, \
     EM_LocationInfo, EM_DolbyAtmosInfo, TripleBool, SessionTimeCodeRate, \
     SessionFeetFramesRate, SessionRatePull, RM_RecordMode, Track, \
     PM_PlaybackMode, RM_RecordMode, AutomationDataOptions, \
-    PasteSpecialOptions, TrackOffsetOptions
+    PasteSpecialOptions, TrackOffsetOptions, TrackListInvertibleFilter
 
 
 @contextmanager
@@ -258,8 +258,8 @@ class Engine:
         """
         Get a list of file locations meeting a set of criteria.
 
-        :param filters: a List of :py:class:`~ptsl.FileLocationTypeFilter`
-        :returns: a List of :py:class:`~ptsl.FileLocation`
+        :param filters: a List of :py:class:`~ptsl.PTSL_pb2.FileLocationTypeFilter`
+        :returns: a List of :py:class:`~ptsl.PTSL_pb2.FileLocation`
         """
         op = ops.GetFileLocation(
             page_limit=10000,
@@ -283,13 +283,13 @@ class Engine:
         *Note: This method runs synchronously and will not return until the
         bounce has completed.*
 
-        :param file_type: Export file type as a :py:class:`~ptsl.EM_FileType`
-        :param path_list: Busses to bounce, a List of :py:class:`~ptsl.EM_SourceInfo`
-        :param audio_info: Audio options, a :py:class:`~ptsl.EM_AudioInfo`
-        :param video_info: Video options, a :py:class:`~ptsl.EM_VideoInfo`
-        :param location_info: Output folder settings, a :py:class:`~ptsl.EM_LocationInfo`
+        :param file_type: Export file type
+        :param path_list: Busses to bounce
+        :param audio_info: Audio options
+        :param video_info: Video options
+        :param location_info: Output folder settings
         :param dolby_atmos_info: Dolby Atmos output settings
-        :param offline_bounce: Will bounce offline if this is :py:attr:`~ptsl.TripleBool.TB_True`
+        :param offline_bounce: Bounce offline option
         """
         op = ops.ExportMix(
             file_name=base_name,
@@ -389,8 +389,6 @@ class Engine:
     def session_audio_rate_pull(self) -> 'SessionRatePull':
         """
         Audio pull setting of the currently-open session.
-
-        :returns: a :class:`SessionRatePull` enum.
         """
         op = ops.GetSessionAudioRatePullSettings()
         self.client.run(op)
@@ -400,8 +398,6 @@ class Engine:
     def session_video_rate_pull(self) -> 'SessionRatePull':
         """
         Video pull setting of the currently-open session.
-
-        :returns: a :class:`SessionRatePull` enum.
         """
         op = ops.GetSessionVideoRatePullSettings()
         self.client.run(op)
@@ -420,8 +416,6 @@ class Engine:
     def transport_armed(self) -> bool:
         """
         Transport record-arm state.
-
-        :returns: The transport's record arm state.
         """
         op = ops.GetTransportArmed()
         self.client.run(op)
@@ -443,19 +437,14 @@ class Engine:
     def record_mode(self) -> 'RM_RecordMode':
         """
         Transport's current record mode.
-
-        :returns: The active record mode.
         """
         op = ops.GetRecordMode()
         self.client.run(op)
         return op.response.current_setting
 
-    def track_list(self, filters = [pt.TrackListInvertibleFilter(filter=pt.AllTracks, is_inverted=False)]) -> List['Track']:
+    def track_list(self, filters : List['TrackListInvertibleFilter'] = [pt.TrackListInvertibleFilter(filter=pt.AllTracks, is_inverted=False)]) -> List['Track']:
         """
         Get a list of the tracks in the current session.
-
-        :param filters: a list of :class:`~ptsl.PTSL_pb2.TrackListInvertibleFilter`
-        :returns: list of :class:`~ptsl.PTSL_pb2.Track`
         """
         op = ops.GetTrackList(
             page_limit=1000, 
@@ -506,6 +495,9 @@ class Engine:
 
     def set_session_length(self, new_length: str):
         """
+        Set the session length as a timecode value string.
+
+        .. important:: The ``new_length`` value must be greater than "06:00:00:00", the PTSL server will reject the change and return an error otherwise.
         """
         op = ops.SetSessionLength(session_length=new_length)
         self.client.run(op)
@@ -543,8 +535,6 @@ class Engine:
     def cut(self, special: Optional['AutomationDataOptions'] = None):
         """
         Execute an Edit > Cut.
-
-        :param special: An :class:`AutomationDataOptions` value.
         """
         if special is not None:
             op = ops.CutSpecial(automation_data_option=special)
@@ -556,8 +546,6 @@ class Engine:
     def copy(self, special : Optional['AutomationDataOptions'] = None):
         """
         Execute an Edit > Copy.
-
-        :param special: An :class:`AutomationDataOptions` value.
         """
         if special is not None:
             op = ops.CopySpecial(automation_data_option=special)
@@ -569,8 +557,6 @@ class Engine:
     def paste(self, special : Optional['PasteSpecialOptions'] = None):
         """
         Execute an Edit > Paste.
-
-        :param special: A :class:`PasteSpecialOption` value.
         """
         if special is not None:
             op = ops.PasteSpecial(paste_special_option=special)
@@ -582,8 +568,6 @@ class Engine:
     def clear(self, special: Optional['AutomationDataOptions'] = None):
         """
         Execute an Edit > Clear.
-
-        :param special: An :class:`AutomationDataOptions` value.
         """
         if special is not None:
             op = ops.ClearSpecial(automation_data_option=special)

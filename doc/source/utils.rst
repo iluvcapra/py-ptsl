@@ -18,3 +18,10 @@ Working With Sample Rates and Pull Rates
 .. autofunction:: ptsl.util.sample_rate_info
 
 .. autofunction:: ptsl.util.pull_rate_info
+
+
+Working with Paths
+------------------
+
+.. autofunction:: ptsl.util.macos_to_patform_path 
+    

@@ -4,6 +4,7 @@ Utility functions for working with types.
 
 from typing import Tuple, Optional
 from fractions import Fraction
+import os.path
 
 import ptsl.PTSL_pb2 as pt
 from ptsl.PTSL_pb2 import SessionTimeCodeRate, SessionFeetFramesRate, \
@@ -54,10 +55,9 @@ def feet_frames_info(feet_frames_rate: 'SessionFeetFramesRate') -> Fraction:
     """
     For the given :class:`~ptsl.PTSL_pb2.SessionFeetFramesRate` enumeration value,
     returns a library-agnostic description that can be used for time arithmetic.
-
     :param feet_frames_rate: The session feet+frames rate value.
     :returns: The duration of a frame in the given rate, as a fractional number 
-        of seconds.
+    of seconds.
     """
     map_dict = {
         pt.SFFR_Fps25: (25, 1),
@@ -74,9 +74,7 @@ def sample_rate_info(sample_rate: 'SampleRate') -> Optional[int]:
     Get the sample rate for a :class:`~ptsl.PTSL_pb2.SampleRate` as an
     integer. 
 
-    .. note:: The :attr:`~ptsl.PTSL_pb2.SampleRate.SR_None` value
-        will be returned as a `None`
-
+    .. note:: The :attr:`~ptsl.PTSL_pb2.SampleRate.SR_None` value will be returned as a `None`
     """
     map_dict = {
         pt.SR_192000: 192000,
@@ -118,3 +116,32 @@ def pull_rate_info(rate_pull: 'SessionRatePull') -> Tuple[int, int]:
 
     return map_dict.get(rate_pull)
     
+
+def macos_to_patform_path(macos_path: str) -> str:
+    """
+    Converts a colon-delimited MacOS Classic path
+    into a native path on the current platform.
+    """
+
+    components = macos_path.split(":")
+    components = ["Volumes"] + components
+    return os.path.join(*components)
+
+# def native_to_macos_path(path: str) -> str:
+#     """
+#     Converts a path in the current platform's native
+#     format to a colon-delimited MacOS Classic path.
+    
+#     :param path: A native path. Must be normalized and 
+#     absolute.
+#     """
+
+#     components = []
+#     head = path
+#     while head != "":
+#         head, tail = os.path.split(head)
+#         components = [tail] + components
+
+#     # FIXME: Finish this
+    
+        
