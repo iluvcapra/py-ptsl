@@ -14,6 +14,7 @@ Welcome to py-ptsl's documentation!
 
    engine
    types
+   utils
    implementation
    errata
    ptsl_versions

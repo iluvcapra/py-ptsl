@@ -9,7 +9,10 @@ import ptsl.PTSL_pb2 as pt
 from ptsl.PTSL_pb2 import SessionAudioFormat, SampleRate, BitDepth, \
     IOSettings, ImportType, SessionData, AudioData, FileLocation, \
     EM_FileType, EM_SourceInfo, EM_AudioInfo, EM_VideoInfo, \
-    EM_LocationInfo, EM_DolbyAtmosInfo, TripleBool
+    EM_LocationInfo, EM_DolbyAtmosInfo, TripleBool, SessionTimeCodeRate, \
+    SessionFeetFramesRate, SessionRatePull, RM_RecordMode, Track, \
+    PM_PlaybackMode, RM_RecordMode, AutomationDataOptions, \
+    PasteSpecialOptions, TrackOffsetOptions
 
 
 @contextmanager
@@ -330,19 +333,15 @@ class Engine:
         }
         return map_dict.get(op.response.sample_rate, None)
 
-    def session_audio_format(self) -> 'pt.SessionAudioFormat':
+    def session_audio_format(self) -> 'SessionAudioFormat':
         """
         Open session audio format.
         """
         op = ops.GetSessionAudioFormat()
         self.client.run(op)
-        # map_dict = {
-        #     pt.SAF_WAVE: 'WAVE',
-        #     pt.SAF_AIFF: 'AIFF',
-        # }
         return op.response.current_setting
 
-    def session_bit_depth(self) -> 'pt.BitDepth':
+    def session_bit_depth(self) -> 'BitDepth':
         op = ops.GetSessionBitDepth()
         self.client.run(op)
         return op.response.current_setting
@@ -355,33 +354,12 @@ class Engine:
         self.client.run(op)
         return op.response.current_setting
 
-    def session_timecode_rate(self) -> 'pt.SessionTimeCodeRate':
+    def session_timecode_rate(self) -> 'SessionTimeCodeRate':
         """
         Session timecode rate.
         """
         op = ops.GetSessionTimeCodeRate()
         self.client.run(op)
-        # map_dict = {
-        #     pt.STCR_Fps120: (120, 1, False),
-        #     pt.STCR_Fps120Drop: (120, 1, True),
-        #     pt.STCR_Fps11988: (120_000, 1001, False),
-        #     pt.STCR_Fps11988Drop: (120_000, 1001, True),
-        #     pt.STCR_Fps100: (100, 1, False),
-        #     pt.STCR_Fps60: (60, 1, False),
-        #     pt.STCR_Fps60Drop: (60, 1, True),
-        #     pt.STCR_Fps5994: (60000, 1001, False),
-        #     pt.STCR_Fps5994Drop: (60000, 1001, True),
-        #     pt.STCR_Fps50: (50, 1, False),
-        #     pt.STCR_Fps48: (48, 1, False),
-        #     pt.STCR_Fps47952: (48000, 1001, False),
-        #     pt.STCR_Fps30: (30, 1, False),
-        #     pt.STCR_Fps30Drop: (30, 1, True),
-        #     pt.STCR_Fps2997: (30000, 1001, False),
-        #     pt.STCR_Fps2997Drop: (30000, 1001, True),
-        #     pt.STCR_Fps25: (25, 1, False),
-        #     pt.STCR_Fps24: (24, 1, False),
-        #     pt.STCR_Fps23976: (24000, 1001, False)
-        # }
         return op.response.current_setting
 
     def session_start_time(self) -> str:
@@ -399,31 +377,15 @@ class Engine:
         self.client.run(op)
         return op.response.session_length
 
-    def session_feet_frames_rate(self) -> 'pt.SessionFeetFramesRate':
+    def session_feet_frames_rate(self) -> 'SessionFeetFramesRate':
         """
         """
         op = ops.GetSessionFeetFramesRate()
         self.client.run(op)
-        # map_dict = {
-        #     pt.SFFR_Fps25: (25, 1),
-        #     pt.SFFR_Fps24: (24, 1),
-        #     pt.SFFR_Fps23976: (24000, 1001)
-        # }
         return op.response.current_setting
 
-    # PULL_DICT = {
-    #     pt.SRP_None: (0,0),
-    #     pt.SRP_Down01: (0,-1),
-    #     pt.SRP_Down4: (-1,0),
-    #     pt.SRP_Down4Down01: (-1,-1),
-    #     pt.SRP_Down4Up01: (-1,1),
-    #     pt.SRP_Up01: (0, 1),
-    #     pt.SRP_Up4: (1, 0),
-    #     pt.SRP_Up4Up01: (1, 1),
-    #     pt.SRP_Up4Down01: (1, -1),
-    # }
 
-    def session_audio_rate_pull(self) -> 'pt.SessionRatePull':
+    def session_audio_rate_pull(self) -> 'SessionRatePull':
         """
         Audio pull setting of the currently-open session.
 
@@ -433,7 +395,8 @@ class Engine:
         self.client.run(op)
         return op.response.current_setting
 
-    def session_video_rate_pull(self) -> 'pt.SessionRatePull':
+
+    def session_video_rate_pull(self) -> 'SessionRatePull':
         """
         Video pull setting of the currently-open session.
 
@@ -443,6 +406,7 @@ class Engine:
         self.client.run(op)
         return op.response.current_setting
 
+
     def transport_state(self) -> str:
         """
         Current transport state.
@@ -450,6 +414,7 @@ class Engine:
         op = ops.GetTransportState()
         self.client.run(op)
         return pt.TS_TransportState.Name(op.response.current_setting)
+
 
     def transport_armed(self) -> bool:
         """
@@ -460,6 +425,7 @@ class Engine:
         op = ops.GetTransportArmed()
         self.client.run(op)
         return op.response.is_transport_armed
+
 
     def playback_modes(self) -> Tuple[bool, bool, bool]:
         """
@@ -473,7 +439,7 @@ class Engine:
                 pt.PM_Loop in op.response.current_settings,
                 pt.PM_DynamicTransport in op.response.current_settings)
 
-    def record_mode(self) -> str:
+    def record_mode(self) -> 'RM_RecordMode':
         """
         Transport's current record mode.
 
@@ -481,14 +447,14 @@ class Engine:
         """
         op = ops.GetRecordMode()
         self.client.run(op)
-        return pt.RM_RecordMode.Name(op.response.current_setting)
+        return op.response.current_setting
 
-    def track_list(self, filters = [pt.TrackListInvertibleFilter(filter=pt.AllTracks, is_inverted=False)]) -> List[pt.Track]:
+    def track_list(self, filters = [pt.TrackListInvertibleFilter(filter=pt.AllTracks, is_inverted=False)]) -> List['Track']:
         """
         Get a list of the tracks in the current session.
 
-        :param filters: a list of `TrackListInvertibleFilter`s
-        :returns: list of tracks
+        :param filters: a list of :class:`~ptsl.PTSL_pb2.TrackListInvertibleFilter`
+        :returns: list of :class:`~ptsl.PTSL_pb2.Track`
         """
         op = ops.GetTrackList(
             page_limit=1000, 
@@ -499,14 +465,14 @@ class Engine:
 
         return op.track_list
 
-    def set_playback_mode(self, new_mode: 'pt.PM_PlaybackMode'):
+    def set_playback_mode(self, new_mode: 'PM_PlaybackMode'):
         """
         Set the playback mode.
         """
         op = ops.SetPlaybackMode(playback_mode=new_mode)
         self.client.run(op)
 
-    def set_record_mode(self, new_mode: 'pt.RM_RecordMode', record_arm_transport: bool):
+    def set_record_mode(self, new_mode: 'RM_RecordMode', record_arm_transport: bool):
         """
         Set the record mode.
         """
@@ -514,20 +480,20 @@ class Engine:
             record_arm_transport=record_arm_transport)
         self.client.run(op)
 
-    def set_session_bit_depth(self, new_bit_depth: 'pt.BitDepth'):
+    def set_session_bit_depth(self, new_bit_depth: 'BitDepth'):
         """
         """
         op = ops.SetSessionBitDepth(bit_depth=new_bit_depth)
         self.client.run(op)
 
-    def set_session_audio_format(self, new_audio_format: 'pt.SessionAudioFormat'):
+    def set_session_audio_format(self, new_audio_format: 'SessionAudioFormat'):
         """
         """
         op = ops.SetSessionAudioFormat(audio_format=new_audio_format)
         self.client.run(op)
 
     def set_session_start_time(self, new_start: str, 
-        track_offset_opts: 'pt.TrackOffsetOptions', 
+        track_offset_opts: 'TrackOffsetOptions', 
         maintain_relative: bool):
         """
         """
@@ -549,31 +515,31 @@ class Engine:
         op = ops.SetSessionInterleavedState(interleaved_state=new_state)
         self.client.run(op)
 
-    def set_session_time_code_rate(self, tc_rate: 'pt.SessionTimeCodeRate'):
+    def set_session_time_code_rate(self, tc_rate: 'SessionTimeCodeRate'):
         """
         """
         op = ops.SetSessionTimeCodeRate(time_code_rate=tc_rate)
         self.client.run(op)
 
-    def set_session_feet_frames_rate(self, ff_rate: 'pt.SessionFeetFramesRate'):
+    def set_session_feet_frames_rate(self, ff_rate: 'SessionFeetFramesRate'):
         """
         """
         op = ops.SetSessionFeetFramesRate(feet_frames_rate=ff_rate)
         self.client.run(op)
 
-    def set_session_audio_rate_pull(self, pull_rate: 'pt.SessionRatePull'):
+    def set_session_audio_rate_pull(self, pull_rate: 'SessionRatePull'):
         """
         """
         op = ops.SetSessionAudioRatePullSettings(audio_rate_pull=pull_rate)
         self.client.run(op)
 
-    def set_session_video_rate_pull(self, pull_rate: 'pt.SessionRatePull'):
+    def set_session_video_rate_pull(self, pull_rate: 'SessionRatePull'):
         """
         """
         op = ops.SetSessionVideoRatePullSettings(video_rate_pull=pull_rate)
         self.client.run(op)
 
-    def cut(self, special = None):
+    def cut(self, special: Optional['AutomationDataOptions'] = None):
         """
         Execute an Edit > Cut.
 
@@ -586,7 +552,7 @@ class Engine:
 
         self.client.run(op)
 
-    def copy(self, special = None):
+    def copy(self, special : Optional['AutomationDataOptions'] = None):
         """
         Execute an Edit > Copy.
 
@@ -599,7 +565,7 @@ class Engine:
 
         self.client.run(op)
 
-    def paste(self, special = None):
+    def paste(self, special : Optional['PasteSpecialOptions'] = None):
         """
         Execute an Edit > Paste.
 
@@ -612,7 +578,7 @@ class Engine:
         
         self.client.run(op)
 
-    def clear(self, special = None):
+    def clear(self, special: Optional['AutomationDataOptions'] = None):
         """
         Execute an Edit > Clear.
 
