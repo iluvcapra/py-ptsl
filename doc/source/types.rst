@@ -1,7 +1,7 @@
 Types and Enumerations
 ======================
 
-.. py:currentmodule:: ptsl
+.. py:currentmodule:: ptsl.PTSL_pb2
 
 These are some of the protobuf-generated enumerations 
 used by the :class:`Engine` class for method arguments 
@@ -27,21 +27,32 @@ Common Settings and Value Types
 
 .. py:class:: MediaDestination
 
-    Used by import methods.
+    Used by the import methods.
 
-    .. attribute:: MD_None
-    .. attribute:: MD_MainVideoTrack
-    .. attribute:: MD_NewTrack
-    .. attribute:: MD_ClipList
+	.. attribute:: MD_None
+		:value: 0
+	.. attribute:: MD_MainVideoTrack
+		:value: 1
+	.. attribute:: MD_NewTrack
+		:value: 2
+	.. attribute:: MD_ClipList
+		:value: 3
 
 
 .. py:class:: MediaLocation
 
-    .. attribute:: ML_None
-    .. attribute:: ML_SessionStart
-    .. attribute:: ML_SongStart
-    .. attribute:: ML_Selection
-    .. attribute:: ML_Spot
+    Used by the import methods.
+
+	.. attribute:: ML_None
+		:value: 0
+	.. attribute:: ML_SessionStart
+		:value: 1
+	.. attribute:: ML_SongStart
+		:value: 2
+	.. attribute:: ML_Selection
+		:value: 3
+	.. attribute:: ML_Spot
+		:value: 4
 
 
 .. py:class:: SessionAudioFormat
@@ -74,10 +85,14 @@ Common Settings and Value Types
 
 .. py:class:: BitDepth
 
-    .. py:attribute:: Bit_None
-    .. py:attribute:: Bit16
-    .. py:attribute:: Bit24
-    .. py:attribute:: Bit32Float
+	.. attribute:: Bit_None
+		:value: 0
+	.. attribute:: Bit16
+		:value: 1
+	.. attribute:: Bit24
+		:value: 2
+	.. attribute:: Bit32Float
+		:value: 3
 
 
 Property Containers
@@ -138,13 +153,20 @@ New Session Settings
     Used by :py:meth:`~ptsl.Engine.create_session` to set the
     initial IO setup of a new session.
 
-    .. py:attribute:: IO_None
-    .. py:attribute:: IO_Last
-    .. py:attribute:: IO_StereoMix
-    .. py:attribute:: IO_51FilmMix
-    .. py:attribute:: IO_51SMPTEMix
-    .. py:attribute:: IO_51DTSMix
-    .. py:attribute:: IO_UserDefined
+	.. attribute:: IO_None
+		:value: 0
+	.. attribute:: IO_Last
+		:value: 1
+	.. attribute:: IO_StereoMix
+		:value: 2
+	.. attribute:: IO_51FilmMix
+		:value: 3
+	.. attribute:: IO_51SMPTEMix
+		:value: 4
+	.. attribute:: IO_51DTSMix
+		:value: 5
+	.. attribute:: IO_UserDefined
+		:value: 6
 
 
 Importing
@@ -156,12 +178,16 @@ Importing
     according to talk on the DUC only the "Session"
     value is currently operative.
 
-    .. attribute:: Session
-    .. attribute:: Audio
-    .. attribute:: Video
-    .. attribute:: MIDI
-    .. attribute:: ClipGroup
-
+	.. attribute:: Session
+		:value: 0
+	.. attribute:: Audio
+		:value: 1
+	.. attribute:: Video
+		:value: 2
+	.. attribute:: MIDI
+		:value: 3
+	.. attribute:: ClipGroups
+		:value: 4
 
 .. py:class:: SessionData
 
@@ -239,18 +265,23 @@ Importing
 
 .. py:class:: AudioMediaOptions
 
-    .. attribute:: LinkToSourceAudio
-    .. attribute:: CopyFromSourceAudio
-    .. attribute:: ConsolidateFromSourceAudio
-    .. attribute:: ForceToTargetSessionFormat
+	.. attribute:: LinkToSourceAudio
+		:value: 0
+	.. attribute:: CopyFromSourceAudio
+		:value: 1
+	.. attribute:: ConsolidateFromSourceAudio
+		:value: 2
+	.. attribute:: ForceToTargetSessionFormat
+		:value: 3  
 
 .. py:class:: VideoMediaOptions
 
-    .. attribute:: LinkToSourceVideo
-
-    .. attribute:: CopyFromSourceVideo
-
-    .. attribute:: ImportAsOfflineSatelliteMedia
+	.. attribute:: LinkToSourceVideo
+		:value: 0
+	.. attribute:: CopyFromSourceVideo
+		:value: 1
+	.. attribute:: ImportAsOfflineSatelliteMedia
+		:value: 2
 
         A note in the proto here says "will not support"
 
@@ -259,29 +290,26 @@ Importing
 
     .. attribute:: file_list
         :type: List[str]
-
     .. attribute:: audio_operations
         :type: AudioOperations
-
     .. attribute:: destination_path
         :type: str
-
     .. attribute:: destination
         :type: MediaDestination
-
     .. attribute:: location
         :type: MediaLocation
 
 
 .. py:class:: AudioOperations
 
-    .. attribute:: AddAudio
-
-    .. attribute:: CopyAudio
-
-    .. attribute:: ConvertAudio
-
-    .. attribute:: Default
+	.. attribute:: AddAudio
+		:value: 0
+	.. attribute:: CopyAudio
+		:value: 1
+	.. attribute:: ConvertAudio
+		:value: 2
+	.. attribute:: Default
+		:value: 3
 
 
 
