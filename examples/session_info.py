@@ -10,9 +10,8 @@ from ptsl import open_engine, CommandError
 from ptsl.PTSL_pb2 import PT_NoOpenedSession
 import ptsl.PTSL_pb2 as pt
 
-key_path = os.getenv('PTSL_KEY')
 
-with open_engine(api_key_path=key_path) as engine:
+with open_engine() as engine:
     
     try:
         print("PTSL Version: %i" % engine.ptsl_version())
