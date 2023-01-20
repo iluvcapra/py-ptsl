@@ -240,9 +240,11 @@ class Engine:
         :param adjust_bounds: Auto-adjust clip boundaries to accomodate
             fades.
         """
-        op = ops.CreateFadesBasedOnPreset(
-            preset_name=preset_name, 
-            auto_adjust_bounds=adjust_bounds)
+        rq = pt.CreateFadesBasedOnPresetRequestBody()
+        rq.fade_preset_name = preset_name
+        rq.auto_adjust_bounds = adjust_bounds
+        op = ops.CreateFadesBasedOnPreset()
+        op.request = rq
         self.client.run(op)
 
     def rename_target_track(self, old_name: str, new_name: str):
