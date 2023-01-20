@@ -12,7 +12,8 @@ from ptsl.PTSL_pb2 import SessionAudioFormat, SampleRate, BitDepth, \
     EM_LocationInfo, EM_DolbyAtmosInfo, TripleBool, SessionTimeCodeRate, \
     SessionFeetFramesRate, SessionRatePull, RM_RecordMode, Track, \
     PM_PlaybackMode, RM_RecordMode, AutomationDataOptions, \
-    PasteSpecialOptions, TrackOffsetOptions, TrackListInvertibleFilter
+    PasteSpecialOptions, TrackOffsetOptions, TrackListInvertibleFilter, \
+    ExportFileType, ResolveDuplicateNamesBy, ExportFormat
 
 
 @contextmanager
@@ -251,6 +252,44 @@ class Engine:
         :param new_name: The new name to give the track.
         """
         op = ops.RenameTargetTrack(track_id=old_name, new_name=new_name)
+        self.client.run(op)
+
+    def consolidate_clip(self):
+        """
+        Consolidate time selection.
+        """
+        op = ops.ConsolidateClip()
+        self.client.run(op)
+
+    def export_clips_as_files(self, path: str, 
+        ftype: 'ExportFileType', bit_depth: 'BitDepth',
+        format: Optional['ExportFormat'] = None, 
+        enforce_avid_compatibility: bool = False,
+        resolve_duplicates: Optional['ResolveDuplicateNamesBy'] = None):
+        """
+        Export clips as files.
+        
+        :param path: Export directory path.
+        :param ftype: File type, WAV/AIFF/etc.
+        :param bit_depth: Bit Depth
+        :param format: Export file format, mono/multiple mono/interleaved
+        :param enforce_avid_compatibilty: Enforce Avid compatibility
+        :param resolve_duplicates: Duplicate name resolution method
+        """
+        rq = pt.ExportClipsAsFilesRequestBody()
+        rq.bit_depth = bit_depth
+        rq.enforce_avid_compatibility = enforce_avid_compatibility
+        rq.file_path = path
+        rq.file_type = ftype
+        
+        if resolve_duplicates is not None:
+            rq.duplicate_names = resolve_duplicates
+        
+        if format is not None:
+            rq.format = format
+            
+        op = ops.ExportClipsAsFiles()
+        op.request = rq
         self.client.run(op)
 
     def get_file_location(self, 
