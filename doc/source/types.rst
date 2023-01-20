@@ -435,45 +435,6 @@ Importing
 		:value: 3
 
 
-Exporting
----------
-
-These are enums used specifically by :meth:`ptsl.Engine.export_clips_as_files`.
-
-.. class:: ExportFileType
-
-	.. attribute:: WAV
-		:value: 0
-		
-	.. attribute:: AIFF
-		:value: 1
-		
-	.. attribute:: MXF
-		:value: 2
-
-		can't be selected unless 'Enforce Avid Compatibility is ON
-
-	.. attribute:: MP3
-		:value: 3
-
-		is not supported
-
-	.. attribute:: QuickTime
-		:value: 4
-
-		is not supported
-
-
-.. class:: ResolveDuplicateNamesBy
-
-	.. attribute:: AutoRenaming
-		:value: 0
-
-		default
-
-	.. attribute:: ReplacingWithNewFiles
-		:value: 1
-
 
 File Locations
 --------------
@@ -519,8 +480,43 @@ File Locations
 		:type: bool
 
 
-Exporting Mixes
----------------
+Exporting Clips and Mixes
+-------------------------
+
+.. class:: ExportFileType
+
+	.. attribute:: WAV
+		:value: 0
+		
+	.. attribute:: AIFF
+		:value: 1
+		
+	.. attribute:: MXF
+		:value: 2
+
+		can't be selected unless 'Enforce Avid Compatibility is ON
+
+	.. attribute:: MP3
+		:value: 3
+
+		is not supported
+
+	.. attribute:: QuickTime
+		:value: 4
+
+		is not supported
+
+
+.. class:: ResolveDuplicateNamesBy
+
+	.. attribute:: AutoRenaming
+		:value: 0
+
+		default
+
+	.. attribute:: ReplacingWithNewFiles
+		:value: 1
+
 
 .. class:: EM_FileType
 
@@ -645,7 +641,7 @@ Exporting Mixes
 		:value: 3
 
 		default
-		
+
 
 .. class:: EM_DeliveryFormat
 
