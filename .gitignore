@@ -3,3 +3,4 @@ venv/
 ptsl.egg-info/*
 .DS_Store
 doc/build/
+.vscode/settings.json
