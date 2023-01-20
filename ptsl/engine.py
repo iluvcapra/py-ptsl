@@ -272,12 +272,13 @@ class Engine:
         """
         Export clips as files.
 
-        :param path: Export directory path.
+        :param path: Export directory path. (A MacOS path to a folder, must end with a colon ":".)
         :param ftype: File type, WAV/AIFF/etc.
         :param bit_depth: Bit Depth
         :param format: Export file format, mono/multiple mono/interleaved
         :param enforce_avid_compatibilty: Enforce Avid compatibility
         :param resolve_duplicates: Duplicate name resolution method
+        :raises: :class:`~ptls.errors.CommandError` A :attr:`PT_UnknownError` if the ``path`` argument does not end with a colon.
         """
         rq = pt.ExportClipsAsFilesRequestBody()
         rq.bit_depth = bit_depth

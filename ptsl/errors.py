@@ -9,6 +9,9 @@ class CommandError(RuntimeError):
         self.error_response = error_response
         super().__init__()
 
+    def __str__(self) -> str:
+        return super().__str__() + ("ErrType %i: %s (%s)" % (self.error_type, self.error_name, self.message))
+
     @property
     def is_warning(self) -> bool:
         return self.error_response.is_warning
