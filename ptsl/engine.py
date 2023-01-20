@@ -180,7 +180,7 @@ class Engine:
     def save_session_as(self, path: str, name: str):
         """
         Save the currently-open session as a new name toa different path.
-        
+
         :param path: Path to the new session
         :param name: New name for the session
         """
@@ -310,7 +310,7 @@ class Engine:
 
     def export_mix(self, base_name: str, 
         file_type: 'EM_FileType',
-        path_list: List['EM_SourceInfo'],
+        sources: List['EM_SourceInfo'],
         audio_info: 'EM_AudioInfo',
         video_info: 'EM_VideoInfo',
         location_info: 'EM_LocationInfo',
@@ -324,7 +324,7 @@ class Engine:
         bounce has completed.*
 
         :param file_type: Export file type
-        :param path_list: Busses to bounce
+        :param sources: Busses to bounce
         :param audio_info: Audio options
         :param video_info: Video options
         :param location_info: Output folder settings
@@ -334,7 +334,7 @@ class Engine:
         op = ops.ExportMix(
             file_name=base_name,
             file_type=file_type,
-            files_list=path_list,
+            files_list=sources,
             audio_info=audio_info,
             video_info=video_info,
             location_info=location_info,
@@ -353,7 +353,7 @@ class Engine:
 
     def session_path(self) -> str:
         """
-        Path to the current open session.
+        Path to the current open session. (As a MacOS Classic file path.)
         """
         op = ops.GetSessionPath()
         self.client.run(op)
