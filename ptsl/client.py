@@ -83,8 +83,8 @@ class Client:
             self.close()
             if e.code() == grpc.StatusCode.UNAVAILABLE:
                 print("gRPC endpoint was unavailable, Pro Tools may not be running.", file=sys.stderr)
-            else:
-                raise e
+            
+            raise e
 
 
     def run(self, operation: Operation):
