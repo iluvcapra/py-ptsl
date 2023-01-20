@@ -25,7 +25,6 @@ def open_engine(*args, **kwargs):
     try:
         yield engine
     finally:
-        print("Engine exiting")
         engine.close()
 
 
