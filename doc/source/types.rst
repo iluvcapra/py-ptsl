@@ -869,3 +869,192 @@ Editing Modifiers
 		:value: 1
 	.. attribute:: To_Current_Automation_Type
 		:value: 2
+
+Errors
+------
+
+.. class:: CommandErrorType
+
+	Error enumeration.
+
+	.. attribute:: OS_WritePermissions
+		:value: 0
+
+		command hits write permissions
+
+	.. attribute:: OS_ErrorCode
+		:value: 1
+
+		other OS error
+
+	.. attribute:: OS_NoLocationFound
+		:value: 2
+
+		the specified location does not exist
+
+	.. attribute:: OS_NoSessionFound
+		:value: 3
+
+		the specified session does not exist
+	.. attribute:: OS_FilePathLocation
+		:value: 4
+
+		the specified file path could not be found
+
+	.. attribute:: OS_ReadError
+		:value: 5
+
+		command hits read permissions or can not read specified file
+
+	.. attribute:: OS_DiskSpace
+		:value: 6
+
+		not enough free space on disk 
+
+	.. attribute:: OS_DuplicateName
+		:value: 7
+
+		the session name to be created is a duplicate of some existing
+
+	.. attribute:: OS_IllegalCharacters
+		:value: 8
+
+		the session name contains illegal characters/symbols
+
+	.. attribute:: OS_CharactersLimit
+		:value: 9
+
+		the session/track name is too long (250 characters allowed)
+
+	.. attribute:: OS_ProToolsIsNotAvailable
+		:value: 10
+
+		ProTools is not responding during a specified timeout
+
+	.. attribute:: PT_UnknownError
+		:value: 100
+
+		an unspecified error occurred during execution of a command
+	.. attribute:: PT_NoTemplateGroup
+		:value: 101
+
+		template group does not exist
+
+	.. attribute:: PT_NoTemplate
+		:value: 102
+
+		template name does not exist
+	.. attribute:: PT_SampleRateMismatch
+		:value: 103
+
+		cannot copy/link source media because SRC is on and sample rates don't match
+
+	.. attribute:: PT_NoVideoTrackFound
+		:value: 104
+
+		cannot copy/link source media because no video track found in the session
+
+	.. attribute:: PT_NoTracksFound
+		:value: 105
+
+		warning. no tracks matched because no tracks exist in source
+
+	.. attribute:: PT_NoOpenedSession
+		:value: 106
+
+		session is not open
+
+	.. attribute:: PT_NoTrackFound
+		:value: 107
+
+		specified track(s) not found
+
+	.. attribute:: PT_NoClipsFound
+		:value: 108
+
+		specified track contains no clips
+
+	.. attribute:: PT_NoSelection
+		:value: 109
+
+		no selection was found
+
+	.. attribute:: PT_RecordDrive
+		:value: 110
+
+		the volume is not designated as a record drive
+
+	.. attribute:: PT_NoPresetFound
+		:value: 111
+
+		preset does not exist in the specified location
+
+	.. attribute:: PT_FileTypeMXF
+		:value: 112
+
+		MXF is only available when 'Enforce Media Composer compatibility' is on
+
+	.. attribute:: PT_CopyOptionCopy
+		:value: 113
+
+		copy option are unavailable if 'Quantize Edits to Frame Boundaries' is checked
+
+	.. attribute:: PT_CopyOptionLink
+		:value: 114
+
+		link option are unavailable if 'Quantize Edits to Frame Boundaries' is checked
+
+	.. attribute:: PT_QuantizeEdits
+		:value: 115
+
+		Quantize Edits to Frame Boundaries' can't be false if 'Enforce Media Composer compatibility' is true
+
+	.. attribute:: PT_ExportAsMultichannel
+		:value: 116
+
+		warning. 'Export Stereo, 5.1 and 7.1 Tracks as Multichannel' is not applicable because no tracks of that format are contained within the export selection
+
+	.. attribute:: PT_IllegalCharactersComments
+		:value: 117
+
+		comments contain illegal characters
+
+	.. attribute:: PT_IllegalCharactersSequenceName
+		:value: 118
+
+		sequence name contains illegal characters
+
+	.. attribute:: PT_MaxCharactersComments
+		:value: 119
+
+		comments exceed the maximum character limit
+
+	.. attribute:: PT_MaxCharactersSequenceName
+		:value: 120
+
+		sequence name exceeds the maximum character limit
+
+	.. attribute:: PT_NoSequenceName
+		:value: 121
+
+		sequence name can't be empty
+
+	.. attribute:: PT_InvalidTask
+		:value: 122
+
+		the specified task does not exist
+
+	.. attribute:: PT_FileNotFound
+		:value: 123
+
+		specified files were not found
+
+	.. attribute:: PT_InvalidSelection
+		:value: 124
+
+		unable to perform action because of invalid selection SDK errors
+
+	.. attribute:: SDK_Version_Mismatch
+		:value: 201
+
+		Versions of PTSL Host and PTSL Client are mismatched
