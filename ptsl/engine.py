@@ -180,6 +180,7 @@ class Engine:
     def save_session_as(self, path: str, name: str):
         """
         Save the currently-open session as a new name toa different path.
+        
         :param path: Path to the new session
         :param name: New name for the session
         """
@@ -268,7 +269,7 @@ class Engine:
         resolve_duplicates: Optional['ResolveDuplicateNamesBy'] = None):
         """
         Export clips as files.
-        
+
         :param path: Export directory path.
         :param ftype: File type, WAV/AIFF/etc.
         :param bit_depth: Bit Depth
