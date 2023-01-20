@@ -1,9 +1,11 @@
 Command Implementations in `Engine`
 ===================================
 
+PTSL Version 1
+--------------
 
 ===================================   =============================================================
-Command                               `Engine` method
+Command                               :class:`~ptsl.Engine` method                                                                                 
 ===================================   =============================================================
 CreateSession                         :meth:`~ptsl.Engine.create_session`
 OpenSession							  :meth:`~ptsl.Engine.open_session`
