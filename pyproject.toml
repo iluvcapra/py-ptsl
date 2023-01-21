@@ -3,7 +3,7 @@ requires = ["flit_core >=3.2,<4"]
 build-backend = "flit_core.buildapi"
 
 [project]
-name = "ptsl"
+name = "py-ptsl"
 authors = [{name = "Jamie Hardt", email = "jamiehardt@me.com"}]
 readme = "README.md"
 dynamic = ["version", "description"]
