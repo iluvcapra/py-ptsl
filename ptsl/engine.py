@@ -12,7 +12,8 @@ from ptsl.PTSL_pb2 import SessionAudioFormat, SampleRate, BitDepth, \
     EM_LocationInfo, EM_DolbyAtmosInfo, TripleBool, SessionTimeCodeRate, \
     SessionFeetFramesRate, SessionRatePull, RM_RecordMode, Track, \
     PM_PlaybackMode, RM_RecordMode, AutomationDataOptions, \
-    PasteSpecialOptions, TrackOffsetOptions, TrackListInvertibleFilter
+    PasteSpecialOptions, TrackOffsetOptions, TrackListInvertibleFilter, \
+    ExportFileType, ResolveDuplicateNamesBy, ExportFormat
 
 
 @contextmanager
@@ -179,6 +180,7 @@ class Engine:
     def save_session_as(self, path: str, name: str):
         """
         Save the currently-open session as a new name toa different path.
+
         :param path: Path to the new session
         :param name: New name for the session
         """
@@ -238,9 +240,11 @@ class Engine:
         :param adjust_bounds: Auto-adjust clip boundaries to accomodate
             fades.
         """
-        op = ops.CreateFadesBasedOnPreset(
-            preset_name=preset_name, 
-            auto_adjust_bounds=adjust_bounds)
+        rq = pt.CreateFadesBasedOnPresetRequestBody()
+        rq.fade_preset_name = preset_name
+        rq.auto_adjust_bounds = adjust_bounds
+        op = ops.CreateFadesBasedOnPreset()
+        op.request = rq
         self.client.run(op)
 
     def rename_target_track(self, old_name: str, new_name: str):
@@ -251,6 +255,45 @@ class Engine:
         :param new_name: The new name to give the track.
         """
         op = ops.RenameTargetTrack(track_id=old_name, new_name=new_name)
+        self.client.run(op)
+
+    def consolidate_clip(self):
+        """
+        Consolidate time selection.
+        """
+        op = ops.ConsolidateClip()
+        self.client.run(op)
+
+    def export_clips_as_files(self, path: str, 
+        ftype: 'ExportFileType', bit_depth: 'BitDepth',
+        format: Optional['ExportFormat'] = None, 
+        enforce_avid_compatibility: bool = False,
+        resolve_duplicates: Optional['ResolveDuplicateNamesBy'] = None):
+        """
+        Export clips as files.
+
+        :param path: Export directory path. (A MacOS path to a folder, must end with a colon ":".)
+        :param ftype: File type, WAV/AIFF/etc.
+        :param bit_depth: Bit Depth
+        :param format: Export file format, mono/multiple mono/interleaved
+        :param enforce_avid_compatibilty: Enforce Avid compatibility
+        :param resolve_duplicates: Duplicate name resolution method
+        :raises: :class:`~ptls.errors.CommandError` A :attr:`PT_UnknownError` if the ``path`` argument does not end with a colon.
+        """
+        rq = pt.ExportClipsAsFilesRequestBody()
+        rq.bit_depth = bit_depth
+        rq.enforce_avid_compatibility = enforce_avid_compatibility
+        rq.file_path = path
+        rq.file_type = ftype
+        
+        if resolve_duplicates is not None:
+            rq.duplicate_names = resolve_duplicates
+        
+        if format is not None:
+            rq.format = format
+            
+        op = ops.ExportClipsAsFiles()
+        op.request = rq
         self.client.run(op)
 
     def get_file_location(self, 
@@ -270,7 +313,7 @@ class Engine:
 
     def export_mix(self, base_name: str, 
         file_type: 'EM_FileType',
-        path_list: List['EM_SourceInfo'],
+        sources: List['EM_SourceInfo'],
         audio_info: 'EM_AudioInfo',
         video_info: 'EM_VideoInfo',
         location_info: 'EM_LocationInfo',
@@ -284,7 +327,7 @@ class Engine:
         bounce has completed.*
 
         :param file_type: Export file type
-        :param path_list: Busses to bounce
+        :param sources: Busses to bounce
         :param audio_info: Audio options
         :param video_info: Video options
         :param location_info: Output folder settings
@@ -294,7 +337,7 @@ class Engine:
         op = ops.ExportMix(
             file_name=base_name,
             file_type=file_type,
-            files_list=path_list,
+            files_list=sources,
             audio_info=audio_info,
             video_info=video_info,
             location_info=location_info,
@@ -313,7 +356,7 @@ class Engine:
 
     def session_path(self) -> str:
         """
-        Path to the current open session.
+        Path to the current open session. (As a MacOS Classic file path.)
         """
         op = ops.GetSessionPath()
         self.client.run(op)

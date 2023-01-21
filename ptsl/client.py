@@ -27,6 +27,7 @@ def open_client(*args, **kwargs):
 
 import sys
 import time
+
 class Auditor:
     def __init__(self, enabled: bool) -> None:
         self.output_stream = sys.stderr
@@ -79,12 +80,11 @@ class Client:
             self._primitive_authorize_connection(certificate_path)
             self.is_open = True
         except grpc.RpcError as e:
+            self.close()
             if e.code() == grpc.StatusCode.UNAVAILABLE:
                 print("gRPC endpoint was unavailable, Pro Tools may not be running.", file=sys.stderr)
-            else:
-                raise e
-        finally:
-            self.close()
+            
+            raise e
 
 
     def run(self, operation: Operation):
@@ -165,9 +165,7 @@ class Client:
             ),
             request_body_json=request_body_json
         )
-
         response = self.raw_client.SendGrpcRequest(request)
-
         return response
 
 

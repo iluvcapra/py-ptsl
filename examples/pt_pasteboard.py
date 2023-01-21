@@ -30,9 +30,6 @@ v_mods.add_option("--current", action='store_true')
 p.add_option_group(v_mods)
 
 
-api_key = os.getenv('PTSL_KEY', default=None)
-assert api_key is not None, "No developer key file provided"
-
 (options, _) = p.parse_args()
 
 xcb_modifier = None
@@ -56,7 +53,7 @@ elif options.current:
     v_modifier = pt.To_Current_Automation_Type
 
 
-with open_engine(api_key_path=api_key) as e:
+with open_engine() as e:
     if options.cut:
         e.cut(special=xcb_modifier)
 

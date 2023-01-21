@@ -1,9 +1,11 @@
 Command Implementations in `Engine`
 ===================================
 
+PTSL Version 1
+--------------
 
 ===================================   =============================================================
-Command                               `Engine` method
+Command                               :class:`~ptsl.Engine` method                                                                                 
 ===================================   =============================================================
 CreateSession                         :meth:`~ptsl.Engine.create_session`
 OpenSession							  :meth:`~ptsl.Engine.open_session`
@@ -14,8 +16,8 @@ ExtendSelectionToTargetTracks		  :meth:`~ptsl.Engine.extend_selection_to_target_
 TrimToSelection                       :meth:`~ptsl.Engine.trim_to_selection` 
 CreateFadesBasedOnPreset			  :meth:`~ptsl.Engine.create_batch_fades`
 RenameTargetTrack					  :meth:`~ptsl.Engine.rename_target_track`
-ConsolidateClip
-ExportClipsAsFiles
+ConsolidateClip                       :meth:`~ptsl.Engine.consolidate_clip`
+ExportClipsAsFiles                    :meth:`~ptsl.Engine.export_clips_as_files`
 ExportSelectedTracksAsAAFOMF
 GetTaskStatus
 HostReadyCheck

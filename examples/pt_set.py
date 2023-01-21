@@ -51,7 +51,7 @@ api_key = options.K or os.getenv('PTSL_KEY', default=None)
 
 assert api_key is not None, "No developer key file provided"
 
-with open_engine(api_key_path=api_key) as e:
+with open_engine(certificate_path=api_key) as e:
     try:
         process_option(options, 'playback_mode', pt.PM_PlaybackMode, e.set_playback_mode)
         process_option(options, 'record_mode', pt.RM_RecordMode, lambda x: e.set_record_mode(x, False))
@@ -64,8 +64,8 @@ with open_engine(api_key_path=api_key) as e:
         process_option(options, 'start_time', str, simple_set_start)
         process_option(options, 'length', str, e.set_session_length)
         process_option(options, 'interleaved_state', bool, e.set_session_interleaved_state)
-        process_option(options, 'timecode_rate', str, e.set_session_time_code_rate)
-        process_option(options, 'feetframes_rate', str, e.set_session_feet_frames_rate)
+        process_option(options, 'timecode_rate', pt.SessionTimeCodeRate, e.set_session_time_code_rate)
+        process_option(options, 'feetframes_rate', pt.SessionFeetFramesRate, e.set_session_feet_frames_rate)
         process_option(options, 'audio_pull', pt.SessionRatePull, e.set_session_audio_rate_pull)
         process_option(options, 'video_pull', pt.SessionRatePull, e.set_session_video_rate_pull)
     except CommandError as e:
