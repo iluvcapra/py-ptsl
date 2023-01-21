@@ -1,5 +1,5 @@
 """
-py-ptsl
+py-ptsl: Native Python client for the Pro Tools scripting RPC interface
 """
 
 from .client import Client
