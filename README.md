@@ -4,15 +4,15 @@ Native Python client for the Pro Tools scripting RPC interface
 
 ## Work In Progress
 
-This project is in an early phases of development. The 
-client successfully connects to Pro Tools, will authorize your connection with your
-developer key and about half of the available commands are exposed through the `Engine` interface. PRs and issue submissions are welcome
-to guide future development!
+This project is in an early phases of development. The client successfully 
+connects to Pro Tools, will authorize the connection with your developer key 
+and about half of the available commands are exposed through the `Engine` 
+interface. PRs and issue submissions are welcome to guide future development!
 
 ## Installing
 
-py-ptsl can be installed by cloning the repository from Github, and then installing 
-the package with `pip`.
+py-ptsl can be installed by cloning the repository from Github, and then 
+installing the package with `pip`.
 
 ```sh
 $ gh repo clone iluvcapra/py-ptsl
@@ -30,7 +30,7 @@ $ source venv/bin/activate
 $ python3 -m pip install -e .
 ```
 
-If you'd like to build the documentation, install the `doc` optional
+If you'd like to build the documentation, install the `doc` optional 
 dependencies.
 
 ```sh
@@ -41,7 +41,8 @@ $ python3 -m pip install .[doc]
 [em]: https://pip.pypa.io/en/stable/cli/pip_install/#cmdoption-e
 ## Example
 
-See the [examples directory](examples) for scripts demonstrating how to use the client.
+See the [examples directory](examples) for scripts demonstrating how to use the
+client.
 
 ### Sending Commands To Pro Tools with the `Engine` class
 
@@ -67,7 +68,8 @@ set -Ux PTSL_KEY /path/to/your/cert.json
 
 ### Script: [session_info.py](examples/session_info.py)
 
-This script will print a list of gettable properties from the currently open session.
+This script will print a list of gettable properties from the currently open 
+session.
 
 ```sh
 $ python3 examples/session_info.py
