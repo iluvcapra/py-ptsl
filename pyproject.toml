@@ -1,0 +1,31 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "ptsl"
+authors = [{name = "Jamie Hardt", email = "jamiehardt@me.com"}]
+readme = "README.md"
+dynamic = ["version", "description"]
+requires-python = "~=3.8"
+classifiers = [
+    "Private :: Do Not Upload"
+]
+dependencies = [
+    'grpcio >= 1.51.1', 
+    'protobuf >= 4.21.12'
+]
+
+[tool.flit.module]
+name = "ptsl"
+
+[project.optional-dependencies]
+doc = [
+    'sphinx >= 5.3.0',
+    'sphinx_rtd_theme >= 1.1.1'
+]
+
+[project.urls]
+Home = "https://github.com/iluvcapra/py-ptsl"
+
+
