@@ -21,8 +21,7 @@ jobs:
         pip install flake8
     - name: Analysing the code with pylint
       run: |
-        pylint $(git ls-files '*.py')
+        pylint ptsl
     - name: Analyzing code with flake8
       run: |
-        flake8 $(git ls-files '*.py')
-        
+        flake8 ptsl
