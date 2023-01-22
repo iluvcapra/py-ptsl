@@ -162,21 +162,21 @@ class Engine:
         Open a session.
         """
         op = ops.OpenSession(session_path=path)
-        self.engine.run(op)
+        self.client.run(op)
 
     def close_session(self, save_on_close: bool):
         """
         Close the currently-open session.
         """
         op = ops.CloseSession(save_on_close=save_on_close)
-        self.engine.run(op)
+        self.client.run(op)
 
     def save_session(self):
         """
         Save the currently-open session.
         """
         op = ops.SaveSession()
-        self.engine.run(op)
+        self.client.run(op)
 
     def save_session_as(self, path: str, name: str):
         """
@@ -186,7 +186,7 @@ class Engine:
         :param name: New name for the session
         """
         op = ops.SaveSessionAs(session_name=name, session_location=path)
-        self.engine.run(op)
+        self.client.run(op)
 
     def import_data(self,
                     session_path: str,
@@ -267,7 +267,7 @@ class Engine:
             self,
             path: str,
             ftype: 'ExportFileType', bit_depth: 'BitDepth',
-            format: Optional['ExportFormat'] = None,
+            ex_format: Optional['ExportFormat'] = None,
             enforce_avid_compatibility: bool = False,
             resolve_duplicates: Optional['ResolveDuplicateNamesBy'] = None
             ):
@@ -278,7 +278,7 @@ class Engine:
             end with a colon ":".)
         :param ftype: File type, WAV/AIFF/etc.
         :param bit_depth: Bit Depth
-        :param format: Export file format, mono/multiple mono/interleaved
+        :param ex_format: Export file format, mono/multiple mono/interleaved
         :param enforce_avid_compatibilty: Enforce Avid compatibility
         :param resolve_duplicates: Duplicate name resolution method
         :raises: :class:`~ptls.errors.CommandError` A :attr:`PT_UnknownError`
@@ -293,8 +293,8 @@ class Engine:
         if resolve_duplicates is not None:
             rq.duplicate_names = resolve_duplicates
 
-        if format is not None:
-            rq.format = format
+        if ex_format is not None:
+            rq.format = ex_format
 
         op = ops.ExportClipsAsFiles()
         op.request = rq
@@ -302,14 +302,18 @@ class Engine:
 
     def get_file_location(
             self,
-            filters=[pt.Audio_Files]) -> List['FileLocation']:
+            filters=None) -> List['FileLocation']:
         """
         Get a list of file locations meeting a set of criteria.
 
         :param filters: a List of
             :py:class:`~ptsl.PTSL_pb2.FileLocationTypeFilter`
+            If none, defaults
+            to [:attr:`~ptsl.PTSL_pb2.FileLocationTypeFilter.All_Files`]
         :returns: a List of :py:class:`~ptsl.PTSL_pb2.FileLocation`
         """
+        if filters is None:
+            filters = [pt.All_Files]
         op = ops.GetFileLocation(
             page_limit=10000,
             file_filters=filters)
@@ -490,13 +494,18 @@ class Engine:
 
     def track_list(
             self,
-            filters: List['TrackListInvertibleFilter'] =
-            [pt.TrackListInvertibleFilter(filter=pt.AllTracks,
-                                          is_inverted=False)]
+            filters: List['TrackListInvertibleFilter'] = None
             ) -> List['Track']:
         """
         Get a list of the tracks in the current session.
+
+        :param filters: Track list filters. If `None`, defaults to
+            [:attr:`ptsl.PTSL_pb2.TrackListFilter.All`]
         """
+        if filters is None:
+            filters = [pt.TrackListInvertibleFilter(filter=pt.AllTracks,
+                                                    is_inverted=False)]
+
         op = ops.GetTrackList(
             page_limit=1000,
             track_filter_list=filters
