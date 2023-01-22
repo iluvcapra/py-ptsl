@@ -201,7 +201,6 @@ class Client:
         Closes the client.
         """
         self.is_open = False
-        self.raw_client = None
         self.channel.close()
         self.session_id = ""
 
