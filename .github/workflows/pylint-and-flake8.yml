@@ -21,7 +21,7 @@ jobs:
         pip install flake8
     - name: Analysing the code with pylint
       run: |
-        pylint ptsl
+        pylint --rcfile=pyproject.toml ptsl
     - name: Analyzing code with flake8
       run: |
         flake8 ptsl
