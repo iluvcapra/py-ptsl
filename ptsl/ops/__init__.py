@@ -1,3 +1,7 @@
+"""
+Operations classes.
+"""
+
 from typing import Any
 
 from .operation import Operation
@@ -11,8 +15,10 @@ from .get_session_start_time import GetSessionStartTime
 from .get_session_time_code_rate import GetSessionTimeCodeRate
 from .get_session_feet_frames_rate import GetSessionFeetFramesRate
 from .get_session_interleaved_state import GetSessionInterleavedState
-from .get_session_audio_rate_pull_settings import GetSessionAudioRatePullSettings
-from .get_session_video_rate_pull_settings import GetSessionVideoRatePullSettings
+from .get_session_audio_rate_pull_settings import \
+    GetSessionAudioRatePullSettings
+from .get_session_video_rate_pull_settings import \
+    GetSessionVideoRatePullSettings
 from .get_session_length import GetSessionLength
 from .get_playback_mode import GetPlaybackMode
 from .get_transport_state import GetTransportState
@@ -54,11 +60,13 @@ from .set_record_mode import SetRecordMode
 from .spot import Spot
 from .authorize_connection import AuthorizeConnection
 from .set_session_audio_format import SetSessionAudioFormat
-from .set_session_audio_rate_pull_settings import SetSessionAudioRatePullSettings
+from .set_session_audio_rate_pull_settings import \
+    SetSessionAudioRatePullSettings
 from .set_session_bit_depth import SetSessionBitDepth
 from .set_session_feet_frames_rate import SetSessionFeetFramesRate
 from .set_session_interleaved_state import SetSessionInterleavedState
 from .set_session_length import SetSessionLength
 from .set_session_start_time import SetSessionStartTime
 from .set_session_time_code_rate import SetSessionTimeCodeRate
-from .set_session_video_rate_pull_settings import SetSessionVideoRatePullSettings
+from .set_session_video_rate_pull_settings import \
+    SetSessionVideoRatePullSettings

@@ -1,6 +1,7 @@
 [flake8]
 per-file-ignores =
-    __init__.py: F401
+    ptsl/__init__.py: F401
+    ptsl/ops/__init__.py: F401
 
 exclude =
     ptsl/PTSL_pb2_grpc.py
