@@ -27,5 +27,3 @@ doc = [
 
 [project.urls]
 Home = "https://github.com/iluvcapra/py-ptsl"
-
-
