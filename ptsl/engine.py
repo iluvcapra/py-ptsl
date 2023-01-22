@@ -541,12 +541,14 @@ class Engine:
 
     def set_session_bit_depth(self, new_bit_depth: 'BitDepth'):
         """
+        Set session bit depth.
         """
         op = ops.SetSessionBitDepth(bit_depth=new_bit_depth)
         self.client.run(op)
 
     def set_session_audio_format(self, new_audio_format: 'SessionAudioFormat'):
         """
+        Set session audio format.
         """
         op = ops.SetSessionAudioFormat(audio_format=new_audio_format)
         self.client.run(op)
@@ -558,6 +560,12 @@ class Engine:
             maintain_relative: bool
             ):
         """
+        Set session start time.
+
+        :param new_start: New timecode start time
+        :param track_offset_opts: The time format of ``new_start``.
+        :param maintain_relative: If `True`, clips will retain their time
+            position relative to the beginning of the session.
         """
         op = ops.SetSessionStartTime(
             session_start_time=new_start,
@@ -580,30 +588,35 @@ class Engine:
 
     def set_session_interleaved_state(self, new_state: bool):
         """
+        Set session interleaved state.
         """
         op = ops.SetSessionInterleavedState(interleaved_state=new_state)
         self.client.run(op)
 
     def set_session_time_code_rate(self, tc_rate: 'SessionTimeCodeRate'):
         """
+        Set session timecode rate.
         """
         op = ops.SetSessionTimeCodeRate(time_code_rate=tc_rate)
         self.client.run(op)
 
     def set_session_feet_frames_rate(self, ff_rate: 'SessionFeetFramesRate'):
         """
+        Set session feet+frames rate.
         """
         op = ops.SetSessionFeetFramesRate(feet_frames_rate=ff_rate)
         self.client.run(op)
 
     def set_session_audio_rate_pull(self, pull_rate: 'SessionRatePull'):
         """
+        Set session audio rate pull.
         """
         op = ops.SetSessionAudioRatePullSettings(audio_rate_pull=pull_rate)
         self.client.run(op)
 
     def set_session_video_rate_pull(self, pull_rate: 'SessionRatePull'):
         """
+        Set session video rate pull.
         """
         op = ops.SetSessionVideoRatePullSettings(video_rate_pull=pull_rate)
         self.client.run(op)
