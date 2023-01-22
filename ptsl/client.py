@@ -1,3 +1,7 @@
+"""
+ptsl Client
+"""
+
 import io
 from contextlib import contextmanager
 import json
@@ -28,6 +32,11 @@ def open_client(*args, **kwargs):
 
 
 class Auditor:
+    """
+    The Auditor is used by the client for reporting-out the status of requests
+    as the are run.
+    """
+
     def __init__(self, enabled: bool) -> None:
         self.output_stream = sys.stderr
         self.command_sn = 1
@@ -40,31 +49,40 @@ class Auditor:
                   file=self.output_stream)
 
     def run_called(self, command: pt.CommandId):
-        self.emit("Started Command %s (%i)" % (pt.CommandId.Name(command),
-                  command))
+        self.emit(f"Started Command {pt.CommandId.Name(command)} " +
+                  "({command})")
 
     def request_json_before_cleanup(self, json_data):
-        self.emit("Created JSON for request message: %s" % json_data)
+        self.emit(f"Created JSON for request message: {json_data}")
 
     def request_json_after_cleanup(self, json_data):
         self.emit(f"Re-formatted JSON for request message: {json_data}")
 
     def response_json_before_cleanup(self, json_data):
-        self.emit("Received JSON response body: %s" % json_data)
+        self.emit(f"Received JSON response body: {json_data}")
 
     def response_json_after_cleanup(self, json_data):
-        self.emit("Re-formatted JSON response body: %s" % json_data)
+        self.emit(f"Re-formatted JSON response body: {json_data}")
 
     def response_was_empty(self):
         self.emit("Received empty JSON response")
 
     def run_returning(self):
         self.emit("Finished Command")
-        self.emit("%s\n\n" % ('*' * 60))
+        self.emit(f"{('*' * 60)}\n\n")
         self.command_sn += 1
 
 
 class Client:
+    """
+    The Client class
+        - maintains the grpc stub and channel
+        - holds PTSL server session data
+        - manages the connection's authorization
+        - runs `Operation`s on the grpc channel
+        - packages error responses as exceptions to be thrown.
+    """
+
     channel: grpc.Channel
     raw_client: PTSL_pb2_grpc.PTSLStub
     session_id: str

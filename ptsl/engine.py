@@ -1,10 +1,14 @@
+"""
+ptsl Scripting Engine
+"""
+
 from typing import Optional, Tuple, List
 import os
 
 from contextlib import contextmanager
 
 import ptsl
-import ptsl.ops as ops
+from ptsl import ops
 import ptsl.PTSL_pb2 as pt
 from ptsl.PTSL_pb2 import SessionAudioFormat, SampleRate, BitDepth, \
     IOSettings, ImportType, SessionData, AudioData, FileLocation, \
