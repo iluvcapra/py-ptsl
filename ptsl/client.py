@@ -43,17 +43,17 @@ class Auditor:
         self.emit("Started Command %s (%i)" % (pt.CommandId.Name(command),
                   command))
 
-    def request_json_before_cleanup(self, json):
-        self.emit("Created JSON for request message: %s" % json)
+    def request_json_before_cleanup(self, json_data):
+        self.emit("Created JSON for request message: %s" % json_data)
 
-    def request_json_after_cleanup(self, json):
-        self.emit("Re-formatted JSON for request message: %s" % json)
+    def request_json_after_cleanup(self, json_data):
+        self.emit(f"Re-formatted JSON for request message: {json_data}")
 
-    def response_json_before_cleanup(self, json):
-        self.emit("Received JSON response body: %s" % json)
+    def response_json_before_cleanup(self, json_data):
+        self.emit("Received JSON response body: %s" % json_data)
 
-    def response_json_after_cleanup(self, json):
-        self.emit("Re-formatted JSON response body: %s" % json)
+    def response_json_after_cleanup(self, json_data):
+        self.emit("Re-formatted JSON response body: %s" % json_data)
 
     def response_was_empty(self):
         self.emit("Received empty JSON response")
@@ -82,13 +82,13 @@ class Client:
             self._primitive_check_if_ready()
             self._primitive_authorize_connection(certificate_path)
             self.is_open = True
-        except grpc.RpcError as e:
+        except grpc.RpcError as grpc_error:
             self.close()
-            if e.code() == grpc.StatusCode.UNAVAILABLE:
+            if getattr(grpc_error, 'code')() == grpc.StatusCode.UNAVAILABLE:
                 print("gRPC endpoint was unavailable, Pro Tools " +
                       "may not be running.", file=sys.stderr)
 
-            raise e
+            raise grpc_error
 
     def run(self, operation: Operation):
         """
@@ -114,9 +114,9 @@ class Client:
         else:
             # FIXME: dump out for now, will be on the lookout for when
             # this happens
-            assert False, "Unexpected response code %i (%s)" % \
-                (response.header.status,
-                 pt.TaskStatus.Name(response.header.status))
+            assert False, \
+                f"Unexpected response code {response.header.status} " + \
+                "({pt.TaskStatus.Name(response.header.status)})"
 
         self.auditor.run_returning()
 
