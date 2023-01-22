@@ -6,6 +6,9 @@ PTSL Observed Errata
 :Command:
     SetSessionLength
 
+:Version:
+    1
+
 :Observed Behavior:
     When trying to set a session length less than "06:00:00:00", Pro Tools
     returns an Response with an :py:attr:`response_error_json` with a 
@@ -28,6 +31,8 @@ PTSL Observed Errata
     SetSessionAudioPullRateSetting
     SetSessionVideoPullRateSetting
     
+:Version:
+    1
 
 :Observed Behavior:
     Using these commands does not change the settings in the session setup 
@@ -43,6 +48,9 @@ PTSL Observed Errata
 :Command:
     PasteSpecial
 
+:Version:
+    1
+
 :Observed Behvaior:
     When `PasteSpecial` is used with the `To_Current_Automation_Type`, nothing
     happens.
@@ -54,6 +62,9 @@ PTSL Observed Errata
 
 :Command:
     CreateSession
+
+:Version:
+    1
 
 :Observed Behavior:
     When this command is used with the path and name of an existing session,
@@ -69,6 +80,9 @@ PTSL Observed Errata
 :Command:
     ExportSessionInfoAsText
 
+:Version:
+    1
+
 :Observed Behavior:
     When "ESI_string" is given for the `output_type` in the request, an empty
     response is returned.
@@ -83,6 +97,9 @@ PTSL Observed Errata
 :Command:
     GetPlaybackMode
 
+:Version:
+    1
+
 :Observed Behavior:
     In the response, `possible_values` is returned as an array of strings and 
     not an array of integer enum values, as per the proto.
@@ -96,6 +113,9 @@ PTSL Observed Errata
 :Command:
     GetTrackList
 
+:Version:
+    1
+
 :Observed Behavior:
     When there are no tracks in the session, the `track_list` value in the 
     response contains an empty JSON set object `{}` and not an empty JSON list 
@@ -108,6 +128,9 @@ PTSL Observed Errata
 
 :Command:
     GetTaskStatus
+
+:Version:
+    1
 
 :Observed Behavior:
     When the status of a running task is queried, the response contains an 
