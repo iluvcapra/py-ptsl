@@ -1,3 +1,7 @@
+"""
+ptsl Exceptions
+"""
+
 from typing import Optional
 
 from ptsl.PTSL_pb2 import CommandError as CommandErrorResponse
@@ -16,9 +20,7 @@ class CommandError(RuntimeError):
 
     def __str__(self) -> str:
         return super().__str__() + \
-            ("ErrType %i: %s (%s)" % (self.error_type,
-                                      self.error_name,
-                                      self.message))
+            f"ErrType {self.error_type}: {self.error_name} ({self.message})"
 
     @property
     def is_warning(self) -> bool:
