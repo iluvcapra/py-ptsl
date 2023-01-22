@@ -442,7 +442,7 @@ class Engine:
 
     def session_feet_frames_rate(self) -> 'SessionFeetFramesRate':
         """
-        Session feet-frsames rate.
+        Session feet-frames rate.
         """
         op = ops.GetSessionFeetFramesRate()
         self.client.run(op)
