@@ -1,12 +1,16 @@
 from typing import Optional
 
-from ptsl.PTSL_pb2 import CommandError, CommandErrorType
+from ptsl.PTSL_pb2 import CommandError as CommandErrorResponse
+from ptsl.PTSL_pb2 import CommandErrorType
 
 
 class CommandError(RuntimeError):
-    error_response: CommandError
+    """
+    A :class:`Exception` for :class:`CommandError` results
+    """
+    error_response: CommandErrorResponse
 
-    def __init__(self, error_response: CommandError) -> None:
+    def __init__(self, error_response: CommandErrorResponse) -> None:
         self.error_response = error_response
         super().__init__()
 
@@ -18,19 +22,31 @@ class CommandError(RuntimeError):
 
     @property
     def is_warning(self) -> bool:
+        """
+        `True` if command error message is marked as a warning.
+        """
         return self.error_response.is_warning
 
     @property
     def error_type(self) -> CommandErrorType:
+        """
+        :class:`ptsl.PTSL_pb2.CommandErrorType` enumeration value.
+        """
         return self.error_response.command_error_type
 
     @property
     def error_name(self) -> Optional[str]:
+        """
+        Error name, if available.
+        """
         if self.error_type in CommandErrorType.values():
             return CommandErrorType.Name(self.error_type)
-        else:
-            return None
+
+        return None
 
     @property
     def message(self) -> str:
+        """
+        Error message as returned by the client.
+        """
         return self.error_response.command_error_message

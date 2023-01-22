@@ -28,5 +28,8 @@ doc = [
 [project.urls]
 Home = "https://github.com/iluvcapra/py-ptsl"
 
-[flake8]
-per-file-ignores = "__init__.py: F401"
+[tool.pylint.'MESSAGES CONTROL']
+ignored-modules = [
+    "ptsl.PTSL_pb2",
+    "ptsl.PTSL_pb2_grpc"
+]
