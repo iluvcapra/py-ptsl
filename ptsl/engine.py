@@ -432,6 +432,9 @@ class Engine:
 
     def session_length(self) -> str:
         """
+        Session length
+        :returns: Session length, as a string in the current
+            time code format.
         """
         op = ops.GetSessionLength()
         self.client.run(op)
@@ -439,6 +442,7 @@ class Engine:
 
     def session_feet_frames_rate(self) -> 'SessionFeetFramesRate':
         """
+        Session feet-frsames rate.
         """
         op = ops.GetSessionFeetFramesRate()
         self.client.run(op)
