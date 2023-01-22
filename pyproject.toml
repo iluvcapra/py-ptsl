@@ -27,3 +27,6 @@ doc = [
 
 [project.urls]
 Home = "https://github.com/iluvcapra/py-ptsl"
+
+[flake8]
+per-file-ignores = "__init__.py: F401"
