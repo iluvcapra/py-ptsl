@@ -1,7 +1,11 @@
+from typing import TypeVar, Generic
+
 from ptsl import PTSL_pb2 as pt
 
+Q = TypeVar("Q")
+R = TypeVar("R")
 
-class Operation:
+class Operation(Generic[Q,R]):
     """
     An operation composes a `CommandId` with its request and response type.
     The `Operation` abstract base class will infer the `CommandId` Request
@@ -12,14 +16,16 @@ class Operation:
 
     The client runs `Operation`s with the Client.run() method. 
     """
+    request: Q
+    response: R
 
     @classmethod
-    def request_body(cls):
-        return getattr(pt, cls.__name__ + "RequestBody", None)
+    def request_body(cls) -> Q:
+        return getattr(pt, cls.__name__ + "RequestBody", None) # type: ignore
 
     @classmethod
-    def response_body(cls):
-        return getattr(pt, cls.__name__ + "ResponseBody", None)
+    def response_body(cls) -> R:
+        return getattr(pt, cls.__name__ + "ResponseBody", None) # type: ignore
 
     @classmethod
     def command_id(cls):
@@ -29,11 +35,11 @@ class Operation:
     def __init__(self, *args, **kwargs) -> None:
         rq = self.__class__.request_body()
         if rq is not None:
-            self.request = rq(*args, **kwargs)
+            self.request = rq(*args, **kwargs) # type: ignore
         else:
-            self.request = None
+            self.request = None # type: ignore
    
-        self.response = None
+        self.response = None # type: ignore
         self.status = None
         self.task_id = ""
 
@@ -66,9 +72,9 @@ class Operation:
         """
         The client calls this when the server reponds.
         """
-        self.response = None
+        self.response = None # type: ignore
 
-    def on_response_body(self, response_body):
+    def on_response_body(self, response_body: R):
         """
         The client calls this when the server responds with a JSON `pt.ResponseBody`.
         """

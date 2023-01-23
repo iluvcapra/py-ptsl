@@ -36,6 +36,10 @@ ignored-modules = [
 
 [tool.pyright]
 typeCheckingMode = "basic"
+exclude = [
+    "ptsl/PTSL_pb2.py",
+    "ptsl/PTSL_pb2_grpc.py"
+]
 
 [tool.pylint]
 max-line-length = 88

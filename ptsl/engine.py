@@ -436,7 +436,8 @@ class Engine:
 
     def session_length(self) -> str:
         """
-        Session length
+        Session length.
+
         :returns: Session length, as a string in the current
             time code format.
         """
@@ -506,16 +507,16 @@ class Engine:
 
     def track_list(
             self,
-            filters: List['TrackListInvertibleFilter'] = None
+            filters: List['TrackListInvertibleFilter'] = []
             ) -> List['Track']:
         """
         Get a list of the tracks in the current session.
 
-        :param filters: Track list filters. If `None`, defaults to
+        :param filters: Track list filters. Defaults to
             [:attr:`ptsl.PTSL_pb2.TrackListFilter.All`]
         """
-        if filters is None:
-            filters = [pt.TrackListInvertibleFilter(filter=pt.AllTracks,
+        if len(filters) == 0:
+            filters = [pt.TrackListInvertibleFilter(filter=pt.All,
                                                     is_inverted=False)]
 
         op = ops.GetTrackList(
