@@ -28,7 +28,10 @@ class Operation:
 
     def __init__(self, *args, **kwargs) -> None:
         rq = self.__class__.request_body()
-        self.request = rq(*args, **kwargs)
+        if rq is not None:
+            self.request = rq(*args, **kwargs)
+        else:
+            self.request = None
    
         self.response = None
         self.status = None
