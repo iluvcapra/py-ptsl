@@ -48,6 +48,9 @@ class Engine:
         :param address: server:port to connect the engine to.
         """
         certificate_path = certificate_path or os.getenv('PTSL_KEY')
+        assert isinstance(certificate_path, str), \
+                          "No certificate was provided."
+
         self.client = ptsl.client.Client(certificate_path=certificate_path,
                                          address=address)
 
@@ -64,6 +67,7 @@ class Engine:
         """
         op = ops.GetPTSLVersion()
         self.client.run(op)
+        assert isinstance(op.response, pt.GetPTSLVersionResponseBody)
         return op.response.version
 
     def create_session(self,

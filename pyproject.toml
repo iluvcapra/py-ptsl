@@ -34,6 +34,9 @@ ignored-modules = [
     "ptsl.PTSL_pb2_grpc"
 ]
 
+[tool.pyright]
+typeCheckingMode = "basic"
+
 [tool.pylint]
 max-line-length = 88
 disable = [

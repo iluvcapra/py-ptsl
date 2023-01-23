@@ -28,11 +28,11 @@ class Operation:
 
     def __init__(self, *args, **kwargs) -> None:
         rq = self.__class__.request_body()
-        if rq:
-            self.request = rq(**kwargs)
+        if isinstance(rq, callable):
+            self.request = rq(*args, **kwargs)
         else:
             self.request = None
-        
+   
         self.response = None
         self.status = None
         self.task_id = ""
