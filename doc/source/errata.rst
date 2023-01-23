@@ -149,3 +149,6 @@ PTSL Observed Errata
 :Expected Behavior:
     The `progress` field should advance and reflect the task's percentage 
     completion.
+    
+:Avid Response:
+    https://duc.avid.com/showthread.php?t=423152
