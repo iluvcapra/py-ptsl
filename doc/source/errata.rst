@@ -1,5 +1,5 @@
-PTSL Observed Errata
-====================
+PTSL Errata
+===========
 
 .. currentmodule:: ptsl
 
