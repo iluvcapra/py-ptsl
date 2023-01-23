@@ -91,6 +91,10 @@ PTSL Observed Errata
     When the `output_type=ESI_string` parameter-value is given for this 
     command, the command should return a text export as a string with the
     response.
+    
+:Avid Response:
+    PT-297044
+    https://duc.avid.com/showthread.php?t=422971
 
 ---
 
@@ -107,6 +111,10 @@ PTSL Observed Errata
 :Expected Behavior:
     `possible_values` should return a list of integers corresponding to the
     `PM_PlaybackMode` enum values.
+
+:Avid Response:
+    PT-296814
+    https://duc.avid.com/showthread.php?p=2659689&posted=1#post2659689
 
 ---
 
