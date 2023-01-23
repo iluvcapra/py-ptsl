@@ -28,10 +28,7 @@ class Operation:
 
     def __init__(self, *args, **kwargs) -> None:
         rq = self.__class__.request_body()
-        if isinstance(rq, callable):
-            self.request = rq(*args, **kwargs)
-        else:
-            self.request = None
+        self.request = rq(*args, **kwargs)
    
         self.response = None
         self.status = None
