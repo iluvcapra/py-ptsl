@@ -259,8 +259,45 @@ class Engine:
         :param old_name: The name of the track to rename.
         :param new_name: The new name to give the track.
         """
-        op = ops.RenameTargetTrack(current_track_name=old_name, new_name=new_name)
+        op = ops.RenameTargetTrack(current_track_name=old_name, 
+                                   new_name=new_name)
         self.client.run(op)
+
+    def rename_selected_clip(self, new_name: str, 
+                             rename_file : bool = True, 
+                             clip_location: pt.CL_ClipLocation = pt.CL_Timeline):
+        """
+        Renames a clip in the current session.
+        """
+        op = ops.RenameSelectedClip(clip_location=clip_location,
+                                    new_name = new_name,
+                                    rename_file = rename_file)
+        
+        self.client.run(op)
+
+    def rename_target_clip(self, clip_name: str,
+                           new_name: str, 
+                           rename_file: bool = True):
+        """
+        Renames a named clip in the current session.
+        """
+        op = ops.RenameTargetClip(clip_name=clip_name,
+                                  new_name=new_name,
+                                  rename_file=rename_file)
+
+        self.client.run(op)
+
+    def toggle_play_state(self):
+        self.client.run(ops.TogglePlayState())
+
+    def toggle_record_enable(self):
+        self.client.run(ops.ToggleRecordEnable())
+
+    def play_half_speed(self):
+        self.client.run(ops.PlayHalfSpeed())
+
+    def record_half_speed(self):
+        self.client.run(ops.RecordHalfSpeed())
 
     def consolidate_clip(self):
         """

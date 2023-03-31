@@ -70,3 +70,11 @@ from .set_session_start_time import SetSessionStartTime
 from .set_session_time_code_rate import SetSessionTimeCodeRate
 from .set_session_video_rate_pull_settings import \
     SetSessionVideoRatePullSettings
+
+from .register_connection import RegisterConnection
+from .rename_selected_clip import RenameSelectedClip
+from .rename_target_clip import RenameTargetClip
+from .toggle_play_state import \
+        TogglePlayState, ToggleRecordEnable, \
+        PlayHalfSpeed, RecordHalfSpeed
+
