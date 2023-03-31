@@ -18,7 +18,7 @@ from ptsl import PTSL_pb2 as pt
 from ptsl.errors import CommandError
 from ptsl.ops import Operation
 
-PTSL_VERSION = 2
+PTSL_VERSION = 1
 
 
 @contextmanager
@@ -245,6 +245,6 @@ class Client:
                 json_format.Parse(response.response_body_json,
                                   pt.RegisterConnectionResponseBody)
 
-                self.session_id = registration_response.session_id
+            self.session_id = registration_response.session_id
                 
 

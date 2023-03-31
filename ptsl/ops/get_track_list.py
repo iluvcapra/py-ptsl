@@ -11,16 +11,16 @@ class GetTrackList(Operation):
         self.track_list : List[pt.Track] = []
         super().__init__(**kwargs)
 
-    def json_cleanup(self, in_json: str) -> str:
+    # def json_cleanup(self, in_json: str) -> str:
 
-        def empty_dict_to_empty_list(dct):
-            if 'track_list' in dct and dct['track_list'] == {}:
-                dct['track_list'] = []
+    #     def empty_dict_to_empty_list(dct):
+    #         if 'track_list' in dct and dct['track_list'] == {}:
+    #             dct['track_list'] = []
 
-            return dct
+    #         return dct
 
-        decoded = json.loads(in_json, object_hook=empty_dict_to_empty_list)
-        return json.dumps(decoded)
+    #     decoded = json.loads(in_json, object_hook=empty_dict_to_empty_list)
+    #     return json.dumps(decoded)
 
 
     def on_empty_response_body(self):

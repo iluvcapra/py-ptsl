@@ -35,9 +35,10 @@ def open_engine(*args, **kwargs):
 
 class Engine:
 
-    client: ptsl.client.Client
+    client: ptsl.Client
 
-    def __init__(self, certificate_path: Optional[str] = None,
+    def __init__(self, company_name: str,
+                 application_name: str,
                  address='localhost:31416'):
         """
         Open the engine.
@@ -47,12 +48,9 @@ class Engine:
             in from the "PTSL_KEY" environment variable.
         :param address: server:port to connect the engine to.
         """
-        certificate_path = certificate_path or os.getenv('PTSL_KEY')
-        assert isinstance(certificate_path, str), \
-                          "No certificate was provided."
-
-        self.client = ptsl.client.Client(certificate_path=certificate_path,
-                                         address=address)
+        self.client = ptsl.Client(company_name=company_name, 
+                                  application_name=application_name,
+                                  address=address)
 
     def close(self):
         """
@@ -261,7 +259,7 @@ class Engine:
         :param old_name: The name of the track to rename.
         :param new_name: The new name to give the track.
         """
-        op = ops.RenameTargetTrack(track_id=old_name, new_name=new_name)
+        op = ops.RenameTargetTrack(current_track_name=old_name, new_name=new_name)
         self.client.run(op)
 
     def consolidate_clip(self):
@@ -357,7 +355,7 @@ class Engine:
         op = ops.ExportMix(
             file_name=base_name,
             file_type=file_type,
-            files_list=sources,
+            mix_source_list=sources,
             audio_info=audio_info,
             video_info=video_info,
             location_info=location_info,
