@@ -299,6 +299,32 @@ class Engine:
     def record_half_speed(self):
         self.client.run(ops.RecordHalfSpeed())
 
+    def edit_memory_location(self, location_number: int,
+                             name: str,
+                             start_time: str, end_time: str,
+                             time_properties: pt.TimeProperties,
+                             reference: pt.MemoryLocationReference,
+                             properties: pt.MemoryLocationProperties,
+                             comments: str):
+
+        op = ops.EditMemoryLocation(
+                number=location_number,
+                name=name,
+                start_time=start_time,
+                end_time=end_time,
+                time_properties=time_properties,
+                reference=reference,
+                properties=properties,
+                comments=comments
+                )
+
+        self.client.run(op)
+
+    def get_memory_locations(self) -> List[pt.MemoryLocation]:
+        op = ops.GetMemoryLocations()
+        self.client.run(op)
+        return op.response.memory_locations
+
     def consolidate_clip(self):
         """
         Consolidate time selection.

@@ -78,3 +78,5 @@ from .toggle_play_state import \
         TogglePlayState, ToggleRecordEnable, \
         PlayHalfSpeed, RecordHalfSpeed
 
+from .memory_locations import EditMemoryLocation, GetMemoryLocations
+
