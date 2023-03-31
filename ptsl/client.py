@@ -13,12 +13,12 @@ from typing import Optional
 import grpc
 from google.protobuf import json_format
 
-from . import PTSL_pb2_grpc
-from . import PTSL_pb2 as pt
-from .errors import CommandError
-from .ops import Operation
+from ptsl import PTSL_pb2_grpc
+from ptsl import PTSL_pb2 as pt
+from ptsl.errors import CommandError
+from ptsl.ops import Operation
 
-PTSL_VERSION = 1
+PTSL_VERSION = 2
 
 
 @contextmanager
@@ -78,7 +78,7 @@ class Client:
     The Client class
         - maintains the grpc stub and channel
         - holds PTSL server session data
-        - manages the connection's authorization
+        - manages the connection's registration
         - runs `Operation`s on the grpc channel
         - packages error responses as exceptions to be thrown.
     """
@@ -89,17 +89,19 @@ class Client:
     auditor: Auditor
     is_open: bool
 
-    def __init__(self, certificate_path: str,
+    def __init__(self, company_name: str, application_name: str,
                  address: str = 'localhost:31416') -> None:
 
         self.channel = grpc.insecure_channel(address)
         self.raw_client = PTSL_pb2_grpc.PTSLStub(self.channel)
         self.session_id = ""
         self.auditor = Auditor(enabled=False)
+
         try:
             self._primitive_check_if_ready()
-            self._primitive_authorize_connection(certificate_path)
+            self._primitive_register_connection(company_name, application_name)
             self.is_open = True
+
         except grpc.RpcError as grpc_error:
             self.close()
             if getattr(grpc_error, 'code')() == grpc.StatusCode.UNAVAILABLE:
@@ -218,34 +220,31 @@ class Client:
         else:
             return True
 
-    def _primitive_authorize_connection(self, api_key_path) -> Optional[str]:
+    def _primitive_register_connection(self, company_name: str, 
+                                       application_name: str):
         """
-        Authorizes the client's connection to the Pro Tools RPC server.
+        Registers the client's connection to the Pro Tools RPC server.
 
         This method is called automatically by the initializer.
         """
-        KEY_FILE_ENCODING = 'ascii'
 
-        with io.FileIO(api_key_path) as f:
-            api_token = f.readall().decode(encoding=KEY_FILE_ENCODING)
+        req = pt.RegisterConnectionRequestBody(company_name=company_name, 
+                                               application_name=application_name)
 
-        req = pt.AuthorizeConnectionRequestBody(auth_string=api_token)
         req_json = json_format.MessageToJson(req,
                                              preserving_proto_field_name=True)
 
-        response = self._send_sync_request(pt.CommandId.AuthorizeConnection,
+        response = self._send_sync_request(pt.CommandId.RegisterConnection,
                                            req_json)
 
         if response.header.status == pt.Failed:
             print("An error occurred")
             print(response)
         else:
-            authorization_response = \
+            registration_response = \
                 json_format.Parse(response.response_body_json,
-                                  pt.AuthorizeConnectionResponseBody)
+                                  pt.RegisterConnectionResponseBody)
 
-            if authorization_response.is_authorized:
-                self.session_id = authorization_response.session_id
-            else:
-                print("Connection did not authorize, message: " +
-                      authorization_response.message)
+                self.session_id = registration_response.session_id
+                
+
