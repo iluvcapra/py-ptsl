@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import PTSL_pb2 as PTSL__pb2
+from ptsl import PTSL_pb2 as PTSL__pb2
 
 
 class PTSLStub(object):

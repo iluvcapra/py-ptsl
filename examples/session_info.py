@@ -11,7 +11,7 @@ from ptsl.PTSL_pb2 import PT_NoOpenedSession
 import ptsl.PTSL_pb2 as pt
 
 
-with open_engine() as engine:
+with open_engine(company_name="py-ptsl", application_name=sys.argv[0]) as engine:
     
     try:
         print("PTSL Version: %i" % engine.ptsl_version())

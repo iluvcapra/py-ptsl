@@ -89,7 +89,9 @@ class Client:
     auditor: Auditor
     is_open: bool
 
-    def __init__(self, company_name: str, application_name: str,
+    def __init__(self, 
+                 company_name: str, 
+                 application_name: str,
                  address: str = 'localhost:31416') -> None:
 
         self.channel = grpc.insecure_channel(address)

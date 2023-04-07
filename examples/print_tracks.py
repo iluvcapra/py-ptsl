@@ -3,13 +3,14 @@
 # This example demonstrates getting a list of tracks.
 
 import os
+import sys
 
 from ptsl import open_engine
 from ptsl import PTSL_pb2 as pt
 
 print("#: %5s : %-13s : %-32s : %9s : %s" % ("ATTRS", "TYPE","NAME","COLOR","ID"))
 
-with open_engine(os.getenv('PTSL_KEY')) as engine:
+with open_engine(company_name="py-ptsl", application_name=sys.argv[0]) as engine:
 
     track_list = engine.track_list()
 

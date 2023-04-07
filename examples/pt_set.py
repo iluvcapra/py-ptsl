@@ -8,9 +8,10 @@ from ptsl import open_engine, CommandError
 import ptsl.PTSL_pb2 as pt
 
 import os
+import sys
 
 def process_option(opts, name, tipo, set_method):
-    val = getattr(opts, name)
+    val : str = getattr(opts, name)
 
     if val is None:
         return
@@ -20,8 +21,14 @@ def process_option(opts, name, tipo, set_method):
         return
     
     if tipo is bool:
-        val = True if val.capitalize() == 'TRUE' else False
-        set_method(val)
+        if val in ['TRUE',"true",1]:
+            fval = True
+        elif val in ['FALSE',"false",0]:
+            fval = False
+        else:
+            print("%s: Unrecognized value '%s'" % (name, val))
+        
+        set_method(fval)
         return
 
     if val not in tipo.keys():
@@ -32,7 +39,6 @@ def process_option(opts, name, tipo, set_method):
 
 
 p = optparse.OptionParser()
-p.add_option("-K", nargs=1, help="Developer key file")
 p.add_option("--playback-mode", nargs=1)
 p.add_option("--record-mode", nargs=1)
 p.add_option("--audio-format", nargs=1)
@@ -47,11 +53,7 @@ p.add_option("--length", nargs=1)
 
 (options, args) = p.parse_args()
 
-api_key = options.K or os.getenv('PTSL_KEY', default=None)
-
-assert api_key is not None, "No developer key file provided"
-
-with open_engine(certificate_path=api_key) as e:
+with open_engine(company_name="py-ptsl", application_name=sys.argv[0]) as e:
     try:
         process_option(options, 'playback_mode', pt.PM_PlaybackMode, e.set_playback_mode)
         process_option(options, 'record_mode', pt.RM_RecordMode, lambda x: e.set_record_mode(x, False))

@@ -8,6 +8,7 @@ from ptsl import open_engine
 import ptsl.PTSL_pb2 as pt
 
 import os
+import sys
 
 p = optparse.OptionParser()
 p.add_option("--cut", action='store_true')
@@ -53,7 +54,7 @@ elif options.current:
     v_modifier = pt.To_Current_Automation_Type
 
 
-with open_engine() as e:
+with open_engine(application_name=sys.argv[0], company_name="py-ptsl") as e:
     if options.cut:
         e.cut(special=xcb_modifier)
 
