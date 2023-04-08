@@ -67,14 +67,14 @@ GetPlaybackMode                       >=2022.12   :meth:`~ptsl.Engine.playback_m
 GetRecordMode                         >=2022.12   :meth:`~ptsl.Engine.record_mode`
 GetTransportArmed                     >=2022.12   :meth:`~ptsl.Engine.transport_armed`
 GetTransportState                     >=2022.12   :meth:`~ptsl.Engine.transport_state`
-AuthorizeConnection                   ==2022.12  
-RenameSelectedClip                    >=2023.3    :meth:`~ptsl.Engine.rename_selected_clip`
-RenameTargetClip                      >=2023.3    :meth:`~ptsl.Engine.rename_target_clip`
-TogglePlayState                       >=2023.3    :meth:`~ptsl.Engine.toggle_play_state`
-ToggleRecordEnable                    >=2023.3    :meth:`~ptsl.Engine.toggle_record_enable`
-PlayHalfSpeed                         >=2023.3    :meth:`~ptsl.Engine.play_half_speed`
-RecordHalfSpeed                       >=2023.3    :meth:`~ptsl.Engine.record_half_speed`
-EditMemoryLocation                    >=2023.3    :meth:`~ptsl.Engine.edit_memory_location`
-GetMemoryLocations                    >=2023.3    :meth:`~ptsl.Engine.get_memory_locations`
+AuthorizeConnection                   ==2022.12   Implicit in :meth:`~ptsl.Client.__init__` 
+RenameSelectedClip                    >=2023.3    
+RenameTargetClip                      >=2023.3    
+TogglePlayState                       >=2023.3    
+ToggleRecordEnable                    >=2023.3    
+PlayHalfSpeed                         >=2023.3    
+RecordHalfSpeed                       >=2023.3    
+EditMemoryLocation                    >=2023.3    
+GetMemoryLocations                    >=2023.3    
 RegisterConnection                    >=2023.3    Implicit in :meth:`~ptsl.Client.__init__`
 ===================================   =========   =============================================================
