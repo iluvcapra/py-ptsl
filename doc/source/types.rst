@@ -1127,7 +1127,24 @@ Errors
 
 		unable to perform action because of invalid selection SDK errors
 
+    .. attribute:: PT_ReadOnlySession
+        :value: 125
+
+        the session is located on a read-only drive and cannot be saved 
+        without user intervention
+
+    .. attribute:: PT_InvalidParameter
+        :value: 126
+
+        One or more parameters are invalid
+
 	.. attribute:: SDK_Version_Mismatch
-		:value: 201
+		:value: 401
 
 		Versions of PTSL Host and PTSL Client are mismatched
+
+    .. attribute:: sdk_notimplemented
+        :value: 402
+
+        Some PTSL functional is not implemented at the PT side
+
