@@ -68,6 +68,13 @@ class Engine:
         assert isinstance(op.response, pt.GetPTSLVersionResponseBody)
         return op.response.version
 
+    def host_ready_check(self):
+        """
+        Runs the `HostReadCheck` message on the host, any error
+        is returned as an exception.
+        """
+        self.client.run(ops.HostReadyCheck())
+
     def create_session(self,
                        name: str,
                        path: str,
