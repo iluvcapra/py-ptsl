@@ -304,15 +304,27 @@ class Engine:
         self.client.run(op)
 
     def toggle_play_state(self):
+        """
+        Toggle the play state.
+        """
         self.client.run(ops.TogglePlayState())
 
     def toggle_record_enable(self):
+        """
+        Toggle record enable.
+        """
         self.client.run(ops.ToggleRecordEnable())
 
     def play_half_speed(self):
+        """
+        Play at half speed.
+        """
         self.client.run(ops.PlayHalfSpeed())
 
     def record_half_speed(self):
+        """
+        Record at half speed.
+        """
         self.client.run(ops.RecordHalfSpeed())
 
     def edit_memory_location(self, location_number: int,
@@ -322,7 +334,9 @@ class Engine:
                              reference: pt.MemoryLocationReference,
                              properties: pt.MemoryLocationProperties,
                              comments: str):
-
+        """
+        Edit a memory location.
+        """
         op = ops.EditMemoryLocation(
                 number=location_number,
                 name=name,
@@ -337,6 +351,9 @@ class Engine:
         self.client.run(op)
 
     def get_memory_locations(self) -> List[pt.MemoryLocation]:
+        """
+        Get a list of all memory locations in currently-open session.
+        """
         op = ops.GetMemoryLocations()
         self.client.run(op)
         return op.response.memory_locations
@@ -750,3 +767,20 @@ class Engine:
             op = ops.Clear()
 
         self.client.run(op)
+    
+    def refresh_target_audio_files(self, files : List[str]) -> int:
+        """
+        Refresh target audio files.
+
+        :param files: A list of files to refresh.
+        :return: Number of files successfully refreshed.
+        """
+        op = ops.RefreshAllModifiedAudioFiles(file_list=files)
+        self.client.run(op)
+
+    def refresh_all_modified_audio_flles(self):
+        """
+        Refreshes all modified audio files.
+        """
+        self.client.run(ops.RefreshAllModifiedAudioFiles())
+       
