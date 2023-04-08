@@ -87,17 +87,16 @@ class Engine:
     def create_session(self,
                        name: str,
                        path: str,
-                       file_type: 'SessionAudioFormat' = pt.SAF_WAVE,
-                       sample_rate: 'SampleRate' = pt.SR_48000,
-                       bit_depth: 'BitDepth' = pt.Bit24,
-                       io_setting: 'IOSettings' = pt.IO_Last,
+                       file_type = pt.SAF_WAVE,
+                       sample_rate = pt.SR_48000,
+                       bit_depth = pt.Bit24,
+                       io_setting = pt.IO_Last,
                        is_interleaved: bool = True) -> None:
         """
         Create a new Pro Tools session.
 
         :param name: Session Name
         :param path: Path to the new session
-            (use colon-delimited paths on MacOS)
         :param SessionAudioFormat file_type: file type, defaults to
             :attr:`~ptsl.PTSL_pb2.SessionAudioFormat.SAF_WAVE`
         :param SampleRate sample_rate: sample rate, defaults to
@@ -127,13 +126,27 @@ class Engine:
             template_name: str,
             name: str,
             path: str,
-            file_type: 'SessionAudioFormat' = pt.SAF_WAVE,
-            sample_rate: 'SampleRate' = pt.SR_48000,
-            bit_depth: 'BitDepth' = pt.Bit24,
-            io_setting: 'IOSettings' = pt.IO_Last,
+            file_type = pt.SAF_WAVE,
+            sample_rate = pt.SR_48000,
+            bit_depth = pt.Bit24,
+            io_setting = pt.IO_Last,
             is_interleaved: bool = True) -> None:
         """
         Create a new session with an installed template.
+        
+        :param str template_group: Name of the template group
+        :param str template_name: Name of the template to use
+        :param str name: Name of the new session
+        :param str path: Path for the new session
+        :param SessionAudioFormat file_type: Defaults to 
+            :attr:`~ptsl.PTSL_pb2.SessionAudioFormat.SAF_WAVE` 
+        :param SampleRate sample_rate: sample rate, defaults to
+            :attr:`~ptsl.PTSL_pb2.SampleRate.SR_48000`
+        :param BitDepth bit_depth: bit depth, defaults to
+            :attr:`~ptsl.PTSL_pb2.BitDepth.Bit24`
+        :param IOSettings io_setting: The IO Setting to use,
+            defaults to :attr:`~ptsl.PTSL_pb2.IOSettings.IO_Last`
+        :param is_interelaved: Interleaved state
         """
 
         op = ops.CreateSession(
@@ -156,13 +169,26 @@ class Engine:
             name: str,
             path: str,
             aaf_path: str,
-            file_type: 'SessionAudioFormat' = pt.SAF_WAVE,
-            sample_rate: 'SampleRate' = pt.SR_48000,
-            bit_depth: 'BitDepth' = pt.Bit24,
-            io_setting: 'IOSettings' = pt.IO_Last,
+            file_type = pt.SAF_WAVE,
+            sample_rate = pt.SR_48000,
+            bit_depth = pt.Bit24,
+            io_setting = pt.IO_Last,
             is_interleaved: bool = True) -> None:
         """
         Create a session from an AAF.
+
+        :param str name: Name of the new session
+        :param str path: Path for the new session
+        :param str aaf_path: Path to the AAF file to convert
+        :param SessionAudioFormat file_type: Defaults to 
+            :attr:`~ptsl.PTSL_pb2.SessionAudioFormat.SAF_WAVE` 
+        :param SampleRate sample_rate: sample rate, defaults to
+            :attr:`~ptsl.PTSL_pb2.SampleRate.SR_48000`
+        :param BitDepth bit_depth: bit depth, defaults to
+            :attr:`~ptsl.PTSL_pb2.BitDepth.Bit24`
+        :param IOSettings io_setting: The IO Setting to use,
+            defaults to :attr:`~ptsl.PTSL_pb2.IOSettings.IO_Last`
+        :param is_interelaved: Interleaved state
         """
 
         op = ops.CreateSession(
@@ -202,7 +228,7 @@ class Engine:
 
     def save_session_as(self, path: str, name: str):
         """
-        Save the currently-open session as a new name toa different path.
+        Save the currently-open session as a new name to a different path.
 
         :param path: Path to the new session
         :param name: New name for the session
@@ -212,11 +238,15 @@ class Engine:
 
     def import_data(self,
                     session_path: str,
-                    import_type: 'ImportType',
-                    session_data: 'SessionData',
-                    audio_data: 'AudioData'):
+                    import_type,
+                    session_data,
+                    audio_data):
         """
         Import session data into the currently-open session.
+
+        :param ImportType import_type: Import type
+        :param SessionData session_data: Session import settings
+        :param AudioData audio_data: Audio data import settings
         """
 
         op = ops.Import(
@@ -232,7 +262,7 @@ class Engine:
         """
         Select all clips on track.
 
-        :param track_name: Name of the track to select all clips on.
+        :param str track_name: Name of the track to select all clips on.
         """
         op = ops.SelectAllClipsOnTrack(track_name=track_name)
         self.client.run(op)
@@ -241,7 +271,7 @@ class Engine:
         """
         Extend selection to target tracks.
 
-        :param tracks: A list of track names to extend the selection to.
+        :param List[str] tracks: A list of track names to extend the selection to.
         """
         op = ops.ExtendSelectionToTargetTracks(tracks_to_extend_to=tracks)
         self.client.run(op)
@@ -257,8 +287,8 @@ class Engine:
         """
         Create batch fades for the timeline selection based on a preset.
 
-        :param preset_name: Name of the batch fades preset to use.
-        :param adjust_bounds: Auto-adjust clip boundaries to accomodate
+        :param str preset_name: Name of the batch fades preset to use.
+        :param bool adjust_bounds: Auto-adjust clip boundaries to accomodate
             fades.
         """
         rq = pt.CreateFadesBasedOnPresetRequestBody()
@@ -272,8 +302,8 @@ class Engine:
         """
         Renames a track in the currently-open session.
 
-        :param old_name: The name of the track to rename.
-        :param new_name: The new name to give the track.
+        :param str old_name: The name of the track to rename.
+        :param str new_name: The new name to give the track.
         """
         op = ops.RenameTargetTrack(current_track_name=old_name, 
                                    new_name=new_name)
@@ -281,9 +311,14 @@ class Engine:
 
     def rename_selected_clip(self, new_name: str, 
                              rename_file : bool = True, 
-                             clip_location: pt.CL_ClipLocation = pt.CL_Timeline):
+                             clip_location =  pt.CL_Timeline):
         """
         Renames a clip in the current session.
+
+        :param str new_name: New name for the clip
+        :param bool rename_file: If true, file will be renamed as well
+        :param CL_ClipLocation clip_location: Clip selection location,
+            defaults to :attr:`~ptsl.PTSL_pb2.CL_ClipLocation.CL_Timeline`
         """
         op = ops.RenameSelectedClip(clip_location=clip_location,
                                     new_name = new_name,
