@@ -2,10 +2,12 @@
 
 Native Python client for the Pro Tools scripting RPC interface
 
-## Work In Progress
+## Important 
 
-This project is in an early phases of development. PRs and issue submissions 
-are welcome to guide future development!
+This software is developed by enthusiasts and is not a work of or supported
+by Avid. Developers who wish to contribute to this project should obtain the 
+PTSL SDK [from Avid's Developer site](https://developer.avid.com) for the
+most current documentation and protobuf source files.
 
 ## Installing
 
