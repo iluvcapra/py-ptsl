@@ -14,13 +14,13 @@ current documentation and protobuf source files.
 See the [examples directory](examples) for scripts demonstrating how to use the
 client.
 
-    - [session_info.py](examples/session_info.py) - This
-      example prints a list of gettable properties from the currently-open
+- [session_info.py](examples/session_info.py) - This example 
+  prints a list of gettable properties from the currently-open
       session.
-    - [print_tracks.py](examples/print_tracks.py) - This example prints
-      a list of every track in the currently-open session, including state
-      information like selection, mute and solo state, track color and 
-      track ID.
+- [print_tracks.py](examples/print_tracks.py) - This example prints
+  a list of every track in the currently-open session, including state
+  information like selection, mute and solo state, track color and 
+  track ID.
 
 
 ### Sending Commands To Pro Tools with the `Engine` class
