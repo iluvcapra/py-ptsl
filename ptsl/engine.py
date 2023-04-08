@@ -37,17 +37,27 @@ class Engine:
 
     client: ptsl.Client
 
-    def __init__(self, company_name: str,
-                 application_name: str,
+    def __init__(self, 
+                 company_name: Optional[str] = None,
+                 application_name: Optional[str] = None,
+                 certificate_path: Optional[str] = None,
                  address='localhost:31416'):
         """
         Open the engine.
 
         :param company_name: Company name
         :param application_name: Application name
+        :param certificate_path: Path to a developer certificate
         :param address: server:port to connect the engine to.
+
+        .. note::  If `certificate_path` is given, the legacy 
+            AuthorizeConnection method will be used for setting up the 
+            connection session. If it is `None`, then `company_name` and 
+            `application_name` will be used with the RegisterConnection 
+            method (available since Pro Tools 2023.3).
         """
-        self.client = ptsl.Client(company_name=company_name, 
+        self.client = ptsl.Client(certificate_path=certificate_path,
+                                  company_name=company_name, 
                                   application_name=application_name,
                                   address=address)
 
