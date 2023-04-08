@@ -43,9 +43,8 @@ class Engine:
         """
         Open the engine.
 
-        :param certificate_path: Path to developer json key file.
-            Pass :py:class:`None` and the engine will read a path
-            in from the "PTSL_KEY" environment variable.
+        :param company_name: Company name
+        :param application_name: Application name
         :param address: server:port to connect the engine to.
         """
         self.client = ptsl.Client(company_name=company_name, 
