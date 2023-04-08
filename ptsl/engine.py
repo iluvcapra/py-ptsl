@@ -98,13 +98,13 @@ class Engine:
         :param name: Session Name
         :param path: Path to the new session
             (use colon-delimited paths on MacOS)
-        :param file_type: file type, defaults to
+        :param SessionAudioFormat file_type: file type, defaults to
             :attr:`~ptsl.PTSL_pb2.SessionAudioFormat.SAF_WAVE`
-        :param sample_rate: sample rate, defaults to
+        :param SampleRate sample_rate: sample rate, defaults to
             :attr:`~ptsl.PTSL_pb2.SampleRate.SR_48000`
-        :param bit_depth: bit depth, defaults to
+        :param BitDepth bit_depth: bit depth, defaults to
             :attr:`~ptsl.PTSL_pb2.BitDepth.Bit24`
-        :param io_setting: The IO Setting to use,
+        :param IOSettings io_setting: The IO Setting to use,
             defaults to :attr:`~ptsl.PTSL_pb2.IOSettings.IO_Last`
         :param is_interelaved: Interleaved state
         """

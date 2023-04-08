@@ -191,20 +191,32 @@ Transport Modes
 
 
 .. py:class:: SampleRate
+    
+    Base sample rates.
 
-	.. py:attribute:: SR_None
+	.. attribute:: SR_None
 		:value: 0
-	.. py:attribute:: SR_44100
+
+	.. attribute:: SR_44100
 		:value: 1
-	.. py:attribute:: SR_48000
+
+	.. attribute:: SR_48000
 		:value: 2
-	.. py:attribute:: SR_96000
+
+	.. attribute:: SR_96000
 		:value: 3
-	.. py:attribute:: SR_176400
+
+	.. attribute:: SR_176400
 		:value: 4
-	.. py:attribute:: SR_192000
+
+	.. attribute:: SR_192000
 		:value: 5
 
+    .. attribute:: SR_88200 
+        :value: 6
+
+        Not available in Pro Tools 2022.12.
+        
 
 .. py:class:: BitDepth
 
