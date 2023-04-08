@@ -683,7 +683,7 @@ Working With Tracks
 
 .. class:: Track
 
-	Contains information on a single class, returned 
+	Contains information for a single track, returned 
 	by :meth:`~ptsl.Engine.track_list`.
 
 	.. attribute:: name
@@ -839,6 +839,67 @@ Working With Tracks
 		:value: 15
 	.. attribute:: Online
 		:value: 16
+
+Working with Memory Locations
+-----------------------------
+
+.. class:: MemoryLocation
+
+    Data structure for a single memory location.
+
+    .. attribute:: name
+        :type: str
+    .. attribute:: number
+        :type: int
+    .. attribute:: reference
+        :type: MemoryLocationReference 
+    .. attribute:: start_time
+        :type: str
+    .. attribute:: end_time
+        :type: str
+    .. attribute:: time_properties
+        :type: TimeProperties
+    .. attribute:: general_properties
+        :type: MemoryLocationProperties
+    .. attribute:: comments
+        :type: str
+
+
+.. class:: MemoryLocationProperties
+
+    .. attribute:: zoom_settings
+        :type: bool
+    .. attribute:: pre_post_roll_times
+        :type: bool
+    .. attribute:: track_visibility
+        :type: bool
+    .. attribute:: track_heights
+        :type: bool
+    .. attribute:: group_enables
+        :type: bool
+    .. attribute:: window_configuration
+        :type: bool
+    .. attribute:: window_configuration_index
+        :type: int
+    .. attribute:: window_configuration_name
+        :type: str
+    
+
+.. class:: MemoryLocationReference
+    
+    .. attribute:: MLR_BarBeat
+        :value: 0
+    .. attribute:: MLR_Absolute
+        :value: 1
+
+.. class:: TimeProperties
+    
+    .. attribute:: TP_Marker
+        :value: 0
+    .. attribute:: TP_Selection
+        :value: 1
+    .. attribute:: TP_None
+        :value: 2
 
 
 Editing Modifiers
