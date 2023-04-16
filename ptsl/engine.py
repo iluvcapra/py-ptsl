@@ -314,7 +314,7 @@ class Engine:
                 end_time=end_time,
                 time_properties=time_properties,
                 reference=reference,
-                general_properties=properties,
+                general_properties=general_properties,
                 comments=comments
                 )
 
