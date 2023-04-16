@@ -22,6 +22,9 @@ PTSL Errata
     :py:attr:`command_error` whose value exists in the 
     :py:class:`CommandErrorType` enumeration.
 
+:Fixed:
+    Pro Tools 2023.3
+
 ---
 
 :Command:
@@ -42,6 +45,8 @@ PTSL Errata
 :Expected Behavior:
     The Session setup window should change its visible settings immediately.
 
+:Fixed:
+    Pro Tools 2023.3
 
 ---
 
@@ -95,6 +100,8 @@ PTSL Errata
 :Avid Response:
     PT-297044
     https://duc.avid.com/showthread.php?t=422971
+:Fixed:
+    Pro Tools 2023.3
 
 ---
 
@@ -115,6 +122,9 @@ PTSL Errata
 :Avid Response:
     PT-296814
     https://duc.avid.com/showthread.php?p=2659689&posted=1#post2659689
+
+:Fixed:
+    Pro Tools 2023.3
 
 ---
 

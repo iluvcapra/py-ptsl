@@ -90,10 +90,19 @@ class Client:
     is_open: bool
 
     def __init__(self, 
-                 company_name: str, 
-                 application_name: str,
+                 company_name: Optional[str] = None,
+                 application_name: Optional[str] = None,
+                 certificate_path: Optional[str] = None,
                  address: str = 'localhost:31416') -> None:
-
+        """
+        Creates a new client.
+        
+        ..note:: If `certificate_path` is given, the legacy AuthorizeConnection
+            method will be used for setting up the connection session. If it is 
+            `None`, then `company_name` and `application_name` will be used with 
+            the RegisterConnection method (available since Pro Tools 2023.3).
+        """
+        
         self.channel = grpc.insecure_channel(address)
         self.raw_client = PTSL_pb2_grpc.PTSLStub(self.channel)
         self.session_id = ""
@@ -101,7 +110,13 @@ class Client:
 
         try:
             self._primitive_check_if_ready()
-            self._primitive_register_connection(company_name, application_name)
+            
+            if certificate_path is not None:
+                self._primitive_authorize_connection(certificate_path)
+
+            elif company_name is not None and application_name is not None:
+                self._primitive_register_connection(company_name, application_name)
+            
             self.is_open = True
 
         except grpc.RpcError as grpc_error:
@@ -248,5 +263,40 @@ class Client:
                                   pt.RegisterConnectionResponseBody)
 
             self.session_id = registration_response.session_id
-                
+    
+    def _primitive_authorize_connection(self, api_key_path) -> Optional[str]:
+        """
+        (Deprecated) Authorizes the client's connection to the Pro Tools RPC server.
+
+        This method is called automatically by the initializer.
+        """
+
+        print("WARNING: Certificate authorization method is deprecated", 
+              file=sys.stderr)
+
+        KEY_FILE_ENCODING = 'ascii'
+
+        with io.FileIO(api_key_path) as f:
+            api_token = f.readall().decode(encoding=KEY_FILE_ENCODING)
+
+        req = pt.AuthorizeConnectionRequestBody(auth_string=api_token)
+        req_json = json_format.MessageToJson(req,
+                                             preserving_proto_field_name=True)
+
+        response = self._send_sync_request(pt.CommandId.AuthorizeConnection,
+                                           req_json)
+
+        if response.header.status == pt.Failed:
+            print("An error occurred")
+            print(response)
+        else:
+            authorization_response = \
+                json_format.Parse(response.response_body_json,
+                                  pt.AuthorizeConnectionResponseBody)
+
+            if authorization_response.is_authorized:
+                self.session_id = authorization_response.session_id
+            else:
+                print("Connection did not authorize, message: " +
+                      authorization_response.message)
 

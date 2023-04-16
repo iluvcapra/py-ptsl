@@ -5,6 +5,9 @@ Operations classes.
 from typing import Any
 
 from .operation import Operation
+
+# Implemented by Pro Tools 2022.12
+
 from .get_ptsl_version import GetPTSLVersion
 from .get_session_sample_rate import GetSessionSampleRate
 from .get_session_name import GetSessionName
@@ -70,6 +73,8 @@ from .set_session_start_time import SetSessionStartTime
 from .set_session_time_code_rate import SetSessionTimeCodeRate
 from .set_session_video_rate_pull_settings import \
     SetSessionVideoRatePullSettings
+
+# Pro Tools 2023.3
 
 from .register_connection import RegisterConnection
 from .rename_selected_clip import RenameSelectedClip

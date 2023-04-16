@@ -191,20 +191,32 @@ Transport Modes
 
 
 .. py:class:: SampleRate
+    
+    Base sample rates.
 
-	.. py:attribute:: SR_None
+	.. attribute:: SR_None
 		:value: 0
-	.. py:attribute:: SR_44100
+
+	.. attribute:: SR_44100
 		:value: 1
-	.. py:attribute:: SR_48000
+
+	.. attribute:: SR_48000
 		:value: 2
-	.. py:attribute:: SR_96000
+
+	.. attribute:: SR_96000
 		:value: 3
-	.. py:attribute:: SR_176400
+
+	.. attribute:: SR_176400
 		:value: 4
-	.. py:attribute:: SR_192000
+
+	.. attribute:: SR_192000
 		:value: 5
 
+    .. attribute:: SR_88200 
+        :value: 6
+
+        Not available in Pro Tools 2022.12.
+        
 
 .. py:class:: BitDepth
 
@@ -683,7 +695,7 @@ Working With Tracks
 
 .. class:: Track
 
-	Contains information on a single class, returned 
+	Contains information for a single track, returned 
 	by :meth:`~ptsl.Engine.track_list`.
 
 	.. attribute:: name
@@ -839,6 +851,67 @@ Working With Tracks
 		:value: 15
 	.. attribute:: Online
 		:value: 16
+
+Working with Memory Locations
+-----------------------------
+
+.. class:: MemoryLocation
+
+    Data structure for a single memory location.
+
+    .. attribute:: name
+        :type: str
+    .. attribute:: number
+        :type: int
+    .. attribute:: reference
+        :type: MemoryLocationReference 
+    .. attribute:: start_time
+        :type: str
+    .. attribute:: end_time
+        :type: str
+    .. attribute:: time_properties
+        :type: TimeProperties
+    .. attribute:: general_properties
+        :type: MemoryLocationProperties
+    .. attribute:: comments
+        :type: str
+
+
+.. class:: MemoryLocationProperties
+
+    .. attribute:: zoom_settings
+        :type: bool
+    .. attribute:: pre_post_roll_times
+        :type: bool
+    .. attribute:: track_visibility
+        :type: bool
+    .. attribute:: track_heights
+        :type: bool
+    .. attribute:: group_enables
+        :type: bool
+    .. attribute:: window_configuration
+        :type: bool
+    .. attribute:: window_configuration_index
+        :type: int
+    .. attribute:: window_configuration_name
+        :type: str
+    
+
+.. class:: MemoryLocationReference
+    
+    .. attribute:: MLR_BarBeat
+        :value: 0
+    .. attribute:: MLR_Absolute
+        :value: 1
+
+.. class:: TimeProperties
+    
+    .. attribute:: TP_Marker
+        :value: 0
+    .. attribute:: TP_Selection
+        :value: 1
+    .. attribute:: TP_None
+        :value: 2
 
 
 Editing Modifiers
@@ -1054,7 +1127,24 @@ Errors
 
 		unable to perform action because of invalid selection SDK errors
 
+    .. attribute:: PT_ReadOnlySession
+        :value: 125
+
+        the session is located on a read-only drive and cannot be saved 
+        without user intervention
+
+    .. attribute:: PT_InvalidParameter
+        :value: 126
+
+        One or more parameters are invalid
+
 	.. attribute:: SDK_Version_Mismatch
-		:value: 201
+		:value: 401
 
 		Versions of PTSL Host and PTSL Client are mismatched
+
+    .. attribute:: sdk_notimplemented
+        :value: 402
+
+        Some PTSL functional is not implemented at the PT side
+

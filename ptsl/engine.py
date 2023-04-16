@@ -37,18 +37,27 @@ class Engine:
 
     client: ptsl.Client
 
-    def __init__(self, company_name: str,
-                 application_name: str,
+    def __init__(self, 
+                 company_name: Optional[str] = None,
+                 application_name: Optional[str] = None,
+                 certificate_path: Optional[str] = None,
                  address='localhost:31416'):
         """
         Open the engine.
 
-        :param certificate_path: Path to developer json key file.
-            Pass :py:class:`None` and the engine will read a path
-            in from the "PTSL_KEY" environment variable.
+        :param company_name: Company name
+        :param application_name: Application name
+        :param certificate_path: Path to a developer certificate
         :param address: server:port to connect the engine to.
+
+        .. note::  If `certificate_path` is given, the legacy 
+            AuthorizeConnection method will be used for setting up the 
+            connection session. If it is `None`, then `company_name` and 
+            `application_name` will be used with the RegisterConnection 
+            method (available since Pro Tools 2023.3).
         """
-        self.client = ptsl.Client(company_name=company_name, 
+        self.client = ptsl.Client(certificate_path=certificate_path,
+                                  company_name=company_name, 
                                   application_name=application_name,
                                   address=address)
 
@@ -68,27 +77,33 @@ class Engine:
         assert isinstance(op.response, pt.GetPTSLVersionResponseBody)
         return op.response.version
 
+    def host_ready_check(self):
+        """
+        Runs the `HostReadCheck` message on the host, any error
+        is returned as an exception.
+        """
+        self.client.run(ops.HostReadyCheck())
+
     def create_session(self,
                        name: str,
                        path: str,
-                       file_type: 'SessionAudioFormat' = pt.SAF_WAVE,
-                       sample_rate: 'SampleRate' = pt.SR_48000,
-                       bit_depth: 'BitDepth' = pt.Bit24,
-                       io_setting: 'IOSettings' = pt.IO_Last,
+                       file_type = pt.SAF_WAVE,
+                       sample_rate = pt.SR_48000,
+                       bit_depth = pt.Bit24,
+                       io_setting = pt.IO_Last,
                        is_interleaved: bool = True) -> None:
         """
         Create a new Pro Tools session.
 
         :param name: Session Name
         :param path: Path to the new session
-            (use colon-delimited paths on MacOS)
-        :param file_type: file type, defaults to
+        :param SessionAudioFormat file_type: file type, defaults to
             :attr:`~ptsl.PTSL_pb2.SessionAudioFormat.SAF_WAVE`
-        :param sample_rate: sample rate, defaults to
+        :param SampleRate sample_rate: sample rate, defaults to
             :attr:`~ptsl.PTSL_pb2.SampleRate.SR_48000`
-        :param bit_depth: bit depth, defaults to
+        :param BitDepth bit_depth: bit depth, defaults to
             :attr:`~ptsl.PTSL_pb2.BitDepth.Bit24`
-        :param io_setting: The IO Setting to use,
+        :param IOSettings io_setting: The IO Setting to use,
             defaults to :attr:`~ptsl.PTSL_pb2.IOSettings.IO_Last`
         :param is_interelaved: Interleaved state
         """
@@ -111,13 +126,27 @@ class Engine:
             template_name: str,
             name: str,
             path: str,
-            file_type: 'SessionAudioFormat' = pt.SAF_WAVE,
-            sample_rate: 'SampleRate' = pt.SR_48000,
-            bit_depth: 'BitDepth' = pt.Bit24,
-            io_setting: 'IOSettings' = pt.IO_Last,
+            file_type = pt.SAF_WAVE,
+            sample_rate = pt.SR_48000,
+            bit_depth = pt.Bit24,
+            io_setting = pt.IO_Last,
             is_interleaved: bool = True) -> None:
         """
         Create a new session with an installed template.
+        
+        :param str template_group: Name of the template group
+        :param str template_name: Name of the template to use
+        :param str name: Name of the new session
+        :param str path: Path for the new session
+        :param SessionAudioFormat file_type: Defaults to 
+            :attr:`~ptsl.PTSL_pb2.SessionAudioFormat.SAF_WAVE` 
+        :param SampleRate sample_rate: sample rate, defaults to
+            :attr:`~ptsl.PTSL_pb2.SampleRate.SR_48000`
+        :param BitDepth bit_depth: bit depth, defaults to
+            :attr:`~ptsl.PTSL_pb2.BitDepth.Bit24`
+        :param IOSettings io_setting: The IO Setting to use,
+            defaults to :attr:`~ptsl.PTSL_pb2.IOSettings.IO_Last`
+        :param is_interelaved: Interleaved state
         """
 
         op = ops.CreateSession(
@@ -140,13 +169,26 @@ class Engine:
             name: str,
             path: str,
             aaf_path: str,
-            file_type: 'SessionAudioFormat' = pt.SAF_WAVE,
-            sample_rate: 'SampleRate' = pt.SR_48000,
-            bit_depth: 'BitDepth' = pt.Bit24,
-            io_setting: 'IOSettings' = pt.IO_Last,
+            file_type = pt.SAF_WAVE,
+            sample_rate = pt.SR_48000,
+            bit_depth = pt.Bit24,
+            io_setting = pt.IO_Last,
             is_interleaved: bool = True) -> None:
         """
         Create a session from an AAF.
+
+        :param str name: Name of the new session
+        :param str path: Path for the new session
+        :param str aaf_path: Path to the AAF file to convert
+        :param SessionAudioFormat file_type: Defaults to 
+            :attr:`~ptsl.PTSL_pb2.SessionAudioFormat.SAF_WAVE` 
+        :param SampleRate sample_rate: sample rate, defaults to
+            :attr:`~ptsl.PTSL_pb2.SampleRate.SR_48000`
+        :param BitDepth bit_depth: bit depth, defaults to
+            :attr:`~ptsl.PTSL_pb2.BitDepth.Bit24`
+        :param IOSettings io_setting: The IO Setting to use,
+            defaults to :attr:`~ptsl.PTSL_pb2.IOSettings.IO_Last`
+        :param is_interelaved: Interleaved state
         """
 
         op = ops.CreateSession(
@@ -186,7 +228,7 @@ class Engine:
 
     def save_session_as(self, path: str, name: str):
         """
-        Save the currently-open session as a new name toa different path.
+        Save the currently-open session as a new name to a different path.
 
         :param path: Path to the new session
         :param name: New name for the session
@@ -196,11 +238,15 @@ class Engine:
 
     def import_data(self,
                     session_path: str,
-                    import_type: 'ImportType',
-                    session_data: 'SessionData',
-                    audio_data: 'AudioData'):
+                    import_type,
+                    session_data,
+                    audio_data):
         """
         Import session data into the currently-open session.
+
+        :param ImportType import_type: Import type
+        :param SessionData session_data: Session import settings
+        :param AudioData audio_data: Audio data import settings
         """
 
         op = ops.Import(
@@ -216,7 +262,7 @@ class Engine:
         """
         Select all clips on track.
 
-        :param track_name: Name of the track to select all clips on.
+        :param str track_name: Name of the track to select all clips on.
         """
         op = ops.SelectAllClipsOnTrack(track_name=track_name)
         self.client.run(op)
@@ -225,7 +271,7 @@ class Engine:
         """
         Extend selection to target tracks.
 
-        :param tracks: A list of track names to extend the selection to.
+        :param List[str] tracks: A list of track names to extend the selection to.
         """
         op = ops.ExtendSelectionToTargetTracks(tracks_to_extend_to=tracks)
         self.client.run(op)
@@ -241,8 +287,8 @@ class Engine:
         """
         Create batch fades for the timeline selection based on a preset.
 
-        :param preset_name: Name of the batch fades preset to use.
-        :param adjust_bounds: Auto-adjust clip boundaries to accomodate
+        :param str preset_name: Name of the batch fades preset to use.
+        :param bool adjust_bounds: Auto-adjust clip boundaries to accomodate
             fades.
         """
         rq = pt.CreateFadesBasedOnPresetRequestBody()
@@ -256,8 +302,8 @@ class Engine:
         """
         Renames a track in the currently-open session.
 
-        :param old_name: The name of the track to rename.
-        :param new_name: The new name to give the track.
+        :param str old_name: The name of the track to rename.
+        :param str new_name: The new name to give the track.
         """
         op = ops.RenameTargetTrack(current_track_name=old_name, 
                                    new_name=new_name)
@@ -265,9 +311,14 @@ class Engine:
 
     def rename_selected_clip(self, new_name: str, 
                              rename_file : bool = True, 
-                             clip_location: pt.CL_ClipLocation = pt.CL_Timeline):
+                             clip_location =  pt.CL_Timeline):
         """
         Renames a clip in the current session.
+
+        :param str new_name: New name for the clip
+        :param bool rename_file: If true, file will be renamed as well
+        :param CL_ClipLocation clip_location: Clip selection location,
+            defaults to :attr:`~ptsl.PTSL_pb2.CL_ClipLocation.CL_Timeline`
         """
         op = ops.RenameSelectedClip(clip_location=clip_location,
                                     new_name = new_name,
@@ -288,15 +339,27 @@ class Engine:
         self.client.run(op)
 
     def toggle_play_state(self):
+        """
+        Toggle the play state.
+        """
         self.client.run(ops.TogglePlayState())
 
     def toggle_record_enable(self):
+        """
+        Toggle record enable.
+        """
         self.client.run(ops.ToggleRecordEnable())
 
     def play_half_speed(self):
+        """
+        Play at half speed.
+        """
         self.client.run(ops.PlayHalfSpeed())
 
     def record_half_speed(self):
+        """
+        Record at half speed.
+        """
         self.client.run(ops.RecordHalfSpeed())
 
     def edit_memory_location(self, location_number: int,
@@ -306,7 +369,9 @@ class Engine:
                              reference: pt.MemoryLocationReference,
                              general_properties: pt.MemoryLocationProperties,
                              comments: str):
-
+        """
+        Edit a memory location.
+        """
         op = ops.EditMemoryLocation(
                 number=location_number,
                 name=name,
@@ -321,6 +386,9 @@ class Engine:
         self.client.run(op)
 
     def get_memory_locations(self) -> List[pt.MemoryLocation]:
+        """
+        Get a list of all memory locations in currently-open session.
+        """
         op = ops.GetMemoryLocations()
         self.client.run(op)
         return op.response.memory_locations
@@ -734,3 +802,20 @@ class Engine:
             op = ops.Clear()
 
         self.client.run(op)
+    
+    def refresh_target_audio_files(self, files : List[str]) -> int:
+        """
+        Refresh target audio files.
+
+        :param files: A list of files to refresh.
+        :return: Number of files successfully refreshed.
+        """
+        op = ops.RefreshAllModifiedAudioFiles(file_list=files)
+        self.client.run(op)
+
+    def refresh_all_modified_audio_flles(self):
+        """
+        Refreshes all modified audio files.
+        """
+        self.client.run(ops.RefreshAllModifiedAudioFiles())
+       

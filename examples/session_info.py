@@ -2,6 +2,29 @@
 # 
 # This example demonstrates various getter methods of the `ptsl.Engine`
 # class.
+#
+# ```sh
+# $ python3 examples/session_info.py
+# PTSL Version: 1
+# Session Name: Test2
+# Session Path: Macintosh HD:Users:jamie:Test2:Test2.ptx
+# Session Sample Rate: 48000
+# Session Audio Format: SAF_WAVE
+# Session Bit Depth: Bit24
+# Session Audio Interlaved: TRUE
+# Session Timecode Rate: STCR_Fps2997
+# Session Start Time: 01:58:00:00.00
+# Session Length: 20:00:00:00
+# Session feet+frames rate: SFFR_Fps23976
+# Session Audio Rate Pull: SRP_None
+# Session Video Rate Pull: SRP_None
+# -------------------------------
+# Transport State: TS_TransportStopped 
+# Transport Arm: SAFE
+# Playback Modes: Normal
+# Record Mode: RM_Loop
+# ```
+
 
 import sys
 import os
