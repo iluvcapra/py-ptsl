@@ -690,6 +690,15 @@ Exporting Clips and Mixes
 	.. attribute:: property_list
 		:type: List[PropertyContainer]
 
+
+Working With Clips
+------------------
+
+.. class:: CL_ClipLocation
+    
+    Describes a named clip's location.
+
+
 Working With Tracks
 -------------------
 

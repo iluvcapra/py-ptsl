@@ -19,8 +19,7 @@ from ptsl.PTSL_pb2 import SessionAudioFormat, SampleRate, BitDepth, \
     PasteSpecialOptions, TrackOffsetOptions, TrackListInvertibleFilter, \
     ExportFileType, ResolveDuplicateNamesBy, ExportFormat, \
     MemoryLocationReference, MemoryLocationProperties, MemoryLocation, \
-    TimeProperties
-
+    TimeProperties, CL_ClipLocation
 
 
 @contextmanager
@@ -317,7 +316,8 @@ class Engine:
 
     def rename_selected_clip(self, new_name: str, 
                              rename_file : bool = True, 
-                             clip_location =  pt.CL_Timeline):
+                             clip_location: 'CL_ClipLocation' = pt.CL_Timeline):
+
         """
         Renames a clip in the current session.
 
