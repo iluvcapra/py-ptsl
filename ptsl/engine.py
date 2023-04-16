@@ -304,7 +304,7 @@ class Engine:
                              start_time: str, end_time: str,
                              time_properties: pt.TimeProperties,
                              reference: pt.MemoryLocationReference,
-                             properties: pt.MemoryLocationProperties,
+                             general_properties: pt.MemoryLocationProperties,
                              comments: str):
 
         op = ops.EditMemoryLocation(
@@ -314,7 +314,7 @@ class Engine:
                 end_time=end_time,
                 time_properties=time_properties,
                 reference=reference,
-                properties=properties,
+                general_properties=properties,
                 comments=comments
                 )
 
