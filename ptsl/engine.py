@@ -17,7 +17,10 @@ from ptsl.PTSL_pb2 import SessionAudioFormat, SampleRate, BitDepth, \
     SessionFeetFramesRate, SessionRatePull, Track, \
     PM_PlaybackMode, RM_RecordMode, AutomationDataOptions, \
     PasteSpecialOptions, TrackOffsetOptions, TrackListInvertibleFilter, \
-    ExportFileType, ResolveDuplicateNamesBy, ExportFormat
+    ExportFileType, ResolveDuplicateNamesBy, ExportFormat, \
+    MemoryLocationReference, MemoryLocationProperties, MemoryLocation, \
+    TimeProperties
+
 
 
 @contextmanager
@@ -79,18 +82,21 @@ class Engine:
 
     def host_ready_check(self):
         """
-        Runs the `HostReadCheck` message on the host, any error
+        Runs the `HostReadyCheck` message on the host, any error
         is returned as an exception.
+
+        .. note:: This method will succeed even if the client
+            connection is not registered.
         """
         self.client.run(ops.HostReadyCheck())
 
     def create_session(self,
                        name: str,
                        path: str,
-                       file_type = pt.SAF_WAVE,
-                       sample_rate = pt.SR_48000,
-                       bit_depth = pt.Bit24,
-                       io_setting = pt.IO_Last,
+                       file_type: 'SessionAudioFormat' = pt.SAF_WAVE,
+                       sample_rate: 'SampleRate' = pt.SR_48000,
+                       bit_depth: 'BitDepth' = pt.Bit24,
+                       io_setting: 'IOSettings' = pt.IO_Last,
                        is_interleaved: bool = True) -> None:
         """
         Create a new Pro Tools session.
@@ -126,10 +132,10 @@ class Engine:
             template_name: str,
             name: str,
             path: str,
-            file_type = pt.SAF_WAVE,
-            sample_rate = pt.SR_48000,
-            bit_depth = pt.Bit24,
-            io_setting = pt.IO_Last,
+            file_type: 'SessionAudioFormat' = pt.SAF_WAVE,
+            sample_rate: 'SampleRate' = pt.SR_48000,
+            bit_depth: 'BitDepth' = pt.Bit24,
+            io_setting: 'IOSettings' = pt.IO_Last,
             is_interleaved: bool = True) -> None:
         """
         Create a new session with an installed template.
@@ -169,10 +175,10 @@ class Engine:
             name: str,
             path: str,
             aaf_path: str,
-            file_type = pt.SAF_WAVE,
-            sample_rate = pt.SR_48000,
-            bit_depth = pt.Bit24,
-            io_setting = pt.IO_Last,
+            file_type: 'SessionAudioFormat' = pt.SAF_WAVE,
+            sample_rate: 'SampleRate' = pt.SR_48000,
+            bit_depth: 'BitDepth' = pt.Bit24,
+            io_setting: 'IOSettings' = pt.IO_Last,
             is_interleaved: bool = True) -> None:
         """
         Create a session from an AAF.
@@ -365,9 +371,9 @@ class Engine:
     def edit_memory_location(self, location_number: int,
                              name: str,
                              start_time: str, end_time: str,
-                             time_properties: pt.TimeProperties,
-                             reference: pt.MemoryLocationReference,
-                             general_properties: pt.MemoryLocationProperties,
+                             time_properties: 'TimeProperties',
+                             reference: 'MemoryLocationReference',
+                             general_properties: 'MemoryLocationProperties',
                              comments: str):
         """
         Edit a memory location.
