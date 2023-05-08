@@ -116,6 +116,10 @@ class Client:
 
             elif company_name is not None and application_name is not None:
                 self._primitive_register_connection(company_name, application_name)
+
+            else:
+                raise AssertionError("company_name and application_name parameters were not given")
+
             
             self.is_open = True
 
