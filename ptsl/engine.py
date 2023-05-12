@@ -511,7 +511,7 @@ class Engine:
 
     def session_path(self) -> str:
         """
-        Path to the current open session. (As a MacOS Classic file path.)
+        Path to the current open session.
         """
         op = ops.GetSessionPath()
         self.client.run(op)
