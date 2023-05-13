@@ -241,6 +241,42 @@ class Engine:
         op = ops.SaveSessionAs(session_name=name, session_location=path)
         self.client.run(op)
 
+    def export_session_as_text(self,
+                               include_clip_list = False,
+                               include_file_list = False,
+                               include_markers = False,
+                               include_plugin_list = False,
+                               include_track_edls = False,
+                               show_sub_frames = False,
+                               track_list_type: Optional[pt.TrackListType] = pt.SelectedTracksOnly, 
+                               include_user_timestamp = False,
+                               fade_handling_type:pt.FadeHandlingType = pt.DontShowCrossfades,
+                               track_offset_options: pt.TrackOffsetOptions = pt.TimeCode,
+                               text_as_file_format: pt.TextAsFileFormat = pt.UTF8,
+                               output_type: pt.ESI_OutputType = pt.ESI_String,
+                               output_path: Optional[str] = None) -> str:
+        """
+        Export the open session as text.
+        """
+        req = pt.ExportSessionInfoAsTextRequestBody(
+            include_clip_list=include_clip_list,
+            include_file_list=include_file_list,
+            include_markers=include_markers,
+            include_plugin_list=include_plugin_list,
+            include_track_edls=include_track_edls,
+            show_sub_frames=show_sub_frames,
+            track_list_type=track_list_type,
+            include_user_timestamps=include_user_timestamp,
+            fade_handling_type=fade_handling_type,
+            track_offset_options=track_offset_options,
+            text_as_file_format=text_as_file_format,
+            output_type=output_type,
+            output_path=output_path)
+        
+        op = ops.ExportSessionInfoAsText(req)
+        self.client.run(op)
+        return op.response.session_info
+
     def import_data(self,
                     session_path: str,
                     import_type,
