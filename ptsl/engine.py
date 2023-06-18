@@ -76,7 +76,8 @@ class Engine:
         """
         op = ops.GetPTSLVersion()
         self.client.run(op)
-        assert isinstance(op.response, pt.GetPTSLVersionResponseBody)
+        assert isinstance(op.response, pt.GetPTSLVersionResponseBody), f"Expected response body, encountered {op.response}"
+
         return op.response.version
 
     def host_ready_check(self):
