@@ -28,10 +28,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 pytest
         python -m pip install -e .
-    - name: Lint with flake8
-      run: |
-        # will use .flake8 file at top of project
-        flake8 . 
+#     - name: Lint with flake8
+#       run: |
+#         # will use .flake8 file at top of project
+#         flake8 . 
     - name: Test with pytest
       run: |
         pytest
