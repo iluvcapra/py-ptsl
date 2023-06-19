@@ -1,5 +1,5 @@
 # pt_set.py
-# 
+#
 # This example demonstrates some of the set_* functions of the
 # `ptsl.Engine`.
 
@@ -7,7 +7,6 @@ import optparse
 from ptsl import open_engine
 import ptsl.PTSL_pb2 as pt
 
-import os
 import sys
 
 p = optparse.OptionParser()
@@ -66,5 +65,3 @@ with open_engine(application_name=sys.argv[0], company_name="py-ptsl") as e:
 
     elif options.clear:
         e.clear(special=xcb_modifier)
-
-
