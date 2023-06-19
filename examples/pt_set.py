@@ -1,5 +1,5 @@
 # pt_set.py
-# 
+#
 # This example demonstrates some of the set_* functions of the
 # `ptsl.Engine`.
 
@@ -7,11 +7,11 @@ import optparse
 from ptsl import open_engine, CommandError
 import ptsl.PTSL_pb2 as pt
 
-import os
 import sys
 
+
 def process_option(opts, name, tipo, set_method):
-    val : str = getattr(opts, name)
+    val: str = getattr(opts, name)
 
     if val is None:
         return
@@ -19,15 +19,15 @@ def process_option(opts, name, tipo, set_method):
     if tipo is str:
         set_method(val)
         return
-    
+
     if tipo is bool:
-        if val in ['TRUE',"true",1]:
+        if val in ['TRUE', "true", 1]:
             fval = True
-        elif val in ['FALSE',"false",0]:
+        elif val in ['FALSE', "false", 0]:
             fval = False
         else:
             print("%s: Unrecognized value '%s'" % (name, val))
-        
+
         set_method(fval)
         return
 
@@ -55,24 +55,35 @@ p.add_option("--length", nargs=1)
 
 with open_engine(company_name="py-ptsl", application_name=sys.argv[0]) as e:
     try:
-        process_option(options, 'playback_mode', pt.PM_PlaybackMode, e.set_playback_mode)
-        process_option(options, 'record_mode', pt.RM_RecordMode, lambda x: e.set_record_mode(x, False))
-        process_option(options, 'bit_depth', pt.BitDepth, e.set_session_bit_depth)
-        process_option(options, 'audio_format', pt.SessionAudioFormat, e.set_session_audio_format)
+        process_option(options, 'playback_mode',
+                       pt.PM_PlaybackMode, e.set_playback_mode)
+        process_option(options, 'record_mode',
+                       pt.RM_RecordMode, lambda x: e.set_record_mode(x, False))
+        process_option(options, 'bit_depth',
+                       pt.BitDepth, e.set_session_bit_depth)
+        process_option(options, 'audio_format',
+                       pt.SessionAudioFormat, e.set_session_audio_format)
 
         def simple_set_start(t):
             e.set_session_start_time(t, pt.TimeCode, True)
 
         process_option(options, 'start_time', str, simple_set_start)
-        process_option(options, 'length', str, e.set_session_length)
-        process_option(options, 'interleaved_state', bool, e.set_session_interleaved_state)
-        process_option(options, 'timecode_rate', pt.SessionTimeCodeRate, e.set_session_time_code_rate)
-        process_option(options, 'feetframes_rate', pt.SessionFeetFramesRate, e.set_session_feet_frames_rate)
-        process_option(options, 'audio_pull', pt.SessionRatePull, e.set_session_audio_rate_pull)
-        process_option(options, 'video_pull', pt.SessionRatePull, e.set_session_video_rate_pull)
-    except CommandError as e:
-        print(("WARNING %s:" if e.is_warning else "FAILURE: %s") % e.error_name)
-        print(" %s" % e.message)
-        exit(-1)
-    
+        process_option(options, 'length', str,
+                       e.set_session_length)
+        process_option(options, 'interleaved_state', bool,
+                       e.set_session_interleaved_state)
+        process_option(options, 'timecode_rate', pt.SessionTimeCodeRate,
+                       e.set_session_time_code_rate)
+        process_option(options, 'feetframes_rate', pt.SessionFeetFramesRate,
+                       e.set_session_feet_frames_rate)
+        process_option(options, 'audio_pull', pt.SessionRatePull,
+                       e.set_session_audio_rate_pull)
+        process_option(options, 'video_pull', pt.SessionRatePull,
+                       e.set_session_video_rate_pull)
 
+    except CommandError as error:
+        print(("WARNING %s:" if error.is_warning else "FAILURE: %s") %
+              error.error_name)
+
+        print(" %s" % error.message)
+        exit(-1)
