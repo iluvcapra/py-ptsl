@@ -3,7 +3,6 @@ ptsl Scripting Engine
 """
 
 from typing import Optional, Tuple, List
-import os
 
 from contextlib import contextmanager
 
@@ -11,14 +10,14 @@ import ptsl
 from ptsl import ops
 import ptsl.PTSL_pb2 as pt
 from ptsl.PTSL_pb2 import SessionAudioFormat, SampleRate, BitDepth, \
-    IOSettings, ImportType, SessionData, AudioData, FileLocation, \
+    IOSettings, FileLocation, \
     EM_FileType, EM_SourceInfo, EM_AudioInfo, EM_VideoInfo, \
     EM_LocationInfo, EM_DolbyAtmosInfo, TripleBool, SessionTimeCodeRate, \
     SessionFeetFramesRate, SessionRatePull, Track, \
     PM_PlaybackMode, RM_RecordMode, AutomationDataOptions, \
     PasteSpecialOptions, TrackOffsetOptions, TrackListInvertibleFilter, \
     ExportFileType, ResolveDuplicateNamesBy, ExportFormat, \
-    MemoryLocationReference, MemoryLocationProperties, MemoryLocation, \
+    MemoryLocationReference, MemoryLocationProperties, \
     TimeProperties, CL_ClipLocation
 
 
@@ -847,16 +846,15 @@ class Engine:
 
         self.client.run(op)
     
-    def refresh_target_audio_files(self, files : List[str]) -> int:
+    def refresh_target_audio_files(self, files : List[str]):
         """
         Refresh target audio files.
 
         :param files: A list of files to refresh.
-        :return: Number of files successfully refreshed.
         """
         op = ops.RefreshAllModifiedAudioFiles(file_list=files)
         self.client.run(op)
-
+        
     def refresh_all_modified_audio_flles(self):
         """
         Refreshes all modified audio files.

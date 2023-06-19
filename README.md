@@ -1,3 +1,5 @@
+[![Lint and Test](https://github.com/iluvcapra/py-ptsl/actions/workflows/lint_and_pytest.yml/badge.svg)](https://github.com/iluvcapra/py-ptsl/actions/workflows/lint_and_pytest.yml)
+
 # py-ptsl
 
 Native Python client for the Pro Tools scripting RPC interface
