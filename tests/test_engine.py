@@ -170,11 +170,15 @@ class TestEngine(TestCase):
     def test_rename_track(self):
         with open_engine_with_mock_client() as engine:
             self.assertIsNone(
-                engine.rename_target_track(old_name="x", new_name="y")
+                engine.rename_selected_clip(new_name="new.01",
+                                            rename_file=False,
+                                            clip_location=pt.CL_Timeline)
             )
 
     def test_rename_selected_clip(self):
         with open_engine_with_mock_client() as engine:
             self.assertIsNone(
-                engine.rename_target_clip(clip_name="x", new_name="y", rename_file=True)
+                engine.rename_target_clip(clip_name="x", 
+                                          new_name="y", 
+                                          rename_file=True)
             )
