@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-from ptsl import PTSL_pb2 as PTSL__pb2
+from . import PTSL_pb2 as PTSL__pb2
 
 
 class PTSLStub(object):
@@ -35,7 +35,7 @@ class PTSLServicer(object):
 
     def SendGrpcRequest(self, request, context):
         """*
-        Send generic gRPC request and receive generic responce.
+        Send generic gRPC request and receive generic response.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -43,7 +43,7 @@ class PTSLServicer(object):
 
     def SendGrpcStreamingRequest(self, request, context):
         """*
-        Send generic gRPC request and receive generic streaming responces.
+        Send generic gRPC request and receive generic streaming responses.
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')

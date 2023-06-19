@@ -58,6 +58,7 @@ CopyFromSourceMedia: CopyOption
 CopyFromSourceVideo: VideoMediaOptions
 CopySpecial: CommandId
 CreateFadesBasedOnPreset: CommandId
+CreateMemoryLocation: CommandId
 CreateSession: CommandId
 Cut: CommandId
 CutSpecial: CommandId
@@ -204,6 +205,7 @@ OS_DuplicateName: CommandErrorType
 OS_ErrorCode: CommandErrorType
 OS_FilePathLocation: CommandErrorType
 OS_IllegalCharacters: CommandErrorType
+OS_NoFilePathFound: CommandErrorType
 OS_NoLocationFound: CommandErrorType
 OS_NoSessionFound: CommandErrorType
 OS_ProToolsIsNotAvailable: CommandErrorType
@@ -387,18 +389,20 @@ WithAutomationOnMainPlaylist: TrackListFilter
 WithClipsOnMainPlaylist: TrackListFilter
 
 class AudioData(_message.Message):
-    __slots__ = ["audio_operations", "destination", "destination_path", "file_list", "location"]
+    __slots__ = ["audio_operations", "destination", "destination_path", "file_list", "location", "location_data"]
     AUDIO_OPERATIONS_FIELD_NUMBER: _ClassVar[int]
     DESTINATION_FIELD_NUMBER: _ClassVar[int]
     DESTINATION_PATH_FIELD_NUMBER: _ClassVar[int]
     FILE_LIST_FIELD_NUMBER: _ClassVar[int]
+    LOCATION_DATA_FIELD_NUMBER: _ClassVar[int]
     LOCATION_FIELD_NUMBER: _ClassVar[int]
     audio_operations: AudioOperations
     destination: MediaDestination
     destination_path: str
     file_list: _containers.RepeatedScalarFieldContainer[str]
     location: MediaLocation
-    def __init__(self, file_list: _Optional[_Iterable[str]] = ..., audio_operations: _Optional[_Union[AudioOperations, str]] = ..., destination_path: _Optional[str] = ..., destination: _Optional[_Union[MediaDestination, str]] = ..., location: _Optional[_Union[MediaLocation, str]] = ...) -> None: ...
+    location_data: SpotLocationData
+    def __init__(self, file_list: _Optional[_Iterable[str]] = ..., audio_operations: _Optional[_Union[AudioOperations, str]] = ..., destination_path: _Optional[str] = ..., destination: _Optional[_Union[MediaDestination, str]] = ..., location: _Optional[_Union[MediaLocation, str]] = ..., location_data: _Optional[_Union[SpotLocationData, _Mapping]] = ...) -> None: ...
 
 class AuthorizeConnectionRequestBody(_message.Message):
     __slots__ = ["auth_string"]
@@ -467,6 +471,30 @@ class CreateFadesBasedOnPresetResponseBody(_message.Message):
     FADE_PRESET_NAME_FIELD_NUMBER: _ClassVar[int]
     fade_preset_name: str
     def __init__(self, fade_preset_name: _Optional[str] = ...) -> None: ...
+
+class CreateMemoryLocationRequestBody(_message.Message):
+    __slots__ = ["comments", "end_time", "general_properties", "name", "number", "reference", "start_time", "time_properties"]
+    COMMENTS_FIELD_NUMBER: _ClassVar[int]
+    END_TIME_FIELD_NUMBER: _ClassVar[int]
+    GENERAL_PROPERTIES_FIELD_NUMBER: _ClassVar[int]
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    NUMBER_FIELD_NUMBER: _ClassVar[int]
+    REFERENCE_FIELD_NUMBER: _ClassVar[int]
+    START_TIME_FIELD_NUMBER: _ClassVar[int]
+    TIME_PROPERTIES_FIELD_NUMBER: _ClassVar[int]
+    comments: str
+    end_time: str
+    general_properties: MemoryLocationProperties
+    name: str
+    number: int
+    reference: MemoryLocationReference
+    start_time: str
+    time_properties: TimeProperties
+    def __init__(self, number: _Optional[int] = ..., name: _Optional[str] = ..., start_time: _Optional[str] = ..., end_time: _Optional[str] = ..., time_properties: _Optional[_Union[TimeProperties, str]] = ..., reference: _Optional[_Union[MemoryLocationReference, str]] = ..., general_properties: _Optional[_Union[MemoryLocationProperties, _Mapping]] = ..., comments: _Optional[str] = ...) -> None: ...
+
+class CreateMemoryLocationResponseBody(_message.Message):
+    __slots__ = []
+    def __init__(self) -> None: ...
 
 class CreateSessionRequestBody(_message.Message):
     __slots__ = ["bit_depth", "create_from_aaf", "create_from_template", "file_type", "input_output_settings", "is_cloud_project", "is_interleaved", "path_to_aaf", "sample_rate", "session_location", "session_name", "template_group", "template_name"]
@@ -1319,12 +1347,14 @@ class SetSessionVideoRatePullSettingsRequestBody(_message.Message):
     def __init__(self, video_rate_pull: _Optional[_Union[SessionRatePull, str]] = ...) -> None: ...
 
 class SpotLocationData(_message.Message):
-    __slots__ = ["location_type", "location_value"]
+    __slots__ = ["location_options", "location_type", "location_value"]
+    LOCATION_OPTIONS_FIELD_NUMBER: _ClassVar[int]
     LOCATION_TYPE_FIELD_NUMBER: _ClassVar[int]
     LOCATION_VALUE_FIELD_NUMBER: _ClassVar[int]
+    location_options: TrackOffsetOptions
     location_type: SpotLocationType
     location_value: str
-    def __init__(self, location_type: _Optional[_Union[SpotLocationType, str]] = ..., location_value: _Optional[str] = ...) -> None: ...
+    def __init__(self, location_type: _Optional[_Union[SpotLocationType, str]] = ..., location_value: _Optional[str] = ..., location_options: _Optional[_Union[TrackOffsetOptions, str]] = ...) -> None: ...
 
 class SpotRequestBody(_message.Message):
     __slots__ = ["location_data", "track_offset_options"]
@@ -1465,6 +1495,9 @@ class MediaLocation(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
 class TrackListFilter(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = []
 
+class SpotLocationType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = []
+
 class ExportFormat(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = []
 
@@ -1523,9 +1556,6 @@ class DP_ValueTypes(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = []
 
 class DynamicPropertyType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
-    __slots__ = []
-
-class SpotLocationType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = []
 
 class TrackListType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
