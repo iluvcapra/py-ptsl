@@ -25,9 +25,46 @@ class TestEngine(TestCase):
     The :class:`TestEngine` test case exercises the :class:`Engine` interface. The client
     is fully mocked. These tests are here mostly to make sure the engine is translating
     the auto-generated *Request classes from call arguments, and *Response classes into 
-    return values correctly. If these fail, it probably means a breaking change has ocurred 
-    in `PTSL.proto`.
+    return values correctly.
+
+    If these fail, it probably means a breaking change has ocurred in `PTSL.proto` or the
+    engine's interface has changed.
     """
+
+    MARKER_LOCATION_FIXTURE = [
+        {   'number':1, 
+            'name':"Marker 1",
+            'start_time':"01:00:00:00",
+            'end_time':"01:00:01:00",
+            'time_properties':pt.TP_Selection,
+            'reference':pt.MLR_Absolute,
+            'general_properties':pt.MemoryLocationProperties(zoom_settings=True,
+                                                             pre_post_roll_times=True,                           
+                                                             track_visibility=False,
+                                                             track_heights=True,
+                                                             group_enables=True,
+                                                             window_configuration=True,
+                                                             window_configuration_index=0,
+                                                             window_configuration_name="Work"),
+            'comments':"These are my marker comments."},
+        {
+            'number': 2,
+            'name': 'Location 2',
+            'start_time': "00:59:59:23",
+            'end_time':"",
+            'time_properties': pt.TP_Marker,
+            'reference': pt.MLR_Absolute,
+            'general_properties':pt.MemoryLocationProperties(zoom_settings=True,
+                                                             pre_post_roll_times=True,                           
+                                                             track_visibility=False,
+                                                             track_heights=True,
+                                                             group_enables=True,
+                                                             window_configuration=True,
+                                                             window_configuration_index=0,
+                                                             window_configuration_name="Work"),
+            'comments': "These are more comments."
+        }
+    ]
 
     def test_ptsl_version(self):
         with open_engine_with_mock_client(
@@ -212,20 +249,28 @@ class TestEngine(TestCase):
 
     def test_edit_memory_location(self):
         with open_engine_with_mock_client() as engine:
+            for fixture in self.MARKER_LOCATION_FIXTURE:
+                test_fixture = fixture.copy()
+                # "number" is called "location_number" in the EditmemoryLocationRequest
+                test_fixture['location_number'] = test_fixture.pop('number')
+                self.assertIsNone(
+                    engine.edit_memory_location(**test_fixture)
+                )
+
+    def test_get_memory_locations(self):
+        fixture = pt.GetMemoryLocationsResponseBody(
+            memory_locations=[pt.MemoryLocation(**x) for x in self.MARKER_LOCATION_FIXTURE]
+        )
+
+        with open_engine_with_mock_client(expected_response=fixture) as engine:
+            got = engine.get_memory_locations()
+            self.assertEqual(len(got), len(self.MARKER_LOCATION_FIXTURE))
+            for fixture, returned in zip(self.MARKER_LOCATION_FIXTURE, got):
+                for k in fixture.keys():
+                    self.assertEqual(fixture[k], getattr(returned, k))
+
+    def test_consolidate_clip(self):
+        with open_engine_with_mock_client() as engine:
             self.assertIsNone(
-                engine.edit_memory_location(location_number=1, 
-                                            name="Marker 1",
-                                            start_time="01:00:00:00",
-                                            end_time="01:00:01:00",
-                                            time_properties=pt.TP_Selection,
-                                            reference=pt.MLR_Absolute,
-                                            general_properties=pt.MemoryLocationProperties(zoom_settings=True,
-                                                                                           pre_post_roll_times=True,
-                                                                                           track_visibility=False,
-                                                                                           track_heights=True,
-                                                                                           group_enables=True,
-                                                                                           window_configuration=True,
-                                                                                           window_configuration_index=0,
-                                                                                           window_configuration_name="Work"),
-                                            comments="These are my marker comments.")
+                engine.consolidate_clip()
             )
