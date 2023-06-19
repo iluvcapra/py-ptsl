@@ -518,13 +518,13 @@ class Engine:
         .. note:: This method runs synchronously and will not return until the
                 bounce has completed.
 
-        :param file_type: Export file type
-        :param sources: Busses to bounce
-        :param audio_info: Audio options
-        :param video_info: Video options
-        :param location_info: Output folder settings
-        :param dolby_atmos_info: Dolby Atmos output settings
-        :param offline_bounce: Bounce offline option
+        :param EM_FileType file_type: Export file type
+        :param List[EM_SourceInfo] sources: Busses to bounce
+        :param EM_AudioInfo audio_info: Audio options
+        :param EM_VideoInfo video_info: Video options
+        :param EM_LocationInfo location_info: Output folder settings
+        :param EM_DolbyAtmosInfo dolby_atmos_info: Dolby Atmos output settings
+        :param bool offline_bounce: Bounce offline option
         """
         op = ops.ExportMix(
             file_name=base_name,
