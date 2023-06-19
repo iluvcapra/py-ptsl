@@ -516,7 +516,7 @@ class Engine:
         Export mixes/"Bounce to Disk" busses in the currently-open session.
 
         .. note:: This method runs synchronously and will not return until the
-        bounce has completed.
+                bounce has completed.
 
         :param file_type: Export file type
         :param sources: Busses to bounce
