@@ -2,7 +2,7 @@
 
 ## Minimum Requirements
 
-`py-ptsl` requires Python 3.11.
+py-ptsl requires Python 3.11.
 
 ## Steps
 
