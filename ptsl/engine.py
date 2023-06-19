@@ -46,10 +46,10 @@ class Engine:
         """
         Open the engine.
 
-        :param company_name: Company name
-        :param application_name: Application name
-        :param certificate_path: Path to a developer certificate
-        :param address: server:port to connect the engine to.
+        :param Optional[str] company_name: Company name
+        :param Optional[str] application_name: Application name
+        :param Optional[str] certificate_path: Path to a developer certificate
+        :param str address: server:port to connect the engine to.
 
         .. note::  If `certificate_path` is given, the legacy 
             AuthorizeConnection method will be used for setting up the 
@@ -100,8 +100,8 @@ class Engine:
         """
         Create a new Pro Tools session.
 
-        :param name: Session Name
-        :param path: Path to the new session
+        :param str name: Session Name
+        :param str path: Path to the new session
         :param SessionAudioFormat file_type: file type, defaults to
             :attr:`~ptsl.PTSL_pb2.SessionAudioFormat.SAF_WAVE`
         :param SampleRate sample_rate: sample rate, defaults to
@@ -110,7 +110,7 @@ class Engine:
             :attr:`~ptsl.PTSL_pb2.BitDepth.Bit24`
         :param IOSettings io_setting: The IO Setting to use,
             defaults to :attr:`~ptsl.PTSL_pb2.IOSettings.IO_Last`
-        :param is_interelaved: Interleaved state
+        :param bool is_interelaved: Interleaved state
         """
 
         op = ops.CreateSession(
@@ -151,7 +151,7 @@ class Engine:
             :attr:`~ptsl.PTSL_pb2.BitDepth.Bit24`
         :param IOSettings io_setting: The IO Setting to use,
             defaults to :attr:`~ptsl.PTSL_pb2.IOSettings.IO_Last`
-        :param is_interelaved: Interleaved state
+        :param bool is_interelaved: Interleaved state
         """
 
         op = ops.CreateSession(
@@ -193,7 +193,7 @@ class Engine:
             :attr:`~ptsl.PTSL_pb2.BitDepth.Bit24`
         :param IOSettings io_setting: The IO Setting to use,
             defaults to :attr:`~ptsl.PTSL_pb2.IOSettings.IO_Last`
-        :param is_interelaved: Interleaved state
+        :param bool is_interelaved: Interleaved state
         """
 
         op = ops.CreateSession(
@@ -235,8 +235,8 @@ class Engine:
         """
         Save the currently-open session as a new name to a different path.
 
-        :param path: Path to the new session
-        :param name: New name for the session
+        :param str path: Path to the new session
+        :param str name: New name for the session
         """
         op = ops.SaveSessionAs(session_name=name, session_location=path)
         self.client.run(op)
@@ -413,6 +413,16 @@ class Engine:
                              comments: str):
         """
         Edit a memory location.
+
+        :param int location_number: Location number to edit (if location does not 
+            exist, this will create a new location in 2023.6)
+        :param str name: Location name
+        :param str start_time: Start time 
+        :param str end_time: End time
+        :param TimeProperties time_properties: Time properties, either this is a range or a marker
+        :param MemoryLocationReference reference: Reference
+        :param MemoryLocationProperties general_properties: Location properties
+        :param str comments: Comment field
         """
         op = ops.EditMemoryLocation(
                 number=location_number,
