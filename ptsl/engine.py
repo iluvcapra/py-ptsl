@@ -347,7 +347,7 @@ class Engine:
         :param str old_name: The name of the track to rename.
         :param str new_name: The new name to give the track.
         """
-        op = ops.RenameTargetTrack(current_track_name=old_name, 
+        op = ops.RenameTargetTrack(current_name=old_name, 
                                    new_name=new_name)
         self.client.run(op)
 
