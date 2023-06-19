@@ -274,3 +274,26 @@ class TestEngine(TestCase):
             self.assertIsNone(
                 engine.consolidate_clip()
             )
+
+    def test_export_clips_as_files(self):
+        with open_engine_with_mock_client() as engine:
+            self.assertIsNone(
+                engine.export_clips_as_files(path="path/to/export",
+                                             ftype=pt.WAV,
+                                             bit_depth=pt.Bit24,ex_format=pt.EF_Mono,
+                                             enforce_avid_compatibility=False,
+                                             resolve_duplicates=pt.AutoRenaming)
+            )
+
+    def test_get_file_location(self):
+        fixture = pt.GetFileLocationResponseBody(stats=None,
+                                                 file_locations=
+                                                 [pt.FileLocation(path="path/to/a/file.wav",info=pt.FileLocationInfo(is_online=True)),
+                                                 pt.FileLocation(path="path/to/b/file.wav",info=pt.FileLocationInfo(is_online=False))])
+
+        with open_engine_with_mock_client(expected_response=fixture) as engine:
+            got = engine.get_file_location(filters=[pt.Audio_Files,pt.Online_Files])
+            self.assertEqual(len(got), 2)
+            self.assertEqual(got[0].path, "path/to/a/file.wav")
+            self.assertEqual(got[1].info.is_online, False)
+
