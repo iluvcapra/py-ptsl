@@ -243,12 +243,12 @@ class Engine:
         self.client.run(op)
 
     def export_session_as_text(self,
-                               include_clip_list = False,
-                               include_file_list = False,
-                               include_markers = False,
-                               include_plugin_list = False,
-                               include_track_edls = False,
-                               show_sub_frames = False,
+                               include_clip_list: bool = False,
+                               include_file_list: bool = False,
+                               include_markers: bool = False,
+                               include_plugin_list: bool = False,
+                               include_track_edls: bool = False,
+                               show_sub_frames: bool = False,
                                track_list_type: Optional[pt.TrackListType] = pt.SelectedTracksOnly, 
                                include_user_timestamp = False,
                                fade_handling_type:pt.FadeHandlingType = pt.DontShowCrossfades,
@@ -280,9 +280,9 @@ class Engine:
 
     def import_data(self,
                     session_path: str,
-                    import_type,
-                    session_data,
-                    audio_data):
+                    import_type: pt.ImportType,
+                    session_data: pt.SessionData,
+                    audio_data: pt.AudioData):
         """
         Import session data into the currently-open session.
 
@@ -347,7 +347,7 @@ class Engine:
         :param str old_name: The name of the track to rename.
         :param str new_name: The new name to give the track.
         """
-        op = ops.RenameTargetTrack(current_track_name=old_name, 
+        op = ops.RenameTargetTrack(current_name=old_name, 
                                    new_name=new_name)
         self.client.run(op)
 
