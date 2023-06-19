@@ -23,7 +23,10 @@ def open_engine_with_mock_client(expected_response=Optional[Any]):
 class TestEngine(TestCase):
     """
     The :class:`TestEngine` test case exercises the :class:`Engine` interface. The client
-    is fully mocked.
+    is fully mocked. These tests are here mostly to make sure the engine is translating
+    the auto-generated *Request classes from call arguments, and *Response classes into 
+    return values correctly. If these fail, it probably means a breaking change has ocurred 
+    in `PTSL.proto`.
     """
 
     def test_ptsl_version(self):
@@ -181,4 +184,48 @@ class TestEngine(TestCase):
                 engine.rename_target_clip(clip_name="x", 
                                           new_name="y", 
                                           rename_file=True)
+            )
+
+    def test_toggle_play_state(self):
+        with open_engine_with_mock_client() as engine:
+            self.assertIsNone(
+                engine.toggle_play_state()
+            )
+
+    def test_toggle_record_enable(self):
+        with open_engine_with_mock_client() as engine:
+            self.assertIsNone(
+                engine.toggle_record_enable()
+            )
+
+    def test_play_half_speed(self):
+        with open_engine_with_mock_client() as engine:
+            self.assertIsNone(
+                engine.play_half_speed()
+            )
+
+    def test_record_half_speed(self):
+        with open_engine_with_mock_client() as engine:
+            self.assertIsNone(
+                engine.record_half_speed()
+            )
+
+    def test_edit_memory_location(self):
+        with open_engine_with_mock_client() as engine:
+            self.assertIsNone(
+                engine.edit_memory_location(location_number=1, 
+                                            name="Marker 1",
+                                            start_time="01:00:00:00",
+                                            end_time="01:00:01:00",
+                                            time_properties=pt.TP_Selection,
+                                            reference=pt.MLR_Absolute,
+                                            general_properties=pt.MemoryLocationProperties(zoom_settings=True,
+                                                                                           pre_post_roll_times=True,
+                                                                                           track_visibility=False,
+                                                                                           track_heights=True,
+                                                                                           group_enables=True,
+                                                                                           window_configuration=True,
+                                                                                           window_configuration_index=0,
+                                                                                           window_configuration_name="Work"),
+                                            comments="These are my marker comments.")
             )
