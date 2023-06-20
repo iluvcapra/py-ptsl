@@ -1,7 +1,7 @@
+.. currentmodule:: ptsl
+
 Engine Class
 ============
-
-.. currentmodule:: ptsl
 
 .. automethod:: engine.open_engine
 
