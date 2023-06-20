@@ -35,6 +35,13 @@ def open_engine(*args, **kwargs):
 
 
 class Engine:
+    """
+    An idiomatic, callable interface to PTSL.
+
+    The Engine exposes PTSL commands as methods, translating call
+    arguments into corresponding requests, and then translating 
+    responses into return objects.
+    """
 
     client: ptsl.Client
 
