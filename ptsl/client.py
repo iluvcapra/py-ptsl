@@ -34,7 +34,7 @@ def open_client(*args, **kwargs):
 class Auditor:
     """
     The Auditor is used by the client for reporting-out the status of requests
-    as the are run.
+    as they are run.
     """
 
     def __init__(self, enabled: bool) -> None:
@@ -75,7 +75,7 @@ class Auditor:
 
 class Client:
     """
-    The Client class
+    The Client class:
         - maintains the grpc stub and channel
         - holds PTSL server session data
         - manages the connection's registration
@@ -131,13 +131,16 @@ class Client:
 
             raise grpc_error
 
-    def run(self, operation: Operation):
+    def run(self, operation: Operation) -> None:
         """
         Run an operation on the client.
-
+        
         :raises: `CommandError` if the server returns an error
         """
+        
         self.auditor.run_called(operation.command_id())
+
+        # convert the request body into JSON
         request_body_json = self._prepare_operation_request_json(operation)
         response = self._send_sync_request(operation.command_id(),
                                            request_body_json)
@@ -162,6 +165,10 @@ class Client:
         self.auditor.run_returning()
 
     def _prepare_operation_request_json(self, operation):
+        """
+        Convert the request body into a JSON string (or an empty string if
+        there is no request body.
+        """
         if operation.request is None:
             request_body_json = ""
         else:
@@ -176,6 +183,13 @@ class Client:
         return request_body_json
 
     def _response_error_json_cleanup(self, json_in: str) -> str:
+        """
+        This is a shim that will take a `command_error_type` value
+        from the response error json and convert it into a PT_UnknownError
+        if the `command_error_type` value is mis-formatted by the server
+        (for instance, if the server returns a symbold name or numeric string
+        value, as it sometimes has done in the past. (See `errata`).
+        """
         error_dict = json.loads(json_in)
         old_val = error_dict['command_error_type']
         if isinstance(old_val, str):
@@ -190,6 +204,14 @@ class Client:
         return json.dumps(error_dict)
 
     def _handle_completed_response(self, operation, response):
+        """
+        Accept the response message from the server, parse
+        the response body JSON if present, and hand the results
+        to the operation.
+        
+        If the operation provides a cleanup function, this is run on 
+        the response body JSON prior to parsing.
+        """
         p = operation.__class__.response_body()
         if len(response.response_body_json) > 0 and p is not None:
             self.auditor.response_json_before_cleanup(
@@ -206,7 +228,9 @@ class Client:
 
     def _send_sync_request(self, command_id,
                            request_body_json, task_id="") -> pt.Response:
-
+        """
+        Send a synchronous request to the server.
+        """
         request = pt.Request(
             header=pt.RequestHeader(
                 task_id=task_id,
