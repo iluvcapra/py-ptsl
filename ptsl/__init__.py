@@ -1,5 +1,11 @@
 """
-py-ptsl: Native Python client for the Pro Tools scripting RPC interface
+Native Python client for the Pro Tools Scripting Language (PTSL) RPC interface
+
+This project is a work of Pro Tools enthusiasts and users and is not
+affiliated with Avid.
+
+For more information on this package see the github repository at
+https://github.com/iluvcapra/py-ptsl/
 """
 
 from .client import Client
