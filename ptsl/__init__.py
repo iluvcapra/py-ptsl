@@ -1,5 +1,5 @@
 """
-Native Python client for the Pro Tools Scripting Language (PTSL) RPC interface
+Native Python PTSL (Pro Tools Scripting Language) RPC interface
 
 This project is a work of Pro Tools enthusiasts and users and is not
 affiliated with Avid.
