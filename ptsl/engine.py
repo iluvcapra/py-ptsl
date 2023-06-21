@@ -35,6 +35,26 @@ def open_engine(*args, **kwargs):
 
 
 class Engine:
+    """
+    A callable interface for PTSL.
+
+    The Engine exposes PTSL commands as methods, translating call
+    arguments into corresponding requests, and then translating 
+    responses into return objects. So, instead of creating a request,
+    dispatching a command to the client with the request object,
+    receving a response (or error) and processing it, you can simply
+    call a method on the Engine with parameters, and that method returns
+    a value.
+
+    One of the goals of the engine class is to hide as many redundant
+    value classes from the PTSL protocol as possible, so where the PTSL
+    client may return an enumeration value for the session sample rate,
+    the Engine returns a simple integer. Entity types, like :class:`Track`
+    or :class:`MemoryLocation` objects are retained.
+
+    The `Engine` initializes a new :class:`Client` object by passing its 
+    initialization parameters to :meth:`~ptsl.Client.__init__`
+    """
 
     client: ptsl.Client
 
@@ -43,20 +63,7 @@ class Engine:
                  application_name: Optional[str] = None,
                  certificate_path: Optional[str] = None,
                  address='localhost:31416'):
-        """
-        Open the engine.
 
-        :param Optional[str] company_name: Company name
-        :param Optional[str] application_name: Application name
-        :param Optional[str] certificate_path: Path to a developer certificate
-        :param str address: server:port to connect the engine to.
-
-        .. note::  If `certificate_path` is given, the legacy 
-            AuthorizeConnection method will be used for setting up the 
-            connection session. If it is `None`, then `company_name` and 
-            `application_name` will be used with the RegisterConnection 
-            method (available since Pro Tools 2023.3).
-        """
         self.client = ptsl.Client(certificate_path=certificate_path,
                                   company_name=company_name, 
                                   application_name=application_name,
