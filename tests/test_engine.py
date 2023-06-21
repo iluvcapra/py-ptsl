@@ -329,4 +329,8 @@ class TestEngine(TestCase):
                                                  dolby_atmos_info=dolby_info,
                                                  offline_bounce=pt.TB_True))
 
-
+    def test_session_name(self):
+        fixture = pt.GetSessionNameResponseBody(session_name="My Great Session")
+        with open_engine_with_mock_client(expected_response=fixture) as engine:
+            got = engine.session_name()
+            self.assertEqual(got, "My Great Session")
