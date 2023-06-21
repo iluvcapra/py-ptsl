@@ -342,3 +342,19 @@ class TestEngine(TestCase):
         with open_engine_with_mock_client(expected_response=fixture) as engine:
             got = engine.session_path()
             self.assertEqual(got, "path/to/my/great/session")
+
+    def test_session_sample_rate(self):
+        fixture = pt.GetSessionSampleRateResponseBody(sample_rate=pt.SR_44100)
+
+        with open_engine_with_mock_client(expected_response=fixture) as engine:
+            got = engine.session_sample_rate()
+            self.assertEqual(got, 44100)
+
+    def test_session_audio_format(self):
+        fixture = pt.GetSessionAudioFormatResponseBody(current_setting=pt.SAF_AIFF, 
+                                                       possible_settings=[pt.SAF_AIFF, pt.SAF_WAVE])
+
+        with open_engine_with_mock_client(expected_response=fixture) as engine:
+            got = engine.session_audio_format()
+            self.assertEqual(got, pt.SAF_AIFF)
+
