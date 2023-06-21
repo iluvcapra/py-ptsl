@@ -297,3 +297,36 @@ class TestEngine(TestCase):
             self.assertEqual(got[0].path, "path/to/a/file.wav")
             self.assertEqual(got[1].info.is_online, False)
 
+    def test_export_mix(self):
+        
+        sources = [pt.EM_SourceInfo(source_type=pt.PhysicalOut, name="Output 1")]
+        audio_info = pt.EM_AudioInfo(compression_type=pt.CT_PCM,
+                                                         export_format=pt.EF_MultipleMono,
+                                                         bit_depth=pt.Bit24,
+                                                         sample_rate=pt.SR_96000,
+                                                         pad_to_frame_boundary=pt.TB_False,
+                                                         delivery_format=pt.EM_DF_FilePerMixSource)
+       
+        video_info = pt.EM_VideoInfo(include_video=pt.TB_False,
+                                                         export_option=pt.VE_Transcode,
+                                                         replace_timecode_track=pt.TB_True,
+                                                         codec_info=pt.EM_CodecInfo(codec_name="my codec",
+                                                                                    property_list=[]))
+        location_info = pt.EM_LocationInfo(import_after_bounce=pt.TB_None,
+                                           import_options=pt.EM_ImportOptions())
+    
+        dolby_info = pt.EM_DolbyAtmosInfo(add_first_frame_of_action=pt.TB_False,
+                                          timecode_value="01:00:00:00",
+                                          property_list=[])
+
+        with open_engine_with_mock_client() as engine:
+            self.assertIsNone( engine.export_mix(base_name="outfile",
+                                                 file_type=pt.EM_WAV, 
+                                                 sources=sources,
+                                                 audio_info=audio_info, 
+                                                 video_info=video_info,
+                                                 location_info=location_info,
+                                                 dolby_atmos_info=dolby_info,
+                                                 offline_bounce=pt.TB_True))
+
+
