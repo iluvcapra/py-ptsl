@@ -1,6 +1,6 @@
 # py-ptsl
 
-Native Python client for the Pro Tools scripting RPC interface
+Native Python PTSL (Pro Tools Scripting Language) RPC interface
 
 ## Important Notice! 
 
