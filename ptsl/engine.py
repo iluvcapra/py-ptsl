@@ -35,6 +35,26 @@ def open_engine(*args, **kwargs):
 
 
 class Engine:
+    """
+    A callable interface for PTSL.
+
+    The Engine exposes PTSL commands as methods, translating call
+    arguments into corresponding requests, and then translating 
+    responses into return objects. So, instead of creating a request,
+    dispatching a command to the client with the request object,
+    receving a response (or error) and processing it, you can simply
+    call a method on the Engine with parameters, and that method returns
+    a value.
+
+    One of the goals of the engine class is to hide as many redundant
+    value classes from the PTSL protocol as possible, so where the PTSL
+    client may return an enumeration value for the session sample rate,
+    the Engine returns a simple integer. Entity types, like :class:`Track`
+    or :class:`MemoryLocation` objects are retained.
+
+    The `Engine` initializes a new :class:`Client` object by passing its 
+    initialization parameters to :meth:`~ptsl.Client.__init__`
+    """
 
     client: ptsl.Client
 
@@ -43,20 +63,7 @@ class Engine:
                  application_name: Optional[str] = None,
                  certificate_path: Optional[str] = None,
                  address='localhost:31416'):
-        """
-        Open the engine.
 
-        :param company_name: Company name
-        :param application_name: Application name
-        :param certificate_path: Path to a developer certificate
-        :param address: server:port to connect the engine to.
-
-        .. note::  If `certificate_path` is given, the legacy 
-            AuthorizeConnection method will be used for setting up the 
-            connection session. If it is `None`, then `company_name` and 
-            `application_name` will be used with the RegisterConnection 
-            method (available since Pro Tools 2023.3).
-        """
         self.client = ptsl.Client(certificate_path=certificate_path,
                                   company_name=company_name, 
                                   application_name=application_name,
@@ -100,8 +107,8 @@ class Engine:
         """
         Create a new Pro Tools session.
 
-        :param name: Session Name
-        :param path: Path to the new session
+        :param str name: Session Name
+        :param str path: Path to the new session
         :param SessionAudioFormat file_type: file type, defaults to
             :attr:`~ptsl.PTSL_pb2.SessionAudioFormat.SAF_WAVE`
         :param SampleRate sample_rate: sample rate, defaults to
@@ -110,7 +117,7 @@ class Engine:
             :attr:`~ptsl.PTSL_pb2.BitDepth.Bit24`
         :param IOSettings io_setting: The IO Setting to use,
             defaults to :attr:`~ptsl.PTSL_pb2.IOSettings.IO_Last`
-        :param is_interelaved: Interleaved state
+        :param bool is_interelaved: Interleaved state
         """
 
         op = ops.CreateSession(
@@ -151,7 +158,7 @@ class Engine:
             :attr:`~ptsl.PTSL_pb2.BitDepth.Bit24`
         :param IOSettings io_setting: The IO Setting to use,
             defaults to :attr:`~ptsl.PTSL_pb2.IOSettings.IO_Last`
-        :param is_interelaved: Interleaved state
+        :param bool is_interelaved: Interleaved state
         """
 
         op = ops.CreateSession(
@@ -193,7 +200,7 @@ class Engine:
             :attr:`~ptsl.PTSL_pb2.BitDepth.Bit24`
         :param IOSettings io_setting: The IO Setting to use,
             defaults to :attr:`~ptsl.PTSL_pb2.IOSettings.IO_Last`
-        :param is_interelaved: Interleaved state
+        :param bool is_interelaved: Interleaved state
         """
 
         op = ops.CreateSession(
@@ -235,8 +242,8 @@ class Engine:
         """
         Save the currently-open session as a new name to a different path.
 
-        :param path: Path to the new session
-        :param name: New name for the session
+        :param str path: Path to the new session
+        :param str name: New name for the session
         """
         op = ops.SaveSessionAs(session_name=name, session_location=path)
         self.client.run(op)
@@ -413,6 +420,16 @@ class Engine:
                              comments: str):
         """
         Edit a memory location.
+
+        :param int location_number: Location number to edit (if location does not 
+            exist, this will create a new location in 2023.6)
+        :param str name: Location name
+        :param str start_time: Start time 
+        :param str end_time: End time
+        :param TimeProperties time_properties: Time properties, either this is a range or a marker
+        :param MemoryLocationReference reference: Reference
+        :param MemoryLocationProperties general_properties: Location properties
+        :param str comments: Comment field
         """
         op = ops.EditMemoryLocation(
                 number=location_number,
@@ -517,13 +534,13 @@ class Engine:
         .. note:: This method runs synchronously and will not return until the
                 bounce has completed.
 
-        :param file_type: Export file type
-        :param sources: Busses to bounce
-        :param audio_info: Audio options
-        :param video_info: Video options
-        :param location_info: Output folder settings
-        :param dolby_atmos_info: Dolby Atmos output settings
-        :param offline_bounce: Bounce offline option
+        :param EM_FileType file_type: Export file type
+        :param List[EM_SourceInfo] sources: Busses to bounce
+        :param EM_AudioInfo audio_info: Audio options
+        :param EM_VideoInfo video_info: Video options
+        :param EM_LocationInfo location_info: Output folder settings
+        :param EM_DolbyAtmosInfo dolby_atmos_info: Dolby Atmos output settings
+        :param bool offline_bounce: Bounce offline option
         """
         op = ops.ExportMix(
             file_name=base_name,

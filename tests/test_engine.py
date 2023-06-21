@@ -24,11 +24,11 @@ class TestEngine(TestCase):
     """
     The :class:`TestEngine` test case exercises the :class:`Engine` interface. The client
     is fully mocked. These tests are here mostly to make sure the engine is translating
-    the auto-generated *Request classes from call arguments, and *Response classes into 
-    return values correctly.
+    the *Request classes from call arguments, and *Response classes into return values, 
+    correctly.
 
     If these fail, it probably means a breaking change has ocurred in `PTSL.proto` or the
-    engine's interface has changed.
+    engine's interface.
     """
 
     MARKER_LOCATION_FIXTURE = [

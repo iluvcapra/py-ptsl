@@ -1,4 +1,10 @@
-## Installing
+# Installing
+
+## Minimum Requirements
+
+py-ptsl requires Python 3.11.
+
+## Steps
 
 py-ptsl can be installed by cloning the repository from Github, and then 
 installing the package with `pip`.
