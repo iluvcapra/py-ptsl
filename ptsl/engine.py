@@ -2,6 +2,7 @@
 ptsl Scripting Engine
 """
 
+from __future__ import annotations
 from typing import Optional, Tuple, List
 
 from contextlib import contextmanager
@@ -79,6 +80,9 @@ class Engine:
         """
         Requests the current PTSL version running on the server and returns the
         reponse value.
+
+        :returns: The server's PTSL version number.
+        :rtype: int
         """
         op = ops.GetPTSLVersion()
         self.client.run(op)
