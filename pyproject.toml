@@ -19,6 +19,13 @@ classifiers = [
   "Topic :: Multimedia :: Sound/Audio :: Editors",
   "Private :: Do Not Upload"
 ]
+keywords = [
+  "pro tools", 
+  "scripting", 
+  "grpc", 
+  "automation", 
+  "avid"
+]
 dependencies = [
     'grpcio >= 1.51.1', 
     'protobuf >= 4.21.12'
