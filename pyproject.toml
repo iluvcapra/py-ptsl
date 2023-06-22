@@ -45,6 +45,8 @@ dev = [
 
 [project.urls]
 Home = "https://github.com/iluvcapra/py-ptsl"
+Source = "https://github.com/iluvcapra/py-ptsl"
+Tracker = "https://github.com/iluvcapra/py-ptsl/issues"
 
 [tool.pylint.'MESSAGES CONTROL']
 ignored-modules = [
