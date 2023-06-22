@@ -7,6 +7,7 @@ name = "py-ptsl"
 authors = [{name = "Jamie Hardt", email = "jamiehardt@me.com"}]
 readme = "README.md"
 dynamic = ["version", "description"]
+license = {file = 'LICENSE'}
 requires-python = "~=3.8"
 classifiers = [
     "Private :: Do Not Upload"
