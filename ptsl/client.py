@@ -1,5 +1,5 @@
 """
-ptsl Client
+ptsl Client - Client class and client context manager. 
 """
 
 import io
@@ -75,6 +75,8 @@ class Auditor:
 
 class Client:
     """
+    Medium-level PTSL interface.
+
     The Client class:
         - maintains the grpc stub and channel
         - holds PTSL server session data

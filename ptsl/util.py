@@ -1,5 +1,5 @@
 """
-Utility functions for working with types.
+ptsl Utilities - Utility functions for working with types
 """
 
 from typing import Tuple, Optional

@@ -1,5 +1,5 @@
 """
-ptsl Scripting Engine
+ptsl Engine - Engine class and context manager
 """
 
 from __future__ import annotations
