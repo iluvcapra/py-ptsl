@@ -358,3 +358,54 @@ class TestEngine(TestCase):
             got = engine.session_audio_format()
             self.assertEqual(got, pt.SAF_AIFF)
 
+    def test_session_bit_depth(self):
+        fixture = pt.GetSessionBitDepthResponseBody(current_setting=pt.Bit32Float, 
+                                                    possible_settings=[pt.Bit16, pt.Bit24, pt.Bit32Float])
+
+        with open_engine_with_mock_client(expected_response=fixture) as engine:
+            got  = engine.session_bit_depth()
+            self.assertEqual(got, pt.Bit32Float)
+
+    def test_session_interleaved_state(self):
+        fixture = pt.GetSessionInterleavedStateResponseBody(current_setting=True,
+                                                            possible_settings=[True,False])
+
+        with open_engine_with_mock_client(expected_response=fixture) as engine:
+            got = engine.session_interleaved_state()
+            self.assertTrue(got)
+
+    def test_session_timecode_rate(self):
+        fixture = pt.GetSessionTimeCodeRateResponseBody(current_setting=pt.STCR_Fps23976,
+                                                        possible_settings=[pt.STCR_Fps23976,
+                                                                           pt.STCR_Fps24,
+                                                                           pt.STCR_Fps25])
+
+        with open_engine_with_mock_client(expected_response=fixture) as engine:
+            got = engine.session_timecode_rate()
+            self.assertEqual(got, pt.STCR_Fps23976)
+
+    def test_session_start_time(self):
+        fixture = pt.GetSessionStartTimeResponseBody(session_start_time="00:59:00:00")
+
+        with open_engine_with_mock_client(expected_response=fixture) as engine:
+            got = engine.session_start_time()
+            self.assertEqual(got, "00:59:00:00")
+
+    def test_session_length(self):
+        fixture = pt.GetSessionLengthResponseBody(session_length="24:00:00:00")
+
+        with open_engine_with_mock_client(expected_response=fixture) as engine:
+            got = engine.session_length()
+            self.assertEqual(got, "24:00:00:00")
+
+    def test_session_feet_frames_rate(self):
+        fixture = pt.GetSessionFeetFramesRateResponseBody(current_setting=pt.SFFR_Fps24,
+                                                         possible_settings=[pt.SFFR_Fps24,
+                                                                            pt.SFFR_Fps25,
+                                                                            pt.SFFR_Fps23976])
+
+        with open_engine_with_mock_client(fixture) as engine:
+            got = engine.session_feet_frames_rate()
+            self.assertEqual(got, pt.SFFR_Fps24)
+
+
