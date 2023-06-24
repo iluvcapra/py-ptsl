@@ -15,8 +15,7 @@ Note on Versions
 ----------------
 
 The `__version__` property of this module uses semantic versioning of
-a particular form. Instead of the usual three elements, there are 
-four.
+a particular form. 
 
 - The first element of the version triple is the PTSL version as 
   supported by the client * 100, plus the major version of this module.
