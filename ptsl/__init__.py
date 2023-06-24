@@ -19,11 +19,6 @@ a particular form.
 
 - The first element of the version triple is the PTSL version as 
   supported by the client * 100, plus the major version of this module.
-
-Changes in this elements of the version are breaking changes.
-While the module remains in beta development, breaking changes may 
-occur with any change in version.
-
 - The second element increments with feature enhancements. Support for
   new versions of Pro Tools will always increment this value.
 - The third element increments with bug fixes or modifcations to docs, 
