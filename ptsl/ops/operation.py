@@ -76,6 +76,7 @@ class Operation(Generic[Q, R]):
 
     def on_response_body(self, response_body: R):
         """
-        The client calls this when the server responds with a JSON `pt.ResponseBody`.
+        The client calls this when the server responds with a JSON
+        `pt.ResponseBody`.
         """
         self.response = response_body
