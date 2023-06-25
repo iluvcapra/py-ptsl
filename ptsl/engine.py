@@ -362,9 +362,11 @@ class Engine:
                                    new_name=new_name)
         self.client.run(op)
 
-    def rename_selected_clip(self, new_name: str,
-                             rename_file: bool = True,
-                             clip_location: 'CL_ClipLocation' = pt.CL_Timeline):
+    def rename_selected_clip(
+            self,
+            new_name: str,
+            rename_file: bool = True,
+            clip_location: 'CL_ClipLocation' = pt.CL_Timeline):
         """
         Renames a clip in the current session.
 

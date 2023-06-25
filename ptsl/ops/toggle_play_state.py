@@ -15,4 +15,3 @@ class PlayHalfSpeed(Operation):
 
 class RecordHalfSpeed(Operation):
     pass
-
