@@ -579,7 +579,7 @@ class TestEngine(TestCase):
             self.assertIsNone(
                 engine.set_session_audio_format(new_audio_format=pt.SAF_AIFF)
             )
-    
+
     def test_session_start_time(self):
         with open_engine_with_mock_client() as engine:
             self.assertIsNone(
@@ -599,5 +599,3 @@ class TestEngine(TestCase):
             self.assertIsNone(
                 engine.set_session_interleaved_state(new_state=True)
             )
-
-    
