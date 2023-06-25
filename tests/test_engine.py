@@ -574,13 +574,13 @@ class TestEngine(TestCase):
                 engine.set_session_bit_depth(new_bit_depth=pt.Bit16)
             )
 
-    def test_session_audio_format(self):
+    def test_set_session_audio_format(self):
         with open_engine_with_mock_client() as engine:
             self.assertIsNone(
                 engine.set_session_audio_format(new_audio_format=pt.SAF_AIFF)
             )
 
-    def test_session_start_time(self):
+    def test_set_session_start_time(self):
         with open_engine_with_mock_client() as engine:
             self.assertIsNone(
                 engine.set_session_start_time(new_start="01:00:00:00",
