@@ -11,7 +11,8 @@ import ptsl.ops as ops
 @contextmanager
 def open_engine_with_mock_client(expected_response=Optional[Any]):
     with patch('ptsl.Client'):
-        with open_engine(company_name="none", application_name="none") as engine:
+        with open_engine(company_name="none",
+                         application_name="none") as engine:
             if expected_response is None:
                 yield engine
                 engine.client.run.assert_called()
@@ -19,67 +20,74 @@ def open_engine_with_mock_client(expected_response=Optional[Any]):
                 def give_response(op: ops.Operation):
                     op.on_response_body(expected_response)
 
-                with patch.object(engine.client, 'run', new=Mock(side_effect=give_response)):
+                with patch.object(engine.client, 'run',
+                                  new=Mock(side_effect=give_response)):
                     yield engine
                     engine.client.run.assert_called()
 
 
 class TestEngine(TestCase):
     """
-    The :class:`TestEngine` test case exercises the :class:`Engine` interface. The client
-    is fully mocked. These tests are here mostly to make sure the engine is translating
-    the *Request classes from call arguments, and *Response classes into return values,
-    correctly.
+    The :class:`TestEngine` test case exercises the :class:`Engine` interface.
+    The client is fully mocked. These tests are here mostly to make sure the
+    engine is translating the *Request classes from call arguments, and
+    *Response classes into return values, correctly.
 
-    If these fail, it probably means a breaking change has ocurred in `PTSL.proto` or the
-    engine's interface.
+    If these fail, it probably means a breaking change has ocurred in
+    `PTSL.proto` or the engine's interface.
     """
 
-    MARKER_LOCATION_FIXTURE = [{'number': 1,
-                                'name': "Marker 1",
-                                'start_time': "01:00:00:00",
-                                'end_time': "01:00:01:00",
-                                'time_properties': pt.TP_Selection,
-                                'reference': pt.MLR_Absolute,
-                                'general_properties': pt.MemoryLocationProperties(zoom_settings=True,
-                                                                                  pre_post_roll_times=True,
-                                                                                  track_visibility=False,
-                                                                                  track_heights=True,
-                                                                                  group_enables=True,
-                                                                                  window_configuration=True,
-                                                                                  window_configuration_index=0,
-                                                                                  window_configuration_name="Work"),
-                                'comments': "These are my marker comments."},
-                               {'number': 2,
-                                'name': 'Location 2',
-                                'start_time': "00:59:59:23",
-                                'end_time': "",
-                                'time_properties': pt.TP_Marker,
-                                'reference': pt.MLR_Absolute,
-                                'general_properties': pt.MemoryLocationProperties(zoom_settings=True,
-                                                                                  pre_post_roll_times=True,
-                                                                                  track_visibility=False,
-                                                                                  track_heights=True,
-                                                                                  group_enables=True,
-                                                                                  window_configuration=True,
-                                                                                  window_configuration_index=0,
-                                                                                  window_configuration_name="Work"),
-                                'comments': "These are more comments."}]
+    MARKER_LOCATION_FIXTURE = [
+        {'number': 1,
+         'name': "Marker 1",
+         'start_time': "01:00:00:00",
+         'end_time': "01:00:01:00",
+         'time_properties': pt.TP_Selection,
+         'reference': pt.MLR_Absolute,
+         'general_properties': pt.MemoryLocationProperties(
+             zoom_settings=True,
+             pre_post_roll_times=True,
+             track_visibility=False,
+             track_heights=True,
+             group_enables=True,
+             window_configuration=True,
+             window_configuration_index=0,
+             window_configuration_name="Work"),
+         'comments': "These are my marker comments."},
+
+        {'number': 2,
+         'name': 'Location 2',
+         'start_time': "00:59:59:23",
+         'end_time': "",
+         'time_properties': pt.TP_Marker,
+         'reference': pt.MLR_Absolute,
+         'general_properties': pt.MemoryLocationProperties(
+             zoom_settings=True,
+             pre_post_roll_times=True,
+             track_visibility=False,
+             track_heights=True,
+             group_enables=True,
+             window_configuration=True,
+             window_configuration_index=0,
+             window_configuration_name="Work"),
+         'comments': "These are more comments."}]
 
     def test_ptsl_version(self):
         with open_engine_with_mock_client(
-                expected_response=pt.GetPTSLVersionResponseBody(version=1)) as engine:
+                expected_response=pt.GetPTSLVersionResponseBody(version=1)
+        ) as engine:
             self.assertEqual(engine.ptsl_version(), 1)
 
     def test_create_session(self):
         with open_engine_with_mock_client() as engine:
-            self.assertIsNone(engine.create_session(name="test name",
-                                                    path="test/to/path",
-                                                    file_type=pt.SAF_AIFF,
-                                                    sample_rate=pt.SR_96000,
-                                                    bit_depth=pt.Bit32Float,
-                                                    io_setting=pt.IO_51FilmMix,
-                                                    is_interleaved=False))
+            self.assertIsNone(
+                engine.create_session(name="test name",
+                                      path="test/to/path",
+                                      file_type=pt.SAF_AIFF,
+                                      sample_rate=pt.SR_96000,
+                                      bit_depth=pt.Bit32Float,
+                                      io_setting=pt.IO_51FilmMix,
+                                      is_interleaved=False))
 
     def test_create_session_from_template(self):
         with open_engine_with_mock_client() as engine:
@@ -255,7 +263,8 @@ class TestEngine(TestCase):
         with open_engine_with_mock_client() as engine:
             for fixture in self.MARKER_LOCATION_FIXTURE:
                 test_fixture = fixture.copy()
-                # "number" is called "location_number" in the EditmemoryLocationRequest
+                # "number" is called "location_number" in the
+                # EditmemoryLocationRequest
                 test_fixture['location_number'] = test_fixture.pop('number')
                 self.assertIsNone(
                     engine.edit_memory_location(**test_fixture)
