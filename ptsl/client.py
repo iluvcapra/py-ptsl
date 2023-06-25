@@ -101,8 +101,9 @@ class Client:
 
         ..note:: If `certificate_path` is given, the legacy AuthorizeConnection
             method will be used for setting up the connection session. If it is
-            `None`, then `company_name` and `application_name` will be used with
-            the RegisterConnection method (available since Pro Tools 2023.3).
+            `None`, then `company_name` and `application_name` will be used
+            with the RegisterConnection method (available since Pro Tools
+            2023.3).
         """
 
         self.channel = grpc.insecure_channel(address)
@@ -122,7 +123,8 @@ class Client:
 
             else:
                 raise AssertionError(
-                    "company_name and application_name parameters were not given")
+                    "company_name and application_name parameters were " +
+                    "not given")
 
             self.is_open = True
 
@@ -276,8 +278,9 @@ class Client:
         This method is called automatically by the initializer.
         """
 
-        req = pt.RegisterConnectionRequestBody(company_name=company_name,
-                                               application_name=application_name)
+        req = pt.RegisterConnectionRequestBody(
+            company_name=company_name,
+            application_name=application_name)
 
         req_json = json_format.MessageToJson(req,
                                              preserving_proto_field_name=True)
@@ -297,7 +300,8 @@ class Client:
 
     def _primitive_authorize_connection(self, api_key_path) -> Optional[str]:
         """
-        (Deprecated) Authorizes the client's connection to the Pro Tools RPC server.
+        (Deprecated) Authorizes the client's connection to the Pro Tools RPC
+        server.
 
         This method is called automatically by the initializer.
         """

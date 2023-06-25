@@ -87,7 +87,8 @@ class Engine:
         op = ops.GetPTSLVersion()
         self.client.run(op)
         assert isinstance(
-            op.response, pt.GetPTSLVersionResponseBody), f"Expected response body, encountered {op.response}"
+            op.response, pt.GetPTSLVersionResponseBody), \
+            f"Expected response body, encountered {op.response}"
 
         return op.response.version
 
@@ -253,20 +254,22 @@ class Engine:
         op = ops.SaveSessionAs(session_name=name, session_location=path)
         self.client.run(op)
 
-    def export_session_as_text(self,
-                               include_clip_list: bool = False,
-                               include_file_list: bool = False,
-                               include_markers: bool = False,
-                               include_plugin_list: bool = False,
-                               include_track_edls: bool = False,
-                               show_sub_frames: bool = False,
-                               track_list_type: Optional[pt.TrackListType] = pt.SelectedTracksOnly,
-                               include_user_timestamp=False,
-                               fade_handling_type: pt.FadeHandlingType = pt.DontShowCrossfades,
-                               track_offset_options: pt.TrackOffsetOptions = pt.TimeCode,
-                               text_as_file_format: pt.TextAsFileFormat = pt.UTF8,
-                               output_type: pt.ESI_OutputType = pt.ESI_String,
-                               output_path: Optional[str] = None) -> str:
+    def export_session_as_text(
+            self,
+            include_clip_list: bool = False,
+            include_file_list: bool = False,
+            include_markers: bool = False,
+            include_plugin_list: bool = False,
+            include_track_edls: bool = False,
+            show_sub_frames: bool = False,
+            track_list_type: Optional[pt.TrackListType] =
+            pt.SelectedTracksOnly,
+            include_user_timestamp=False,
+            fade_handling_type: pt.FadeHandlingType = pt.DontShowCrossfades,
+            track_offset_options: pt.TrackOffsetOptions = pt.TimeCode,
+            text_as_file_format: pt.TextAsFileFormat = pt.UTF8,
+            output_type: pt.ESI_OutputType = pt.ESI_String,
+            output_path: Optional[str] = None) -> str:
         """
         Export the open session as text.
         """
@@ -324,7 +327,8 @@ class Engine:
         """
         Extend selection to target tracks.
 
-        :param List[str] tracks: A list of track names to extend the selection to.
+        :param List[str] tracks: A list of track names to extend
+            the selection to.
         """
         op = ops.ExtendSelectionToTargetTracks(tracks_to_extend_to=tracks)
         self.client.run(op)
@@ -427,12 +431,13 @@ class Engine:
         """
         Edit a memory location.
 
-        :param int location_number: Location number to edit (if location does not
-            exist, this will create a new location in 2023.6)
+        :param int location_number: Location number to edit (if location
+            does not exist, this will create a new location in 2023.6)
         :param str name: Location name
         :param str start_time: Start time
         :param str end_time: End time
-        :param TimeProperties time_properties: Time properties, either this is a range or a marker
+        :param TimeProperties time_properties: Time properties, either this
+            is a range or a marker
         :param MemoryLocationReference reference: Reference
         :param MemoryLocationProperties general_properties: Location properties
         :param str comments: Comment field

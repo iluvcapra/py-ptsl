@@ -80,8 +80,7 @@ from .register_connection import RegisterConnection
 from .rename_selected_clip import RenameSelectedClip
 from .rename_target_clip import RenameTargetClip
 from .toggle_play_state import \
-        TogglePlayState, ToggleRecordEnable, \
-        PlayHalfSpeed, RecordHalfSpeed
+    TogglePlayState, ToggleRecordEnable, \
+    PlayHalfSpeed, RecordHalfSpeed
 
 from .memory_locations import EditMemoryLocation, GetMemoryLocations
-

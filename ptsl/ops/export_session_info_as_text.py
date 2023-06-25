@@ -6,7 +6,7 @@ from ptsl.ops import Operation
 #
 # https://duc.avid.com/showthread.php?t=422971
 class ExportSessionInfoAsText(Operation):
- 
+
     @classmethod
     def response_body(cls):
         return None
