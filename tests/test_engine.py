@@ -13,12 +13,14 @@ def open_engine_with_mock_client(expected_response=Optional[Any]):
         with open_engine(company_name="none", application_name="none") as engine:
             if expected_response is None:
                 yield engine
+                engine.client.run.assert_called()
             else:
                 def give_response(op: ops.Operation):
-                    op.response = expected_response
+                    op.on_response_body(expected_response)
                 
                 with patch.object(engine.client, 'run', new=Mock(side_effect=give_response)):
                     yield engine
+                    engine.client.run.assert_called()
 
 class TestEngine(TestCase):
     """
@@ -408,4 +410,108 @@ class TestEngine(TestCase):
             got = engine.session_feet_frames_rate()
             self.assertEqual(got, pt.SFFR_Fps24)
 
+
+    def test_session_audio_rate_pull(self):
+        fixture = pt.GetSessionAudioRatePullSettingsResponseBody(current_setting=pt.SRP_Up01, 
+                                                       possible_settings=[pt.SRP_None,
+                                                                          pt.SRP_Up01,
+                                                                          pt.SRP_Up4Up01,
+                                                                          pt.SRP_Up4,
+                                                                          pt.SRP_Down01,
+                                                                          pt.SRP_Down4,
+                                                                          pt.SRP_Down4Up01,
+                                                                          pt.SRP_Down4Down01])
+
+        with open_engine_with_mock_client(fixture) as engine:
+            got = engine.session_audio_rate_pull()
+            self.assertEqual(got, pt.SRP_Up01)
+
+    def test_session_video_rate_pull(self):
+        fixture = pt.GetSessionVideoRatePullSettingsResponseBody(current_setting=pt.SRP_Down4Down01, 
+                                                       possible_settings=[pt.SRP_None,
+                                                                          pt.SRP_Up01,
+                                                                          pt.SRP_Up4Up01,
+                                                                          pt.SRP_Up4,
+                                                                          pt.SRP_Down01,
+                                                                          pt.SRP_Down4,
+                                                                          pt.SRP_Down4Up01,
+                                                                          pt.SRP_Down4Down01])
+
+        with open_engine_with_mock_client(fixture) as engine:
+            got = engine.session_video_rate_pull()
+            self.assertEqual(got, pt.SRP_Down4Down01)
+
+    def test_transport_state(self):
+        fixture = pt.GetTransportStateResponseBody(current_setting=pt.TS_TransportFastForward, 
+                                                   possible_settings=[pt.TS_TransportIsPreviewing,
+                                                                      pt.TS_TransportFastForward,
+                                                                      pt.TS_TransportIsCued,
+                                                                      pt.TS_TransportRewind
+                                                   ])
+
+        with open_engine_with_mock_client(fixture) as engine:
+            got = engine.transport_state()
+            self.assertEqual(got, "TS_TransportFastForward")
+
+    def test_transport_armed(self):
+        fixture = pt.GetTransportArmedResponseBody(is_transport_armed=False)
+
+        with open_engine_with_mock_client(fixture) as engine:
+            got = engine.transport_armed()
+            self.assertFalse(got)
+
+    def test_playback_modes(self):
+        fixture = pt.GetPlaybackModeResponseBody(current_settings=[pt.PM_Normal, pt.PM_DynamicTransport],
+                                                 possible_settings=[pt.PM_Normal, pt.PM_Loop, pt.PM_DynamicTransport])
+
+        with open_engine_with_mock_client(fixture) as engine:
+            got = engine.playback_modes()
+            self.assertEqual(got,(True, False, True))
+
+    def test_record_mode(self): 
+        fixture = pt.GetRecordModeResponseBody(current_setting=pt.RM_QuickPunch,
+                                               possible_settings=[pt.RM_QuickPunch,
+                                                                  pt.RM_Loop])
+
+        with open_engine_with_mock_client(fixture) as engine:
+            got = engine.record_mode()
+            self.assertEqual(got, pt.RM_QuickPunch)
+
+    def test_track_list(self):
+        
+        track_attriute_none = getattr(pt, "None")
+
+        fixture = pt.GetTrackListResponseBody(stats=None,
+                                              track_list=[
+                                              pt.Track(name="Track 1",
+                                                       type=pt.AudioTrack,
+                                                       id="xyz1", 
+                                                       index=0, 
+                                                       color="#FF0000",
+                                                       track_attributes=pt.TrackAttributes(is_inactive=pt.SetExplicitly,
+                                                                                           is_hidden=pt.SetExplicitly,
+                                                                                           is_selected=track_attriute_none,
+                                                                                           contains_clips=False, 
+                                                                                           is_soloed=False,
+                                                                                           is_record_enabled=False,
+                                                                                           is_input_monitoring_on=track_attriute_none,
+                                                                                           is_smart_dsp_on=False,
+                                                                                           is_locked=False,
+                                                                                           is_muted=False,
+                                                                                           is_frozen=False,
+                                                                                           is_open=True,
+                                                                                           is_online=True), 
+                                                       id_compressed="zzzz"
+                                                       )
+                                              ])
+
+        with open_engine_with_mock_client(fixture) as engine:
+            got = engine.track_list(filters=[pt.TrackListInvertibleFilter(filter=pt.All,
+                                                                 is_inverted=False)])
+            self.assertEqual(len(got),1)
+            self.assertEqual(got[0].name, "Track 1")
+            self.assertEqual(got[0].track_attributes.contains_clips, False)
+
+    def test_set_playback_mode(self):
+        pass
 
