@@ -22,13 +22,12 @@ def process_option(opts, name, tipo, set_method):
 
     if tipo is bool:
         if val in ['TRUE', "true", 1]:
-            fval = True
+            set_method(True)
         elif val in ['FALSE', "false", 0]:
-            fval = False
+            set_method(False)
         else:
             print("%s: Unrecognized value '%s'" % (name, val))
 
-        set_method(fval)
         return
 
     if val not in tipo.keys():
