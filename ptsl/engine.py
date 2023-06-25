@@ -40,7 +40,7 @@ class Engine:
     A callable interface for PTSL.
 
     The Engine exposes PTSL commands as methods, translating call
-    arguments into corresponding requests, and then translating 
+    arguments into corresponding requests, and then translating
     responses into return objects. So, instead of creating a request,
     dispatching a command to the client with the request object,
     receving a response (or error) and processing it, you can simply
@@ -53,20 +53,20 @@ class Engine:
     the Engine returns a simple integer. Entity types, like :class:`Track`
     or :class:`MemoryLocation` objects are retained.
 
-    The `Engine` initializes a new :class:`Client` object by passing its 
+    The `Engine` initializes a new :class:`Client` object by passing its
     initialization parameters to :meth:`~ptsl.Client.__init__`
     """
 
     client: ptsl.Client
 
-    def __init__(self, 
+    def __init__(self,
                  company_name: Optional[str] = None,
                  application_name: Optional[str] = None,
                  certificate_path: Optional[str] = None,
                  address='localhost:31416'):
 
         self.client = ptsl.Client(certificate_path=certificate_path,
-                                  company_name=company_name, 
+                                  company_name=company_name,
                                   application_name=application_name,
                                   address=address)
 
@@ -86,7 +86,8 @@ class Engine:
         """
         op = ops.GetPTSLVersion()
         self.client.run(op)
-        assert isinstance(op.response, pt.GetPTSLVersionResponseBody), f"Expected response body, encountered {op.response}"
+        assert isinstance(
+            op.response, pt.GetPTSLVersionResponseBody), f"Expected response body, encountered {op.response}"
 
         return op.response.version
 
@@ -149,13 +150,13 @@ class Engine:
             is_interleaved: bool = True) -> None:
         """
         Create a new session with an installed template.
-        
+
         :param str template_group: Name of the template group
         :param str template_name: Name of the template to use
         :param str name: Name of the new session
         :param str path: Path for the new session
-        :param SessionAudioFormat file_type: Defaults to 
-            :attr:`~ptsl.PTSL_pb2.SessionAudioFormat.SAF_WAVE` 
+        :param SessionAudioFormat file_type: Defaults to
+            :attr:`~ptsl.PTSL_pb2.SessionAudioFormat.SAF_WAVE`
         :param SampleRate sample_rate: sample rate, defaults to
             :attr:`~ptsl.PTSL_pb2.SampleRate.SR_48000`
         :param BitDepth bit_depth: bit depth, defaults to
@@ -196,8 +197,8 @@ class Engine:
         :param str name: Name of the new session
         :param str path: Path for the new session
         :param str aaf_path: Path to the AAF file to convert
-        :param SessionAudioFormat file_type: Defaults to 
-            :attr:`~ptsl.PTSL_pb2.SessionAudioFormat.SAF_WAVE` 
+        :param SessionAudioFormat file_type: Defaults to
+            :attr:`~ptsl.PTSL_pb2.SessionAudioFormat.SAF_WAVE`
         :param SampleRate sample_rate: sample rate, defaults to
             :attr:`~ptsl.PTSL_pb2.SampleRate.SR_48000`
         :param BitDepth bit_depth: bit depth, defaults to
@@ -259,9 +260,9 @@ class Engine:
                                include_plugin_list: bool = False,
                                include_track_edls: bool = False,
                                show_sub_frames: bool = False,
-                               track_list_type: Optional[pt.TrackListType] = pt.SelectedTracksOnly, 
-                               include_user_timestamp = False,
-                               fade_handling_type:pt.FadeHandlingType = pt.DontShowCrossfades,
+                               track_list_type: Optional[pt.TrackListType] = pt.SelectedTracksOnly,
+                               include_user_timestamp=False,
+                               fade_handling_type: pt.FadeHandlingType = pt.DontShowCrossfades,
                                track_offset_options: pt.TrackOffsetOptions = pt.TimeCode,
                                text_as_file_format: pt.TextAsFileFormat = pt.UTF8,
                                output_type: pt.ESI_OutputType = pt.ESI_String,
@@ -283,7 +284,7 @@ class Engine:
             text_as_file_format=text_as_file_format,
             output_type=output_type,
             output_path=output_path)
-        
+
         op = ops.ExportSessionInfoAsText(req)
         self.client.run(op)
         return op.response.session_info
@@ -306,7 +307,7 @@ class Engine:
             import_type=import_type,
             session_data=session_data,
             audio_data=audio_data
-            )
+        )
 
         self.client.run(op)
 
@@ -357,14 +358,13 @@ class Engine:
         :param str old_name: The name of the track to rename.
         :param str new_name: The new name to give the track.
         """
-        op = ops.RenameTargetTrack(current_name=old_name, 
+        op = ops.RenameTargetTrack(current_name=old_name,
                                    new_name=new_name)
         self.client.run(op)
 
-    def rename_selected_clip(self, new_name: str, 
-                             rename_file : bool = True, 
+    def rename_selected_clip(self, new_name: str,
+                             rename_file: bool = True,
                              clip_location: 'CL_ClipLocation' = pt.CL_Timeline):
-
         """
         Renames a clip in the current session.
 
@@ -374,13 +374,13 @@ class Engine:
             defaults to :attr:`~ptsl.PTSL_pb2.CL_ClipLocation.CL_Timeline`
         """
         op = ops.RenameSelectedClip(clip_location=clip_location,
-                                    new_name = new_name,
-                                    rename_file = rename_file)
-        
+                                    new_name=new_name,
+                                    rename_file=rename_file)
+
         self.client.run(op)
 
     def rename_target_clip(self, clip_name: str,
-                           new_name: str, 
+                           new_name: str,
                            rename_file: bool = True):
         """
         Renames a named clip in the current session.
@@ -425,10 +425,10 @@ class Engine:
         """
         Edit a memory location.
 
-        :param int location_number: Location number to edit (if location does not 
+        :param int location_number: Location number to edit (if location does not
             exist, this will create a new location in 2023.6)
         :param str name: Location name
-        :param str start_time: Start time 
+        :param str start_time: Start time
         :param str end_time: End time
         :param TimeProperties time_properties: Time properties, either this is a range or a marker
         :param MemoryLocationReference reference: Reference
@@ -436,15 +436,15 @@ class Engine:
         :param str comments: Comment field
         """
         op = ops.EditMemoryLocation(
-                number=location_number,
-                name=name,
-                start_time=start_time,
-                end_time=end_time,
-                time_properties=time_properties,
-                reference=reference,
-                general_properties=general_properties,
-                comments=comments
-                )
+            number=location_number,
+            name=name,
+            start_time=start_time,
+            end_time=end_time,
+            time_properties=time_properties,
+            reference=reference,
+            general_properties=general_properties,
+            comments=comments
+        )
 
         self.client.run(op)
 
@@ -470,7 +470,7 @@ class Engine:
             ex_format: Optional['ExportFormat'] = None,
             enforce_avid_compatibility: bool = False,
             resolve_duplicates: Optional['ResolveDuplicateNamesBy'] = None
-            ):
+    ):
         """
         Export clips as files.
 
@@ -531,7 +531,7 @@ class Engine:
             location_info: 'EM_LocationInfo',
             dolby_atmos_info: 'EM_DolbyAtmosInfo',
             offline_bounce: 'TripleBool'
-            ):
+    ):
         """
         Export mixes/"Bounce to Disk" busses in the currently-open session.
 
@@ -555,7 +555,7 @@ class Engine:
             location_info=location_info,
             dolby_atmos_info=dolby_atmos_info,
             offline_bounce=offline_bounce
-            )
+        )
         self.client.run(op)
 
     def session_name(self) -> str:
@@ -701,7 +701,7 @@ class Engine:
     def track_list(
             self,
             filters: List['TrackListInvertibleFilter'] = []
-            ) -> List['Track']:
+    ) -> List['Track']:
         """
         Get a list of the tracks in the current session.
 
@@ -736,9 +736,9 @@ class Engine:
         Set the record mode.
         """
         op = ops.SetRecordMode(
-                record_mode=new_mode,
-                record_arm_transport=record_arm_transport
-                )
+            record_mode=new_mode,
+            record_arm_transport=record_arm_transport
+        )
         self.client.run(op)
 
     def set_session_bit_depth(self, new_bit_depth: 'BitDepth'):
@@ -760,7 +760,7 @@ class Engine:
             new_start: str,
             track_offset_opts: 'TrackOffsetOptions',
             maintain_relative: bool
-            ):
+    ):
         """
         Set session start time.
 
@@ -773,7 +773,7 @@ class Engine:
             session_start_time=new_start,
             track_offset_opts=track_offset_opts,
             maintain_relative_position=maintain_relative
-            )
+        )
 
         self.client.run(op)
 
@@ -866,8 +866,8 @@ class Engine:
             op = ops.Clear()
 
         self.client.run(op)
-    
-    def refresh_target_audio_files(self, files : List[str]):
+
+    def refresh_target_audio_files(self, files: List[str]):
         """
         Refresh target audio files.
 
@@ -875,10 +875,9 @@ class Engine:
         """
         op = ops.RefreshAllModifiedAudioFiles(file_list=files)
         self.client.run(op)
-        
+
     def refresh_all_modified_audio_flles(self):
         """
         Refreshes all modified audio files.
         """
         self.client.run(ops.RefreshAllModifiedAudioFiles())
-       
