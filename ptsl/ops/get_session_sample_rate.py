@@ -4,6 +4,7 @@ from ptsl import PTSL_pb2 as pt
 
 from ptsl.ops import Operation
 
+
 class GetSessionSampleRate(Operation):
 
     def sample_rate(self) -> Optional[float]:
@@ -19,5 +20,3 @@ class GetSessionSampleRate(Operation):
             return 44100.0
         else:
             return None
-
-
