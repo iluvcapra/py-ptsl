@@ -556,4 +556,46 @@ class TestEngine(TestCase):
             self.assertEqual(got[0].track_attributes.contains_clips, False)
 
     def test_set_playback_mode(self):
-        pass
+        with open_engine_with_mock_client() as engine:
+            self.assertIsNone(engine.set_playback_mode(
+                new_mode=pt.PM_DynamicTransport)
+            )
+
+    def test_set_record_mode(self):
+        with open_engine_with_mock_client() as engine:
+            self.assertIsNone(
+                engine.set_record_mode(new_mode=pt.RM_Normal,
+                                       record_arm_transport=True)
+            )
+
+    def test_set_session_bit_depth(self):
+        with open_engine_with_mock_client() as engine:
+            self.assertIsNone(
+                engine.set_session_bit_depth(new_bit_depth=pt.Bit16)
+            )
+
+    def test_set_session_audio_format(self):
+        with open_engine_with_mock_client() as engine:
+            self.assertIsNone(
+                engine.set_session_audio_format(new_audio_format=pt.SAF_AIFF)
+            )
+
+    def test_set_session_start_time(self):
+        with open_engine_with_mock_client() as engine:
+            self.assertIsNone(
+                engine.set_session_start_time(new_start="01:00:00:00",
+                                              track_offset_opts=pt.TimeCode,
+                                              maintain_relative=False)
+            )
+
+    def test_set_session_length(self):
+        with open_engine_with_mock_client() as engine:
+            self.assertIsNone(
+                engine.set_session_length(new_length="20:00:00:00")
+            )
+
+    def test_set_session_interleaved_state(self):
+        with open_engine_with_mock_client() as engine:
+            self.assertIsNone(
+                engine.set_session_interleaved_state(new_state=True)
+            )
