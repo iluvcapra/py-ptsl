@@ -6,7 +6,8 @@ from unittest.mock import patch
 from google.protobuf import json_format
 
 import ptsl.PTSL_pb2 as pt
-from ptsl.client import open_client
+from ptsl.client import Client, open_client
+from ptsl.ops import GetTrackList
 
 
 class MockPtslStub:
@@ -52,15 +53,28 @@ class TestClient(TestCase):
             with patch('ptsl.PTSL_pb2_grpc.PTSLStub') as stub:
                 stub.return_value = MockPtslStub(session_id="abc123")
 
-                with open_client(company_name='Test',
-                                 application_name='Test') as client:
+                client = Client(company_name='Test',
+                                 application_name='Test')
 
-                    self.assertIsNotNone(client)
-                    self.assertTrue(client.is_open)
-                    self.assertEqual(client.session_id, "abc123")
-                    cast(
-                        MockPtslStub,
-                        client.raw_client).assert_send_request_called()
-                    cast(
-                        MockPtslStub,
+                self.assertIsNotNone(client)
+                self.assertTrue(client.is_open)
+                self.assertEqual(client.session_id, "abc123")
+                cast(
+                    MockPtslStub,
+                    client.raw_client).assert_send_request_called()
+                cast(
+                    MockPtslStub,
                         client.raw_client).assert_register_connection_run()
+
+    # def test_run(self):
+    #     with patch('grpc.Channel'):
+    #         with patch('ptsl.PTSL_pb2_grpc.PTSLStub') as stub:
+    #             stub.return_value = MockPtslStub()
+    #
+    #             client = Client(company_name='Test',
+    #                              application_name='Test')
+    #                 
+    #             self.assertTrue(client.is_open)
+    #             op = GetTrackList()
+    #
+    #             client.run(op)
