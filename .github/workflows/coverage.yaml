@@ -34,7 +34,5 @@ jobs:
         # You may pin to the exact commit or the version.
         # uses: codecov/codecov-action@eaaf4bedf32dbdc6b720b63067d99c4d77d6047d
         uses: codecov/codecov-action@v3.1.4
-        with:
-          gcov_ignore: "ptsl/PTSL_pb2.py ptsl/PTSL_pb2_grpc.py"
             
       
