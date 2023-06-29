@@ -6,7 +6,7 @@ from unittest.mock import patch
 from google.protobuf import json_format
 
 import ptsl.PTSL_pb2 as pt
-from ptsl.client import Client 
+from ptsl.client import Client
 from ptsl.ops import GetTrackList
 
 
