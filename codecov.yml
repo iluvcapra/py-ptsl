@@ -1,0 +1,3 @@
+ignore:
+  - "ptsl/PTSL_pb2.py"
+  - "ptsl/PTSL_pb2_grpc.py"
