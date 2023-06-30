@@ -143,7 +143,7 @@ class TestEngine(TestCase):
                                        name="name")
             )
 
-    def text_export_session_as_text(self):
+    def test_export_session_as_text(self):
         resp = pt.ExportSessionInfoAsTextResponseBody(
             session_info="test string")
         with open_engine_with_mock_client(expected_response=resp) as engine:
@@ -161,7 +161,7 @@ class TestEngine(TestCase):
                 text_as_file_format=pt.TextEdit,
                 output_type=pt.ESI_String,
                 output_path=None)
-            self.assertEqual(info, "test_string")
+            self.assertEqual(info, "test string")
 
     def test_import_data(self):
         with open_engine_with_mock_client() as engine:

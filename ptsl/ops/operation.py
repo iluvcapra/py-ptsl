@@ -35,7 +35,7 @@ class Operation(Generic[Q, R]):
     def __init__(self, *args, **kwargs) -> None:
         rq = self.__class__.request_body()
         if rq is not None:
-            self.request = rq(*args, **kwargs)  # type: ignore
+            self.request = rq(**kwargs)  # type: ignore
         else:
             self.request = None  # type: ignore
 
