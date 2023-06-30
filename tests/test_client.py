@@ -7,10 +7,29 @@ from google.protobuf import json_format
 
 import ptsl.PTSL_pb2 as pt
 from ptsl.client import Client
-from ptsl.ops import GetTrackList
+from ptsl.errors import CommandError
+from ptsl.ops import GetTrackList, Copy, Paste
 
 
 class MockPtslStub:
+    """
+    This is a mock of :class:`~ptsl.PTSL_pb2_grpc.PTSLStub` that has a canned
+    implementation of `SendGrpcRequest`.
+
+    - The `~ptsl.PTSL_pb2.RegisterConnection` action returns a successful,
+      properly-formed `~ptsl.PTSL_pb2.Response` with a
+      `~ptsl.PTSL_pb2.RegisterConnectionResponseBody`.
+
+    - The `~ptsl.PTSL_pb2.GetTrackList` action returns a successful response
+      with an empty track list.
+
+    - The `~ptsl.PTSL_pb2.Copy` action returns a failed response with a well-
+      formed error json.
+
+    - The `~ptsl.PTSL_pb2.Paste` action returns a failed response with a
+      malformed error json meant to trigger the client's cleanup machinery.
+    """
+
     def __init__(self, session_id: str = "") -> None:
         self.session_id = session_id
         self.send_request_called = False
@@ -35,13 +54,17 @@ class MockPtslStub:
             _context=None) -> pt.Response:
         self.send_request_called = True
         response_body_json = None
+        error_body_json = None
+        status = None
 
         if request.header.command == pt.RegisterConnection:
+            status = pt.Completed
             response_body_json = json_format.MessageToJson(
                 pt.RegisterConnectionResponseBody(session_id=self.session_id)
             )
             self.register_connection_run = True
         elif request.header.command == pt.GetTrackList:
+            status = pt.Completed
             self.get_track_list_called = True
             response_body_json = json_format.MessageToJson(
                 pt.GetTrackListResponseBody(
@@ -51,15 +74,32 @@ class MockPtslStub:
                         offset=0),
                     track_list=[])
             )
+        elif request.header.command == pt.Copy:
+            status = pt.Failed
+            error_body_json = json_format.MessageToJson(
+                pt.CommandError(
+                    command_error_type=pt.PT_UnknownError,
+                    command_error_message="Test error response",
+                    is_warning=False)
+            )
+        elif request.header.command == pt.Paste:
+            status = pt.Failed
+            error_body_json = """
+            {
+            "commandErrorType": "PT_CopyOptionCopy",
+            "commandErrorMessage": "Test error message",
+            "isWarning": true
+            }
+            """
 
         return pt.Response(
             header=pt.ResponseHeader(
                 task_id=request.header.task_id,
                 command=request.header.command,
-                status=pt.Completed,
+                status=status,
                 progress=100),
             response_body_json=response_body_json,
-            response_error_json=None)
+            response_error_json=error_body_json)
 
 
 class TestClient(TestCase):
@@ -90,6 +130,14 @@ class TestClient(TestCase):
                 tracks = op.track_list
 
                 self.assertEqual(len(tracks), 0)
+
+                op = Copy()
+                with self.assertRaises(expected_exception=CommandError):
+                    client.run(op)
+
+                op = Paste()
+                with self.assertRaises(expected_exception=CommandError):
+                    client.run(op)
 
     # def test_run(self):
     #     with patch('grpc.Channel'):
