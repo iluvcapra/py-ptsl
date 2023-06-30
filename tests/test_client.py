@@ -47,11 +47,11 @@ class MockPtslStub:
     def assert_get_track_list_called(self):
         assert self.get_track_list_called, \
             "GetTrackList command was not run"
-    
+
     def message_to_json(self, message):
         return json_format.MessageToJson(
-            message,                              
-            including_default_value_fields=True,                       
+            message,
+            including_default_value_fields=True,
             preserving_proto_field_name=True)
 
     def SendGrpcRequest(
