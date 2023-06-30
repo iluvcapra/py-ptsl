@@ -47,6 +47,12 @@ class MockPtslStub:
     def assert_get_track_list_called(self):
         assert self.get_track_list_called, \
             "GetTrackList command was not run"
+    
+    def message_to_json(self, message):
+        return json_format.MessageToJson(
+            message,                              
+            including_default_value_fields=True,                       
+            preserving_proto_field_name=True)
 
     def SendGrpcRequest(
             self,
@@ -59,14 +65,14 @@ class MockPtslStub:
 
         if request.header.command == pt.RegisterConnection:
             status = pt.Completed
-            response_body_json = json_format.MessageToJson(
+            response_body_json = self.message_to_json(
                 pt.RegisterConnectionResponseBody(session_id=self.session_id)
             )
             self.register_connection_run = True
         elif request.header.command == pt.GetTrackList:
             status = pt.Completed
             self.get_track_list_called = True
-            response_body_json = json_format.MessageToJson(
+            response_body_json = self.message_to_json(
                 pt.GetTrackListResponseBody(
                     stats=pt.Pagination(
                         total=1,
@@ -76,7 +82,7 @@ class MockPtslStub:
             )
         elif request.header.command == pt.Copy:
             status = pt.Failed
-            error_body_json = json_format.MessageToJson(
+            error_body_json = self.message_to_json(
                 pt.CommandError(
                     command_error_type=pt.PT_UnknownError,
                     command_error_message="Test error response",
@@ -86,9 +92,9 @@ class MockPtslStub:
             status = pt.Failed
             error_body_json = """
             {
-            "commandErrorType": "PT_CopyOptionCopy",
-            "commandErrorMessage": "Test error message",
-            "isWarning": true
+            "command_error_type": "PT_CopyOptionCopy",
+            "command_error_message": "Test error message",
+            "is_warning": true
             }
             """
 

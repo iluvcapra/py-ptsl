@@ -196,15 +196,15 @@ class Client:
         value, as it sometimes has done in the past. (See `errata`).
         """
         error_dict = json.loads(json_in)
-        old_val = error_dict['commandErrorType']
+        old_val = error_dict['command_error_type']
         if isinstance(old_val, str):
             if old_val.isdigit():
-                error_dict['commandErrorType'] = int(old_val)
+                error_dict['command_error_type'] = int(old_val)
             elif old_val in pt.CommandErrorType.keys():
-                error_dict['commandErrorType'] = \
+                error_dict['command_error_type'] = \
                     pt.CommandErrorType.Value(old_val)
             else:
-                error_dict['commandErrorType'] = pt.PT_UnknownError
+                error_dict['command_error_type'] = pt.PT_UnknownError
 
         return json.dumps(error_dict)
 
