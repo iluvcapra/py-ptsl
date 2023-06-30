@@ -145,6 +145,9 @@ class TestClient(TestCase):
                 with self.assertRaises(expected_exception=CommandError):
                     client.run(op)
 
+                client.close()
+                self.assertFalse(client.is_open)
+
     # def test_run(self):
     #     with patch('grpc.Channel'):
     #         with patch('ptsl.PTSL_pb2_grpc.PTSLStub') as stub:
