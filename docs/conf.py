@@ -31,7 +31,6 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
     "sphinx.ext.intersphinx",
-    # "sphinx_autodoc_defaultargs"
 ]
 
 # for sphinx_autodoc_defaultargs
@@ -48,6 +47,7 @@ intersphinx_mapping = {
 intersphinx_disabled_domains = ["std"]
 
 templates_path = ["_templates"]
+source_suffix = '.rst'
 
 # -- Options for EPUB output
 epub_show_urls = "footnote"
