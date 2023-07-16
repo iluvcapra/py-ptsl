@@ -1,6 +1,8 @@
 [![Lint and Test](https://github.com/iluvcapra/py-ptsl/actions/workflows/lint_and_pytest.yml/badge.svg)](https://github.com/iluvcapra/py-ptsl/actions/workflows/lint_and_pytest.yml)
 [![codecov](https://codecov.io/gh/iluvcapra/py-ptsl/branch/master/graph/badge.svg?token=PR6SUQJISZ)](https://codecov.io/gh/iluvcapra/py-ptsl)
-[![Pro Tools Version - 2023.6](https://img.shields.io/static/v1?label=Pro+Tools+Version&message=2023.6&color=2ea44f)](https://github.com/iluvcapra/py-ptsl/blob/master/doc/source/ptsl_versions.rst)
+[![Documentation Status](https://readthedocs.org/projects/py-ptsl/badge/?version=latest)](https://py-ptsl.readthedocs.io/en/latest/?badge=latest)
+![GitHub last commit](https://img.shields.io/github/last-commit/iluvcapra/py-ptsl)
+[![Pro Tools Version - 2023.6](https://img.shields.io/static/v1?label=Pro+Tools+Version&message=2023.6&color=22228f)](https://github.com/iluvcapra/py-ptsl/blob/master/doc/source/ptsl_versions.rst)
 
 # py-ptsl
 
