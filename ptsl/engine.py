@@ -9,6 +9,12 @@ from contextlib import contextmanager
 
 import ptsl
 from ptsl import ops
+from ptsl.builders.create_session_builder import \
+    CreateSessionBuilder, CreateSessionFromTemplateBuilder, \
+    CreateSessionFromAAFBuilder
+from ptsl.builders.export_text_builder import \
+    ExportSessionTextBuilder
+
 import ptsl.PTSL_pb2 as pt
 from ptsl.PTSL_pb2 import SessionAudioFormat, SampleRate, BitDepth, \
     IOSettings, FileLocation, \
@@ -20,7 +26,6 @@ from ptsl.PTSL_pb2 import SessionAudioFormat, SampleRate, BitDepth, \
     ExportFileType, ResolveDuplicateNamesBy, ExportFormat, \
     MemoryLocationReference, MemoryLocationProperties, \
     TimeProperties, CL_ClipLocation
-
 
 @contextmanager
 def open_engine(*args, **kwargs):
@@ -104,51 +109,22 @@ class Engine:
 
     def create_session(self,
                        name: str,
-                       path: str,
-                       file_type: 'SessionAudioFormat' = pt.SAF_WAVE,
-                       sample_rate: 'SampleRate' = pt.SR_48000,
-                       bit_depth: 'BitDepth' = pt.Bit24,
-                       io_setting: 'IOSettings' = pt.IO_Last,
-                       is_interleaved: bool = True) -> None:
+                       path: str) -> CreateSessionBuilder:
         """
         Create a new Pro Tools session.
 
         :param str name: Session Name
         :param str path: Path to the new session
-        :param SessionAudioFormat file_type: file type, defaults to
-            :attr:`~ptsl.PTSL_pb2.SessionAudioFormat.SAF_WAVE`
-        :param SampleRate sample_rate: sample rate, defaults to
-            :attr:`~ptsl.PTSL_pb2.SampleRate.SR_48000`
-        :param BitDepth bit_depth: bit depth, defaults to
-            :attr:`~ptsl.PTSL_pb2.BitDepth.Bit24`
-        :param IOSettings io_setting: The IO Setting to use,
-            defaults to :attr:`~ptsl.PTSL_pb2.IOSettings.IO_Last`
-        :param bool is_interelaved: Interleaved state
         """
+        return CreateSessionBuilder(engine=self, name=name, path=path)
 
-        op = ops.CreateSession(
-            session_name=name,
-            file_type=file_type,
-            sample_rate=sample_rate,
-            input_output_settings=io_setting,
-            is_interleaved=is_interleaved,
-            session_location=path,
-            bit_depth=bit_depth,
-        )
-
-        self.client.run(op)
 
     def create_session_from_template(
             self,
             template_group: str,
             template_name: str,
             name: str,
-            path: str,
-            file_type: 'SessionAudioFormat' = pt.SAF_WAVE,
-            sample_rate: 'SampleRate' = pt.SR_48000,
-            bit_depth: 'BitDepth' = pt.Bit24,
-            io_setting: 'IOSettings' = pt.IO_Last,
-            is_interleaved: bool = True) -> None:
+            path: str) -> CreateSessionFromTemplateBuilder:
         """
         Create a new session with an installed template.
 
@@ -156,72 +132,31 @@ class Engine:
         :param str template_name: Name of the template to use
         :param str name: Name of the new session
         :param str path: Path for the new session
-        :param SessionAudioFormat file_type: Defaults to
-            :attr:`~ptsl.PTSL_pb2.SessionAudioFormat.SAF_WAVE`
-        :param SampleRate sample_rate: sample rate, defaults to
-            :attr:`~ptsl.PTSL_pb2.SampleRate.SR_48000`
-        :param BitDepth bit_depth: bit depth, defaults to
-            :attr:`~ptsl.PTSL_pb2.BitDepth.Bit24`
-        :param IOSettings io_setting: The IO Setting to use,
-            defaults to :attr:`~ptsl.PTSL_pb2.IOSettings.IO_Last`
-        :param bool is_interelaved: Interleaved state
         """
+        return CreateSessionFromTemplateBuilder(self, 
+                                                template_name, 
+                                                template_group,
+                                                name,
+                                                path)
 
-        op = ops.CreateSession(
-            session_name=name,
-            create_from_template=True,
-            template_group=template_group,
-            template_name=template_name,
-            file_type=file_type,
-            sample_rate=sample_rate,
-            input_output_settings=io_setting,
-            is_interleaved=is_interleaved,
-            session_location=path,
-            bit_depth=bit_depth
-        )
-
-        self.client.run(op)
 
     def create_session_from_aaf(
             self,
             name: str,
             path: str,
-            aaf_path: str,
-            file_type: 'SessionAudioFormat' = pt.SAF_WAVE,
-            sample_rate: 'SampleRate' = pt.SR_48000,
-            bit_depth: 'BitDepth' = pt.Bit24,
-            io_setting: 'IOSettings' = pt.IO_Last,
-            is_interleaved: bool = True) -> None:
+            aaf_path: str) -> CreateSessionFromAAFBuilder:
         """
         Create a session from an AAF.
 
         :param str name: Name of the new session
         :param str path: Path for the new session
         :param str aaf_path: Path to the AAF file to convert
-        :param SessionAudioFormat file_type: Defaults to
-            :attr:`~ptsl.PTSL_pb2.SessionAudioFormat.SAF_WAVE`
-        :param SampleRate sample_rate: sample rate, defaults to
-            :attr:`~ptsl.PTSL_pb2.SampleRate.SR_48000`
-        :param BitDepth bit_depth: bit depth, defaults to
-            :attr:`~ptsl.PTSL_pb2.BitDepth.Bit24`
-        :param IOSettings io_setting: The IO Setting to use,
-            defaults to :attr:`~ptsl.PTSL_pb2.IOSettings.IO_Last`
-        :param bool is_interelaved: Interleaved state
         """
+        return CreateSessionFromAAFBuilder(self, 
+            aaf_path=aaf_path, 
+            name=name,
+            path=path)
 
-        op = ops.CreateSession(
-            session_name=name,
-            file_type=file_type,
-            sample_rate=sample_rate,
-            input_output_settings=io_setting,
-            is_interleaved=is_interleaved,
-            session_location=path,
-            bit_depth=bit_depth,
-            create_from_aaf=True,
-            path_to_aaf=aaf_path
-        )
-
-        self.client.run(op)
 
     def open_session(self, path: str):
         """
@@ -254,43 +189,11 @@ class Engine:
         op = ops.SaveSessionAs(session_name=name, session_location=path)
         self.client.run(op)
 
-    def export_session_as_text(
-            self,
-            include_clip_list: bool = False,
-            include_file_list: bool = False,
-            include_markers: bool = False,
-            include_plugin_list: bool = False,
-            include_track_edls: bool = False,
-            show_sub_frames: bool = False,
-            track_list_type: Optional[pt.TrackListType] =
-            pt.SelectedTracksOnly,
-            include_user_timestamp=False,
-            fade_handling_type: pt.FadeHandlingType = pt.DontShowCrossfades,
-            track_offset_options: pt.TrackOffsetOptions = pt.TimeCode,
-            text_as_file_format: pt.TextAsFileFormat = pt.UTF8,
-            output_type: pt.ESI_OutputType = pt.ESI_String,
-            output_path: Optional[str] = None) -> str:
+    def export_session_as_text(self) -> ExportSessionTextBuilder:
         """
         Export the open session as text.
         """
-        req = pt.ExportSessionInfoAsTextRequestBody(
-            include_clip_list=include_clip_list,
-            include_file_list=include_file_list,
-            include_markers=include_markers,
-            include_plugin_list=include_plugin_list,
-            include_track_edls=include_track_edls,
-            show_sub_frames=show_sub_frames,
-            track_list_type=track_list_type,
-            include_user_timestamps=include_user_timestamp,
-            fade_handling_type=fade_handling_type,
-            track_offset_options=track_offset_options,
-            text_as_file_format=text_as_file_format,
-            output_type=output_type,
-            output_path=output_path)
-
-        op = ops.ExportSessionInfoAsText(req)
-        self.client.run(op)
-        return op.response.session_info
+        return ExportSessionTextBuilder(self)
 
     def import_data(self,
                     session_path: str,
