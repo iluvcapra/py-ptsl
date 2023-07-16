@@ -3,8 +3,8 @@
 Engine Class
 ============
 
-.. automethod:: engine.open_engine
+.. automethod:: ptsl.engine.open_engine
 
-.. autoclass:: Engine
+.. autoclass:: ptsl.Engine
     :members: 
     :member-order: bysource
