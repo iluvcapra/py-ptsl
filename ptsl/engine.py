@@ -18,8 +18,7 @@ from ptsl.builders.import_builder import \
     ImportSessionDataBuilder
 
 import ptsl.PTSL_pb2 as pt
-from ptsl.PTSL_pb2 import SessionAudioFormat, SampleRate, BitDepth, \
-    IOSettings, FileLocation, \
+from ptsl.PTSL_pb2 import SessionAudioFormat, BitDepth,  FileLocation, \
     EM_FileType, EM_SourceInfo, EM_AudioInfo, EM_VideoInfo, \
     EM_LocationInfo, EM_DolbyAtmosInfo, TripleBool, SessionTimeCodeRate, \
     SessionFeetFramesRate, SessionRatePull, Track, \
