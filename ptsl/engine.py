@@ -14,6 +14,8 @@ from ptsl.builders.create_session_builder import \
     CreateSessionFromAAFBuilder
 from ptsl.builders.export_text_builder import \
     ExportSessionTextBuilder
+from ptsl.builders.import_builder import \
+    ImportSessionDataBuilder
 
 import ptsl.PTSL_pb2 as pt
 from ptsl.PTSL_pb2 import SessionAudioFormat, SampleRate, BitDepth, \
@@ -196,26 +198,13 @@ class Engine:
         return ExportSessionTextBuilder(self)
 
     def import_data(self,
-                    session_path: str,
-                    import_type: pt.ImportType,
-                    session_data: pt.SessionData,
-                    audio_data: pt.AudioData):
+                    session_path: str
+                    ) -> ImportSessionDataBuilder:
         """
         Import session data into the currently-open session.
-
-        :param ImportType import_type: Import type
-        :param SessionData session_data: Session import settings
-        :param AudioData audio_data: Audio data import settings
         """
+        return ImportSessionDataBuilder(self, session_path)
 
-        op = ops.Import(
-            session_path=session_path,
-            import_type=import_type,
-            session_data=session_data,
-            audio_data=audio_data
-        )
-
-        self.client.run(op)
 
     def select_all_clips_on_track(self, track_name: str):
         """
