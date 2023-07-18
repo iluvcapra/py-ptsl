@@ -2,6 +2,9 @@
 [![codecov](https://codecov.io/gh/iluvcapra/py-ptsl/branch/master/graph/badge.svg?token=PR6SUQJISZ)](https://codecov.io/gh/iluvcapra/py-ptsl)
 [![Documentation Status](https://readthedocs.org/projects/py-ptsl/badge/?version=latest)](https://py-ptsl.readthedocs.io/en/latest/?badge=latest)
 ![GitHub last commit](https://img.shields.io/github/last-commit/iluvcapra/py-ptsl)
+
+![](https://img.shields.io/pypi/pyversions/py-ptsl.svg) [![](https://img.shields.io/pypi/v/py-ptsl.svg)](https://pypi.org/project/py-ptsl/) ![](https://img.shields.io/pypi/wheel/py-ptsl.svg)
+
 [![Pro Tools Version - 2023.6](https://img.shields.io/static/v1?label=Pro+Tools+Version&message=2023.6&color=8f228f)](https://github.com/iluvcapra/py-ptsl/blob/master/docs/source/ptsl_versions.rst)
 [![PTSL Version - 1](https://img.shields.io/static/v1?label=PTSL+Version&message=1&color=0000ff)](https://github.com/iluvcapra/py-ptsl/blob/master/docs/source/ptsl_versions.rst)
 
