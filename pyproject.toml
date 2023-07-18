@@ -18,7 +18,6 @@ classifiers = [
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.8",
   "Topic :: Multimedia :: Sound/Audio :: Editors",
-  "Private :: Do Not Upload"
 ]
 keywords = [
   "pro tools", 
@@ -48,6 +47,7 @@ dev = [
 Home = "https://github.com/iluvcapra/py-ptsl"
 Source = "https://github.com/iluvcapra/py-ptsl"
 Tracker = "https://github.com/iluvcapra/py-ptsl/issues"
+Documentation = "https://py-ptsl.readthedocs.io"
 
 [tool.pylint.'MESSAGES CONTROL']
 ignored-modules = [
