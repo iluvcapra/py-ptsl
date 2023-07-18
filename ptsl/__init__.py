@@ -31,4 +31,4 @@ from .client import Client
 from .engine import Engine, open_engine
 from .errors import CommandError
 
-__version__ = '100.2.0'
+__version__ = '100.3.0'
