@@ -58,6 +58,14 @@ class ExportSessionTextBuilder:
         self._fade_handling_type = CombineCrossfadedClips
 
     def time_type(self, value: str):
+        """
+        Set the time type.
+        
+        :param value: A string indicating the time format. Can
+            be "tc", "timecode", "bars+beats", "min:sec", 
+            "feet+frames". Any otrher value will set the time 
+            type to Samples.
+        """
         if value in ["tc","timecode"]:
             self._track_offset_options = TimeCode
         elif value == "bars+beats":
