@@ -16,12 +16,9 @@ with ptsl.open_engine(company_name="py-ptsl",
     builder = e.create_session(name=name, path=os.path.expanduser(path))
     builder.sample_rate(int(input("Sample rate: ")))
     builder.bit_depth(int(input("Bit Depth: ")))
-    if input("WAVE or AIFF? ").startswith(("A","a")):
+    if input("WAVE or AIFF? ").startswith(("A", "a")):
         builder.aiff_format()
     else:
         builder.wave_format()
 
     builder.create()
-
-
-
