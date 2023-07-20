@@ -18,6 +18,10 @@ class CreateSessionBuilder:
         self._is_interleaved = False 
 
     def audio_format(self, value: str):
+        """
+        :param value: Audio format for the new session. Acceptable 
+            values are "wave" or "aiff".
+        """
         if value == 'wave':
             self._audio_format = SAF_WAVE
         elif value == 'aiff':
@@ -33,8 +37,12 @@ class CreateSessionBuilder:
 
     def sample_rate(self, value: int):
         self._sample_rate = util.sample_rate_enum(value)
-        
+
     def bit_depth(self, value: int):
+        """
+        :param value: Bit depth for the new session. Acceptable
+            values are `16`, `24` or `32`.
+        """
         if value == 16:
             self._bit_depth = Bit16
         elif value == 24:
