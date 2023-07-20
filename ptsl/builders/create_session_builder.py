@@ -1,10 +1,10 @@
 from ptsl.PTSL_pb2 import SAF_AIFF, SAF_WAVE, SAF_AIFF, \
-    SR_44100, SR_48000, SR_88200, SR_96000, SR_176400, SR_192000, \
-    Bit16, Bit24, Bit32Float, \
-    IO_Last, IO_StereoMix, IO_51SMPTEMix 
+    SR_48000, Bit16, Bit24, Bit32Float, \
+    IO_Last, IO_StereoMix, IO_51SMPTEMix
 
 import ptsl
 from ptsl import ops, util
+
 
 class CreateSessionBuilder:
     def __init__(self, engine: 'ptsl.Engine', name: str, path: str):
@@ -12,10 +12,10 @@ class CreateSessionBuilder:
         self._session_name = name
         self._path = path
         self._audio_format = SAF_WAVE
-        self._sample_rate = SR_48000 
+        self._sample_rate = SR_48000
         self._bit_depth = Bit24
         self._io_settings = IO_Last
-        self._is_interleaved = False 
+        self._is_interleaved = False
 
     def audio_format(self, value: str):
         """
@@ -77,13 +77,13 @@ class CreateSessionBuilder:
 
 class CreateSessionFromTemplateBuilder(CreateSessionBuilder):
 
-    def __init__(self, engine: 'ptsl.Engine', 
+    def __init__(self, engine: 'ptsl.Engine',
                  template_name: str,
                  template_group: str,
-                 name: str, 
+                 name: str,
                  path: str):
         self._template_name = template_name
-        self._template_group = template_group 
+        self._template_group = template_group
         super().__init__(engine, name, path)
 
     def create(self):
@@ -102,11 +102,12 @@ class CreateSessionFromTemplateBuilder(CreateSessionBuilder):
 
         self._engine.client.run(op)
 
+
 class CreateSessionFromAAFBuilder(CreateSessionBuilder):
 
-    def __init__(self, engine: 'ptsl.Engine', 
+    def __init__(self, engine: 'ptsl.Engine',
                  aaf_path: str,
-                 name: str, 
+                 name: str,
                  path: str):
         self._aaf_path = aaf_path
         super().__init__(engine, name, path)
@@ -125,4 +126,3 @@ class CreateSessionFromAAFBuilder(CreateSessionBuilder):
         )
 
         self._engine.client.run(op)
-
