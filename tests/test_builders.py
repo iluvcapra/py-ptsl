@@ -82,11 +82,32 @@ class TestSessionBuilder(TestCase):
                 self.assertTrue(called_op.request.include_plugin_list)
                 self.assertTrue(called_op.request.include_track_edls)
                 self.assertTrue(called_op.request.show_sub_frames)
+                self.assertEqual(called_op.request.fade_handling_type,
+                                 pt.DontShowCrossfades)
                 self.assertEqual(called_op.request.track_list_type,
                                  pt.AllTracks)
                 self.assertEqual(called_op.request.track_offset_options,
                                  pt.MinSecs)
-                self.assertEqual(called_op.request.text_as_file_format, 
+                self.assertEqual(called_op.request.text_as_file_format,
                                  pt.UTF8)
-                self.assertEqual(called_op.request.output_type, 
+                self.assertEqual(called_op.request.output_type,
                                  pt.ESI_File)
+
+    def test_text_export2(self):
+        with patch('ptsl.Client'):
+            with open_engine(company_name="none",
+                             application_name="none") as engine:
+                builder = engine.export_session_as_text()
+                builder.time_type("tc")
+                builder.textedit_encoding()
+                builder.dont_show_crossfades()
+
+                builder.export_file("out/file")
+
+                engine.client.run.assert_called()
+                called_op = engine.client.run.call_args.args[0]
+                self.assertIsInstance(called_op, ops.ExportSessionInfoAsText)
+                self.assertEqual(called_op.request.track_offset_options,
+                                 pt.TimeCode)
+                self.assertEqual(called_op.request.fade_handling_type,
+                                 pt.DontShowCrossfades)
