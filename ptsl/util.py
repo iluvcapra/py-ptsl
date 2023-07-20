@@ -4,7 +4,6 @@ ptsl Utilities - Utility functions for working with types
 
 from typing import Tuple, Optional, Dict
 from fractions import Fraction
-import os.path
 
 import ptsl.PTSL_pb2 as pt
 from ptsl.PTSL_pb2 import SessionTimeCodeRate, SessionFeetFramesRate, \

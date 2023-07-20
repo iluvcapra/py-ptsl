@@ -24,3 +24,8 @@ class UtilTest(TestCase):
     def test_sample_rate_info(self):
         info = util.sample_rate_info(pt.SR_48000)
         self.assertEqual(info, 48000)
+
+    def test_pull_rate_info(self):
+        info = util.pull_rate_info(pt.SRP_Down01)
+        self.assertEqual(info, (0, -1))
+
