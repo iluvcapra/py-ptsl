@@ -80,41 +80,32 @@ class TestEngine(TestCase):
 
     def test_create_session(self):
         with open_engine_with_mock_client() as engine:
-            self.assertIsNone(
-                engine.create_session(name="test name",
-                                      path="test/to/path",
-                                      file_type=pt.SAF_AIFF,
-                                      sample_rate=pt.SR_96000,
-                                      bit_depth=pt.Bit32Float,
-                                      io_setting=pt.IO_51FilmMix,
-                                      is_interleaved=False))
+            builder = engine.create_session(name="New Session", path="path/to/sessions")
+            builder.audio_format('wave')
+            builder.sample_rate(48000)
+            builder.bit_depth(24)  
+            self.assertIsNone(builder.create())
 
     def test_create_session_from_template(self):
         with open_engine_with_mock_client() as engine:
-            self.assertIsNone(
-                engine.create_session_from_template(
-                    template_group="xyz",
-                    template_name="template",
-                    name="test",
-                    path="template/test/path",
-                    file_type=pt.SAF_AIFF,
-                    sample_rate=pt.SR_176400,
-                    bit_depth=pt.Bit16,
-                    io_setting=pt.IO_51DTSMix,
-                    is_interleaved=True))
+            builder = engine.create_session_from_template(
+                    template_group="Post",
+                    template_name="Test",
+                    name="New Template Session",
+                    path="path/to/file")
+
+            builder.aiff_format()
+            builder.sample_rate(96000)
+            self.assertIsNone(builder.create())
 
     def test_create_aaf(self):
         with open_engine_with_mock_client() as engine:
-            self.assertIsNone(
-                engine.create_session_from_aaf(
-                    name="test aaf",
-                    path="test/path/to/aaf",
-                    aaf_path="path/to/my/aaf",
-                    file_type=pt.SAF_WAVE,
-                    sample_rate=pt.SR_88200,
-                    bit_depth=pt.Bit24,
-                    io_setting=pt.IO_StereoMix,
-                    is_interleaved=False))
+            builder = engine.create_session_from_aaf(
+                    name="New Session",
+                    path="path/to/session",
+                    aaf_path="path/to/source.aaf")
+
+            self.assertIsNone(builder.create())
 
     def test_open_session(self):
         with open_engine_with_mock_client() as engine:
@@ -147,52 +138,16 @@ class TestEngine(TestCase):
         resp = pt.ExportSessionInfoAsTextResponseBody(
             session_info="test string")
         with open_engine_with_mock_client(expected_response=resp) as engine:
-            info = engine.export_session_as_text(
-                include_clip_list=True,
-                include_file_list=True,
-                include_markers=False,
-                include_plugin_list=True,
-                include_track_edls=True,
-                show_sub_frames=True,
-                track_list_type=pt.AllTracks,
-                include_user_timestamp=False,
-                fade_handling_type=pt.ShowCrossfades,
-                track_offset_options=pt.BarsBeats,
-                text_as_file_format=pt.TextEdit,
-                output_type=pt.ESI_String,
-                output_path=None)
-            self.assertEqual(info, "test string")
+            builder = engine.export_session_as_text()
+            builder.include_markers()
+            self.assertIsNone(builder.export_file("path/to/export.txt"))
+            
 
     def test_import_data(self):
         with open_engine_with_mock_client() as engine:
-
-            session_data = pt.SessionData(
-                audio_options=pt.LinkToSourceAudio,
-                audio_handle_size=100,
-                video_options=pt.LinkToSourceVideo,
-                match_options=pt.MT_ImportAsNewTrack,
-                playlist_options=pt.ImportReplaceExistingPlaylists,
-                track_data_to_import=pt.TrackDataToImport(
-                    track_data_preset_path="path/to/preset",
-                    clip_gain=False,
-                    clips_and_media=True,
-                    volume_automation=True),
-                timecode_mapping_units=pt.MapStartTimeCodeTo,
-                timecode_mapping_start_time="01:00:00:00",
-                adjust_session_start_time_to_match_source=False)
-
-            audio_data = pt.AudioData(file_list=["file_1", "/path/to/file_2"],
-                                      audio_operations=pt.CopyAudio,
-                                      destination_path="path/to/destination",
-                                      destination=pt.MD_NewTrack,
-                                      location=pt.ML_Selection
-                                      )
-            self.assertIsNone(
-                engine.import_data(session_path="path/to/import.ptx",
-                                   import_type=pt.Audio,
-                                   session_data=session_data,
-                                   audio_data=audio_data)
-            )
+            builder = engine.import_data("from/session.ptx")
+            builder.link_to_source_audio()
+            self.assertIsNone(builder.import_data())
 
     def test_select_all_clips_on_track(self):
         with open_engine_with_mock_client() as engine:

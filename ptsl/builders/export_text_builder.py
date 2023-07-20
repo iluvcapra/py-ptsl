@@ -3,11 +3,12 @@ from ptsl.PTSL_pb2 import DontShowCrossfades, ShowCrossfades, \
     FeetFrames, Samples, UTF8, TextEdit, ESI_String, ESI_File, \
     AllTracks, SelectedTracksOnly
 
-from ptsl import ops, Engine
+import ptsl
+from ptsl import ops 
 
 class ExportSessionTextBuilder:
     
-    def __init__(self, engine: Engine):
+    def __init__(self, engine: 'ptsl.Engine'):
         self._engine = engine
         self._include_clip_list = False
         self._include_file_list = False

@@ -3,10 +3,11 @@ from ptsl.PTSL_pb2 import SAF_AIFF, SAF_WAVE, SAF_AIFF, \
     Bit16, Bit24, Bit32Float, \
     IO_Last, IO_StereoMix, IO_51SMPTEMix 
 
-from ptsl import Engine, ops
+import ptsl
+from ptsl import ops, util
 
 class CreateSessionBuilder:
-    def __init__(self, engine: Engine, name: str, path: str):
+    def __init__(self, engine: 'ptsl.Engine', name: str, path: str):
         self._engine = engine
         self._session_name = name
         self._path = path
@@ -31,21 +32,8 @@ class CreateSessionBuilder:
         self.audio_format("aiff")
 
     def sample_rate(self, value: int):
-        if value == 48000:
-            self._sample_rate = SR_48000
-        elif value == 44100:
-            self._sample_rate = SR_44100
-        elif value == 88200:
-            self._sample_rate = SR_88200
-        elif value == 96000:
-            self._sample_rate = SR_96000
-        elif value == 176400:
-            self._sample_rate = SR_176400
-        elif value == 192000:
-            self._sample_rate = SR_192000
-        else:
-            assert False, f"Invalid sample rate value {value}"
-
+        self._sample_rate = util.sample_rate_enum(value)
+        
     def bit_depth(self, value: int):
         if value == 16:
             self._bit_depth = Bit16
@@ -65,7 +53,7 @@ class CreateSessionBuilder:
     def interlaved(self, value: bool):
         self._is_interleaved = value
 
-    def create(self):
+    def create(self) -> None:
         op = ops.CreateSession(
             session_name=self._session_name,
             file_type=self._audio_format,
@@ -81,7 +69,7 @@ class CreateSessionBuilder:
 
 class CreateSessionFromTemplateBuilder(CreateSessionBuilder):
 
-    def __init__(self, engine: Engine, 
+    def __init__(self, engine: 'ptsl.Engine', 
                  template_name: str,
                  template_group: str,
                  name: str, 
@@ -108,7 +96,7 @@ class CreateSessionFromTemplateBuilder(CreateSessionBuilder):
 
 class CreateSessionFromAAFBuilder(CreateSessionBuilder):
 
-    def __init__(self, engine: Engine, 
+    def __init__(self, engine: 'ptsl.Engine', 
                  aaf_path: str,
                  name: str, 
                  path: str):
