@@ -80,19 +80,20 @@ class TestEngine(TestCase):
 
     def test_create_session(self):
         with open_engine_with_mock_client() as engine:
-            builder = engine.create_session(name="New Session", path="path/to/sessions")
+            builder = engine.create_session(
+                name="New Session", path="path/to/sessions")
             builder.audio_format('wave')
             builder.sample_rate(48000)
-            builder.bit_depth(24)  
+            builder.bit_depth(24)
             self.assertIsNone(builder.create())
 
     def test_create_session_from_template(self):
         with open_engine_with_mock_client() as engine:
             builder = engine.create_session_from_template(
-                    template_group="Post",
-                    template_name="Test",
-                    name="New Template Session",
-                    path="path/to/file")
+                template_group="Post",
+                template_name="Test",
+                name="New Template Session",
+                path="path/to/file")
 
             builder.aiff_format()
             builder.sample_rate(96000)
@@ -101,9 +102,9 @@ class TestEngine(TestCase):
     def test_create_aaf(self):
         with open_engine_with_mock_client() as engine:
             builder = engine.create_session_from_aaf(
-                    name="New Session",
-                    path="path/to/session",
-                    aaf_path="path/to/source.aaf")
+                name="New Session",
+                path="path/to/session",
+                aaf_path="path/to/source.aaf")
 
             self.assertIsNone(builder.create())
 
@@ -141,7 +142,6 @@ class TestEngine(TestCase):
             builder = engine.export_session_as_text()
             builder.include_markers()
             self.assertIsNone(builder.export_file("path/to/export.txt"))
-            
 
     def test_import_data(self):
         with open_engine_with_mock_client() as engine:

@@ -4,10 +4,11 @@ from ptsl.PTSL_pb2 import DontShowCrossfades, ShowCrossfades, \
     AllTracks, SelectedTracksOnly
 
 import ptsl
-from ptsl import ops 
+from ptsl import ops
+
 
 class ExportSessionTextBuilder:
-    
+
     def __init__(self, engine: 'ptsl.Engine'):
         self._engine = engine
         self._include_clip_list = False
@@ -23,7 +24,7 @@ class ExportSessionTextBuilder:
         self._encoding = UTF8
         self._output_type = ESI_String
         self._output_path = None
-    
+
     def include_clip_list(self):
         self._include_clip_list = True
 
@@ -61,13 +62,13 @@ class ExportSessionTextBuilder:
     def time_type(self, value: str):
         """
         Set the time type.
-        
+
         :param value: A string indicating the time format. Can
             be "tc", "timecode", "bars+beats", "min:sec", 
             "feet+frames". Any otrher value will set the time 
             type to Samples.
         """
-        if value in ["tc","timecode"]:
+        if value in ["tc", "timecode"]:
             self._track_offset_options = TimeCode
         elif value == "bars+beats":
             self._track_offset_options = BarsBeats

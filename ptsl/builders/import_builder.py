@@ -10,18 +10,17 @@ from ptsl.PTSL_pb2 import SessionData, AudioData, \
     TrackDataToImport, \
     MaintainAbsoluteTimeCodeValues, MaintainRelativeTimeCodeValues, \
     MapStartTimeCodeTo
-    # AddAudio, CopyAudio, ConvertAudio, Default, \
+# AddAudio, CopyAudio, ConvertAudio, Default, \
 
-
-    # AudioOperations, MediaDestination, MediaLocation
+# AudioOperations, MediaDestination, MediaLocation
 
 
 class ImportSessionDataBuilder:
-    
+
     def __init__(self, engine, session_path: str):
         self._engine = engine
         self._session_path = session_path
-        self._import_type = Session # the only type supported at present
+        self._import_type = Session  # the only type supported at present
         self._audio_media_option = LinkToSourceAudio
         self._video_media_option = LinkToSourceVideo
         self._handles_ms = 1000
@@ -70,7 +69,7 @@ class ImportSessionDataBuilder:
 
     def use_track_data_preset(self, preset_path: str):
         self._track_data_preset = preset_path
-   
+
     def import_clip_gain(self):
         self._import_clip_gain = True
 
@@ -93,9 +92,9 @@ class ImportSessionDataBuilder:
     def adjust_start_timecode_to_match_source(self):
         self._adjust_session_start = True
 
-    def import_data(self): 
+    def import_data(self):
         import_type = self._import_type
-        
+
         track_data_import = TrackDataToImport(
             track_data_preset_path=self._track_data_preset,
             clip_gain=self._import_clip_gain,
@@ -104,17 +103,17 @@ class ImportSessionDataBuilder:
         )
 
         session_data = SessionData(
-            audio_options=self._audio_media_option, 
+            audio_options=self._audio_media_option,
             audio_handle_size=self._handles_ms,
             video_options=self._video_media_option,
-            match_options=self._match_track_option, 
-            playlist_options=self._playlist_option, 
-            track_data_to_import=track_data_import, 
-            timecode_mapping_units=self._timecode_mapping_option, 
+            match_options=self._match_track_option,
+            playlist_options=self._playlist_option,
+            track_data_to_import=track_data_import,
+            timecode_mapping_units=self._timecode_mapping_option,
             timecode_mapping_start_time=self._timecode_mapping_start_time,
             adjust_session_start_time_to_match_source=self._adjust_session_start
         )
-        
+
         audio_data = AudioData(
             file_list=None,
             audio_operations=None,
