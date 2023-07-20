@@ -33,6 +33,9 @@ from ptsl.PTSL_pb2 import SessionAudioFormat, BitDepth,  FileLocation, \
 def open_engine(*args, **kwargs):
     """
     Open a ptsl engine. Engine will close with the context.
+    :param company_name: The company name to register.
+    :param application_name: The application name to register.
+    :param certificate_path: A path to a certificate (deprecated).
     """
     engine = Engine(*args, **kwargs)
 
