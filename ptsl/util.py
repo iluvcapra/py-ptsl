@@ -2,9 +2,8 @@
 ptsl Utilities - Utility functions for working with types
 """
 
-from typing import Tuple, Optional
+from typing import Tuple, Optional, Dict
 from fractions import Fraction
-import os.path
 
 import ptsl.PTSL_pb2 as pt
 from ptsl.PTSL_pb2 import SessionTimeCodeRate, SessionFeetFramesRate, \
@@ -13,7 +12,7 @@ from ptsl.PTSL_pb2 import SessionTimeCodeRate, SessionFeetFramesRate, \
 
 def timecode_info(
         session_rate: 'SessionTimeCodeRate'
-        ) -> Tuple[Fraction, bool]:
+) -> Tuple[Fraction, bool]:
     """
     For the given :class:`~ptsl.PTSL_pb2.SessionTimeCodeRate` enumeration
     value, returns a library-agnostic description that can be used for time
@@ -27,7 +26,7 @@ def timecode_info(
     :param session_rate: The session rate value.
     :returns: a Tuple of (`frame duration`, `is drop frame`)
     """
-    map_dict = {
+    map_dict: Dict[pt.SessionTimeCodeRate, Tuple[int, int, bool]] = {
         pt.STCR_Fps120: (120, 1, False),
         pt.STCR_Fps120Drop: (120, 1, True),
         pt.STCR_Fps11988: (120_000, 1001, False),
@@ -51,7 +50,7 @@ def timecode_info(
     assert session_rate in map_dict.keys(), \
         "session_rate (%i) not recognized" % session_rate
 
-    val = map_dict.get(session_rate)
+    val = map_dict[session_rate]
     return (Fraction(val[0], val[1]), val[2])
 
 
@@ -76,6 +75,26 @@ def feet_frames_info(feet_frames_rate: 'SessionFeetFramesRate') -> Fraction:
     return Fraction(*map_dict.get(feet_frames_rate))
 
 
+def sample_rate_enum(sample_rate: Optional[int]) -> 'SampleRate':
+    """
+    Get the symbolic sample rate from the `SampleRate` enum from
+    an integer.
+
+    .. note:: A `sample_rate` not in the enumeration will be returned
+        as `SR_None`
+    """
+    map_dict = {
+        192000: pt.SR_192000,
+        176400: pt.SR_176400,
+        96000: pt.SR_96000,
+        88200: pt.SR_88200,
+        48000: pt.SR_48000,
+        44100: pt.SR_44100,
+        None: pt.SR_None
+    }
+    return map_dict.get(sample_rate, pt.SR_None)
+
+
 def sample_rate_info(sample_rate: 'SampleRate') -> Optional[int]:
     """
     Get the sample rate for a :class:`~ptsl.PTSL_pb2.SampleRate` as an
@@ -88,6 +107,7 @@ def sample_rate_info(sample_rate: 'SampleRate') -> Optional[int]:
         pt.SR_192000: 192000,
         pt.SR_176400: 176400,
         pt.SR_96000: 96000,
+        pt.SR_88200: 88200,
         pt.SR_48000: 48000,
         pt.SR_44100: 44100,
         pt.SR_None: None
@@ -123,30 +143,4 @@ def pull_rate_info(rate_pull: 'SessionRatePull') -> Tuple[int, int]:
     assert rate_pull in map_dict.keys(), \
         "rate_pull (%i) not recgonized" % rate_pull
 
-    return map_dict.get(rate_pull)
-
-
-def macos_to_patform_path(macos_path: str) -> str:
-    """
-    Converts a colon-delimited MacOS Classic path
-    into a native path on the current platform.
-    """
-
-    components = macos_path.split(":")
-    components = ["Volumes"] + components
-    return os.path.join(*components)
-
-# def native_to_macos_path(path: str) -> str:
-#     """
-#     Converts a path in the current platform's native
-#     format to a colon-delimited MacOS Classic path.
-#
-#     :param path: A native path. Must be normalized and
-#     absolute.
-#     """
-#     components = []
-#     head = path
-#     while head != "":
-#         head, tail = os.path.split(head)
-#         components = [tail] + components
-# FIXME: Finish this
+    return map_dict[rate_pull]
