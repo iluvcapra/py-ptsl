@@ -102,6 +102,7 @@ class ImportSessionDataBuilder:
             volume_automation=self._import_volume_automation
         )
 
+        adj = self._adjust_session_start
         session_data = SessionData(
             audio_options=self._audio_media_option,
             audio_handle_size=self._handles_ms,
@@ -111,7 +112,7 @@ class ImportSessionDataBuilder:
             track_data_to_import=track_data_import,
             timecode_mapping_units=self._timecode_mapping_option,
             timecode_mapping_start_time=self._timecode_mapping_start_time,
-            adjust_session_start_time_to_match_source=self._adjust_session_start
+            adjust_session_start_time_to_match_source=adj,
         )
 
         audio_data = AudioData(

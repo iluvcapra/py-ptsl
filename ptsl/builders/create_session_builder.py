@@ -1,4 +1,4 @@
-from ptsl.PTSL_pb2 import SAF_AIFF, SAF_WAVE, SAF_AIFF, \
+from ptsl.PTSL_pb2 import SAF_AIFF, SAF_WAVE,\
     SR_48000, Bit16, Bit24, Bit32Float, \
     IO_Last, IO_StereoMix, IO_51SMPTEMix
 
@@ -19,7 +19,7 @@ class CreateSessionBuilder:
 
     def audio_format(self, value: str):
         """
-        :param value: Audio format for the new session. Acceptable 
+        :param value: Audio format for the new session. Acceptable
             values are "wave" or "aiff".
         """
         if value == 'wave':

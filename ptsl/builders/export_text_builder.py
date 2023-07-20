@@ -64,8 +64,8 @@ class ExportSessionTextBuilder:
         Set the time type.
 
         :param value: A string indicating the time format. Can
-            be "tc", "timecode", "bars+beats", "min:sec", 
-            "feet+frames". Any otrher value will set the time 
+            be "tc", "timecode", "bars+beats", "min:sec",
+            "feet+frames". Any otrher value will set the time
             type to Samples.
         """
         if value in ["tc", "timecode"]:

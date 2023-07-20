@@ -12,7 +12,7 @@ from ptsl.PTSL_pb2 import SessionTimeCodeRate, SessionFeetFramesRate, \
 
 def timecode_info(
         session_rate: 'SessionTimeCodeRate'
-        ) -> Tuple[Fraction, bool]:
+) -> Tuple[Fraction, bool]:
     """
     For the given :class:`~ptsl.PTSL_pb2.SessionTimeCodeRate` enumeration
     value, returns a library-agnostic description that can be used for time
@@ -26,7 +26,7 @@ def timecode_info(
     :param session_rate: The session rate value.
     :returns: a Tuple of (`frame duration`, `is drop frame`)
     """
-    map_dict: Dict[pt.SessionTimeCodeRate, Tuple[int,int,bool]] = {
+    map_dict: Dict[pt.SessionTimeCodeRate, Tuple[int, int, bool]] = {
         pt.STCR_Fps120: (120, 1, False),
         pt.STCR_Fps120Drop: (120, 1, True),
         pt.STCR_Fps11988: (120_000, 1001, False),
@@ -79,7 +79,7 @@ def sample_rate_enum(sample_rate: Optional[int]) -> 'SampleRate':
     """
     Get the symbolic sample rate from the `SampleRate` enum from
     an integer.
-    
+
     .. note:: A `sample_rate` not in the enumeration will be returned
         as `SR_None`
     """
@@ -93,6 +93,7 @@ def sample_rate_enum(sample_rate: Optional[int]) -> 'SampleRate':
         None: pt.SR_None
     }
     return map_dict.get(sample_rate, pt.SR_None)
+
 
 def sample_rate_info(sample_rate: 'SampleRate') -> Optional[int]:
     """
@@ -143,5 +144,3 @@ def pull_rate_info(rate_pull: 'SessionRatePull') -> Tuple[int, int]:
         "rate_pull (%i) not recgonized" % rate_pull
 
     return map_dict[rate_pull]
-
-

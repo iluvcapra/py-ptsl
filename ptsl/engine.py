@@ -28,6 +28,7 @@ from ptsl.PTSL_pb2 import SessionAudioFormat, BitDepth,  FileLocation, \
     MemoryLocationReference, MemoryLocationProperties, \
     TimeProperties, CL_ClipLocation
 
+
 @contextmanager
 def open_engine(*args, **kwargs):
     """
@@ -119,7 +120,6 @@ class Engine:
         """
         return CreateSessionBuilder(engine=self, name=name, path=path)
 
-
     def create_session_from_template(
             self,
             template_group: str,
@@ -134,12 +134,11 @@ class Engine:
         :param str name: Name of the new session
         :param str path: Path for the new session
         """
-        return CreateSessionFromTemplateBuilder(self, 
-                                                template_name, 
+        return CreateSessionFromTemplateBuilder(self,
+                                                template_name,
                                                 template_group,
                                                 name,
                                                 path)
-
 
     def create_session_from_aaf(
             self,
@@ -153,11 +152,10 @@ class Engine:
         :param str path: Path for the new session
         :param str aaf_path: Path to the AAF file to convert
         """
-        return CreateSessionFromAAFBuilder(self, 
-            aaf_path=aaf_path, 
-            name=name,
-            path=path)
-
+        return CreateSessionFromAAFBuilder(self,
+                                           aaf_path=aaf_path,
+                                           name=name,
+                                           path=path)
 
     def open_session(self, path: str):
         """
@@ -203,7 +201,6 @@ class Engine:
         Import session data into the currently-open session.
         """
         return ImportSessionDataBuilder(self, session_path)
-
 
     def select_all_clips_on_track(self, track_name: str):
         """
