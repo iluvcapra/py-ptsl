@@ -1,5 +1,5 @@
 from unittest import TestCase
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 
 import ptsl.PTSL_pb2 as pt
 from ptsl.engine import open_engine
@@ -53,3 +53,40 @@ class TestSessionBuilder(TestCase):
                 self.assertEqual(called_op.request.bit_depth, pt.Bit32Float)
                 self.assertEqual(called_op.request.input_output_settings,
                                  pt.IO_51SMPTEMix)
+
+    def test_text_export(self):
+        with patch('ptsl.Client'):
+            with open_engine(company_name="none",
+                             application_name="none") as engine:
+
+                builder = engine.export_session_as_text()
+                builder.include_clip_list()
+                builder.include_markers()
+                builder.include_file_list()
+                builder.include_plugin_list()
+                builder.include_track_edls()
+                builder.show_sub_frames()
+                builder.time_type("min:sec")
+                builder.all_tracks()
+                builder.dont_show_crossfades()
+                builder.utf8_encoding()
+
+                builder.export_file(path="a/b/c.txt")
+
+                engine.client.run.assert_called()
+                called_op = engine.client.run.call_args.args[0]
+                self.assertIsInstance(called_op, ops.ExportSessionInfoAsText)
+                self.assertTrue(called_op.request.include_clip_list)
+                self.assertTrue(called_op.request.include_markers)
+                self.assertTrue(called_op.request.include_file_list)
+                self.assertTrue(called_op.request.include_plugin_list)
+                self.assertTrue(called_op.request.include_track_edls)
+                self.assertTrue(called_op.request.show_sub_frames)
+                self.assertEqual(called_op.request.track_list_type,
+                                 pt.AllTracks)
+                self.assertEqual(called_op.request.track_offset_options,
+                                 pt.MinSecs)
+                self.assertEqual(called_op.request.text_as_file_format, 
+                                 pt.UTF8)
+                self.assertEqual(called_op.request.output_type, 
+                                 pt.ESI_File)
