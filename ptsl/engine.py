@@ -116,9 +116,9 @@ class Engine:
                        name: str,
                        path: str) -> CreateSessionBuilder:
         """
-        Create a new Pro Tools session. Returns a 
-        :class:`~ptsl.builders.create_session_builder.CreateSessionBuilder` object used to 
-        customize the creation request.
+        Create a new Pro Tools session. Returns a
+        :class:`~ptsl.builders.create_session_builder.CreateSessionBuilder`
+        object used to customize the creation request.
 
         .. sourcecode:: python
            :caption: Creating a session with a builder
