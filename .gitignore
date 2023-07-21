@@ -4,5 +4,5 @@ venv/
 *.pyc
 ptsl.egg-info/*
 .DS_Store
-doc/build/
+docs/build/
 .vscode/settings.json
