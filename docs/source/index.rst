@@ -13,6 +13,7 @@ Welcome to py-ptsl's documentation!
    :caption: Notes:
 
    engine
+   builders
    types
    utils
    implementation
