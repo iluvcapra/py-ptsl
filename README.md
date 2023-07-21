@@ -31,6 +31,12 @@ client.
   a list of every track in the currently-open session, including state
   information like selection, mute and solo state, track color and 
   track ID.
+- [make_session.py](examples/make_session.py) - Creates a new
+  session interactively from the terminal.
+- [pt_set.py](examples/pt_set.py) - Allows several session setup
+  options to be set from the terminal.
+- [pt_pasteboard.py](examples/pt_pasteboard.py) - Demonstrates
+  triggering cut/copy/paste actions.
 
 
 ### Sending Commands To Pro Tools with the `Engine` class
