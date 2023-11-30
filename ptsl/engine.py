@@ -787,6 +787,12 @@ class Engine:
 
     def refresh_all_modified_audio_flles(self):
         """
+        Deprecated: use refresh_all_modified_audio_files() instead
+        """
+        self.refresh_all_modified_audio_files()
+
+    def refresh_all_modified_audio_files(self):
+        """
         Refreshes all modified audio files.
         """
         self.client.run(ops.RefreshAllModifiedAudioFiles())
