@@ -18,7 +18,7 @@ from ptsl.builders.import_builder import \
     ImportSessionDataBuilder
 
 import ptsl.PTSL_pb2 as pt
-from ptsl.PTSL_pb2 import SessionAudioFormat, BitDepth,  FileLocation, \
+from ptsl.PTSL_pb2 import SessionAudioFormat, BitDepth, FileLocation, \
     EM_FileType, EM_SourceInfo, EM_AudioInfo, EM_VideoInfo, \
     EM_LocationInfo, EM_DolbyAtmosInfo, TripleBool, SessionTimeCodeRate, \
     SessionFeetFramesRate, SessionRatePull, Track, \
@@ -27,6 +27,7 @@ from ptsl.PTSL_pb2 import SessionAudioFormat, BitDepth,  FileLocation, \
     ExportFileType, ResolveDuplicateNamesBy, ExportFormat, \
     MemoryLocationReference, MemoryLocationProperties, \
     TimeProperties, CL_ClipLocation
+
 
 @contextmanager
 def open_engine(*args, **kwargs):
@@ -322,7 +323,7 @@ class Engine:
         """
         self.client.run(ops.RecordHalfSpeed())
 
-    def create_memory_location(self, 
+    def create_memory_location(self,
                                location_number: int,
                                name: str,
                                start_time: str,
@@ -336,7 +337,7 @@ class Engine:
         """
         op = ops.CreateMemoryLocation(
             number=location_number,
-            name=name, 
+            name=name,
             start_time=start_time,
             end_time=end_time,
             time_properties=time_properties,
@@ -347,19 +348,17 @@ class Engine:
 
         self.client.run(op)
 
-
     def get_edit_mode(self):
         """
         :returns: The current edit mode and options:
         """
         op = ops.GetEditMode()
         self.client.run(op)
-        mode = op.response.current_setting
+        # mode = op.response.current_setting
 
         op2 = ops.GetEditModeOptions()
         self.client.run(op2)
-        options = op.response.edit_mode_options
-
+        # options = op.response.edit_mode_options
 
     def edit_memory_location(self, location_number: int,
                              name: str,
