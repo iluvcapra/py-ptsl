@@ -1,4 +1,4 @@
-from ptsl.PTSL_pb2 import SAF_AIFF, SAF_WAVE,\
+from ptsl.PTSL_pb2 import SAF_AIFF, SAF_WAVE, \
     SR_48000, Bit16, Bit24, Bit32Float, \
     IO_Last, IO_StereoMix, IO_51SMPTEMix
 
