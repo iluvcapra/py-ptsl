@@ -58,7 +58,7 @@ class CreateSessionBuilder:
     def smpte51_io_settings(self):
         self._io_settings = IO_51SMPTEMix
 
-    def interlaved(self, value: bool):
+    def interleaved(self, value: bool):
         self._is_interleaved = value
 
     def create(self) -> None:

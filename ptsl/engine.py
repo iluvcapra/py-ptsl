@@ -28,7 +28,6 @@ from ptsl.PTSL_pb2 import SessionAudioFormat, BitDepth,  FileLocation, \
     MemoryLocationReference, MemoryLocationProperties, \
     TimeProperties, CL_ClipLocation
 
-
 @contextmanager
 def open_engine(*args, **kwargs):
     """
@@ -322,6 +321,45 @@ class Engine:
         Record at half speed.
         """
         self.client.run(ops.RecordHalfSpeed())
+
+    def create_memory_location(self, 
+                               location_number: int,
+                               name: str,
+                               start_time: str,
+                               end_time: str,
+                               time_properties: TimeProperties,
+                               reference: MemoryLocationReference,
+                               general_properties: MemoryLocationProperties,
+                               comments: str) -> None:
+        """
+        Create a new memory location.
+        """
+        op = ops.CreateMemoryLocation(
+            number=location_number,
+            name=name, 
+            start_time=start_time,
+            end_time=end_time,
+            time_properties=time_properties,
+            reference=reference,
+            general_properties=general_properties,
+            comments=comments
+        )
+
+        self.client.run(op)
+
+
+    def get_edit_mode(self):
+        """
+        :returns: The current edit mode and options:
+        """
+        op = ops.GetEditMode()
+        self.client.run(op)
+        mode = op.response.current_setting
+
+        op2 = ops.GetEditModeOptions()
+        self.client.run(op2)
+        options = op.response.edit_mode_options
+
 
     def edit_memory_location(self, location_number: int,
                              name: str,
