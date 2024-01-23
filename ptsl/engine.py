@@ -215,6 +215,42 @@ class Engine:
         Import session data into the currently-open session.
         """
         return ImportSessionDataBuilder(self, session_path)
+    
+    def import_audio(self,
+                    file_list: List[str],
+                    destination_path: str=None,
+                    audio_operations: int=None,
+                    audio_destination: int=None,
+                    audio_location: int=None,
+                    timecode: str=None
+                    ):
+        """
+        Import audio data into the currently-open session.
+        Throws "command_error_message: location_data ; command_error_type: PT_UnknownError",
+        when no location_data(timecode) is provided, but still works regardless of audio_location setting.
+        Just a basic implementation for audio data import TC based only.
+        """
+        if timecode is not None:
+            spot_data = pt.SpotLocationData(location_type=0,
+                                            location_options=2,
+                                            location_value=timecode
+                                            )
+            audio_data = pt.AudioData(file_list=file_list,
+                                    destination_path=destination_path,
+                                    audio_operations=audio_operations,
+                                    audio_destination=audio_destination,
+                                    audio_location=audio_location,
+                                    location_data=spot_data
+                                    )
+        else:
+            audio_data = pt.AudioData(file_list=file_list,
+                                    destination_path=destination_path,
+                                    audio_operations=audio_operations,
+                                    audio_destination=audio_destination,
+                                    audio_location=audio_location
+                                    )
+        op = ops.Import(import_type=1, audio_data=audio_data)
+        self.client.run(op)
 
     def select_all_clips_on_track(self, track_name: str):
         """
