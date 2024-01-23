@@ -26,7 +26,8 @@ from ptsl.PTSL_pb2 import SessionAudioFormat, BitDepth, FileLocation, \
     PasteSpecialOptions, TrackOffsetOptions, TrackListInvertibleFilter, \
     ExportFileType, ResolveDuplicateNamesBy, ExportFormat, \
     MemoryLocationReference, MemoryLocationProperties, \
-    TimeProperties, CL_ClipLocation
+    TimeProperties, CL_ClipLocation, \
+    TrackFormat, TrackType, TrackTimebase
 
 
 @contextmanager
@@ -215,39 +216,30 @@ class Engine:
         Import session data into the currently-open session.
         """
         return ImportSessionDataBuilder(self, session_path)
-    
+
     def import_audio(self,
-                    file_list: List[str],
-                    destination_path: str=None,
-                    audio_operations: int=None,
-                    audio_destination: int=None,
-                    audio_location: int=None,
-                    timecode: str=None
-                    ):
+                        file_list: List[str],
+                        destination_path: str=None,
+                        audio_operations: int=None,
+                        audio_destination: int=None,
+                        audio_location: int=None,
+                        timecode: str=None
+                        ):
         """
         Import audio data into the currently-open session.
-        Throws "command_error_message: location_data ; command_error_type: PT_UnknownError",
-        when no location_data(timecode) is provided, but still works regardless of audio_location setting.
+        location_data needs to be provided regardless if empty.
         Just a basic implementation for audio data import TC based only.
         """
-        if timecode is not None:
-            spot_data = pt.SpotLocationData(location_type=0,
-                                            location_options=2,
-                                            location_value=timecode
-                                            )
-            audio_data = pt.AudioData(file_list=file_list,
+        spot_data = pt.SpotLocationData(location_type=0,
+                                        location_options=2,
+                                        location_value=timecode
+                                        )
+        audio_data = pt.AudioData(file_list=file_list,
                                     destination_path=destination_path,
                                     audio_operations=audio_operations,
                                     audio_destination=audio_destination,
                                     audio_location=audio_location,
                                     location_data=spot_data
-                                    )
-        else:
-            audio_data = pt.AudioData(file_list=file_list,
-                                    destination_path=destination_path,
-                                    audio_operations=audio_operations,
-                                    audio_destination=audio_destination,
-                                    audio_location=audio_location
                                     )
         op = ops.Import(import_type=1, audio_data=audio_data)
         self.client.run(op)
@@ -803,6 +795,31 @@ class Engine:
         Set session video rate pull.
         """
         op = ops.SetSessionVideoRatePullSettings(video_rate_pull=pull_rate)
+        self.client.run(op)
+
+    def simple_set_timeline_selection(self, in_time: str):
+        """
+        Set Selection at Timecode
+        """
+        op = ops.SetTimelineSelection(in_time=in_time)
+        self.client.run(op)
+
+    def create_new_tracks(self,
+                            number_of_tracks: int = None,
+                            track_name: str = None,
+                            track_format: TrackFormat = None,
+                            track_type: 'TrackType' = None,
+                            track_timebase: TrackTimebase = None
+                            ):
+        """
+        Create new Tracks
+        """
+        op = ops.CreateNewTracks(number_of_tracks=number_of_tracks,
+                                    track_name=track_name,
+                                    track_format=track_format,
+                                    track_type=track_type,
+                                    track_timebase=track_timebase
+                                    )
         self.client.run(op)
 
     def cut(self, special: Optional['AutomationDataOptions'] = None):
