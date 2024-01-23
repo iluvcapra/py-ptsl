@@ -73,8 +73,7 @@ from .set_session_start_time import SetSessionStartTime
 from .set_session_time_code_rate import SetSessionTimeCodeRate
 from .set_session_video_rate_pull_settings import \
     SetSessionVideoRatePullSettings
-from .set_timeline_selection import SetTimelineSelection
-from .create_new_tracks import CreateNewTracks
+
 
 # Pro Tools 2023.3
 
@@ -85,4 +84,8 @@ from .toggle_play_state import \
     TogglePlayState, ToggleRecordEnable, \
     PlayHalfSpeed, RecordHalfSpeed
 
-from .memory_locations import EditMemoryLocation, GetMemoryLocations
+from .memory_locations import EditMemoryLocation, GetMemoryLocations, CreateMemoryLocation
+
+from .set_timeline_selection import SetTimelineSelection
+from .create_new_tracks import CreateNewTracks
+

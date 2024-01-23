@@ -7,3 +7,7 @@ class EditMemoryLocation(Operation):
 
 class GetMemoryLocations(Operation):
     pass
+
+
+class CreateMemoryLocation(Operation):
+    pass

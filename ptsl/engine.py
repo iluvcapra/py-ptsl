@@ -352,28 +352,33 @@ class Engine:
         self.client.run(ops.RecordHalfSpeed())
 
     def create_memory_location(self,
-                               location_number: int,
-                               name: str,
-                               start_time: str,
-                               end_time: str,
-                               time_properties: TimeProperties,
-                               reference: MemoryLocationReference,
-                               general_properties: MemoryLocationProperties,
-                               comments: str) -> None:
+                               start_time: Optional[str] = None,
+                               location_number: Optional[int] = None,
+                               name: Optional[str] = None,
+                               end_time: Optional[str] = None,
+                               location: Optional[str] = None,
+                               track_name: Optional[str] = None,
+                               time_properties: Optional[TimeProperties] = None,
+                               reference: Optional[MemoryLocationReference] = None,
+                               general_properties: Optional[MemoryLocationProperties] = None,
+                               comments: Optional[str] = None) -> None:
         """
         Create a new memory location.
         """
+        if general_properties == None:
+            general_properties = MemoryLocationProperties(track_visibility=False)
         op = ops.CreateMemoryLocation(
             number=location_number,
             name=name,
             start_time=start_time,
             end_time=end_time,
+            track_name=track_name,
             time_properties=time_properties,
             reference=reference,
             general_properties=general_properties,
-            comments=comments
+            comments=comments,
+            location=location
         )
-
         self.client.run(op)
 
     def get_edit_mode(self):
@@ -796,7 +801,7 @@ class Engine:
         """
         op = ops.SetSessionVideoRatePullSettings(video_rate_pull=pull_rate)
         self.client.run(op)
-
+        
     def simple_set_timeline_selection(self, in_time: str):
         """
         Set Selection at Timecode
