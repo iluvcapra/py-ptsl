@@ -18,6 +18,7 @@ from ptsl import PTSL_pb2 as pt
 from ptsl.errors import CommandError
 from ptsl.ops import Operation
 
+
 PTSL_VERSION = 1
 
 

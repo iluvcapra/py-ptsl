@@ -353,7 +353,7 @@ class Engine:
 
     def create_memory_location(self,
                                start_time: Optional[str] = None,
-                               location_number: Optional[int] = None,
+                               memory_number: Optional[int] = None,
                                name: Optional[str] = None,
                                end_time: Optional[str] = None,
                                location: Optional[str] = None,
@@ -368,7 +368,7 @@ class Engine:
         if general_properties == None:
             general_properties = MemoryLocationProperties(track_visibility=False)
         op = ops.CreateMemoryLocation(
-            number=location_number,
+            number=memory_number,
             name=name,
             start_time=start_time,
             end_time=end_time,
