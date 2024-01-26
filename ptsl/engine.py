@@ -218,13 +218,13 @@ class Engine:
         return ImportSessionDataBuilder(self, session_path)
 
     def import_audio(self,
-                        file_list: List[str],
-                        destination_path: str=None,
-                        audio_operations: int=None,
-                        audio_destination: int=None,
-                        audio_location: int=None,
-                        timecode: str=None
-                        ):
+                     file_list: List[str],
+                     destination_path: str = None,
+                     audio_operations: int = None,
+                     audio_destination: int = None,
+                     audio_location: int = None,
+                     timecode: str = None
+                     ):
         """
         Import audio data into the currently-open session.
         location_data needs to be provided regardless if empty.
@@ -235,12 +235,12 @@ class Engine:
                                         location_value=timecode
                                         )
         audio_data = pt.AudioData(file_list=file_list,
-                                    destination_path=destination_path,
-                                    audio_operations=audio_operations,
-                                    audio_destination=audio_destination,
-                                    audio_location=audio_location,
-                                    location_data=spot_data
-                                    )
+                                  destination_path=destination_path,
+                                  audio_operations=audio_operations,
+                                  audio_destination=audio_destination,
+                                  audio_location=audio_location,
+                                  location_data=spot_data
+                                  )
         op = ops.Import(import_type=1, audio_data=audio_data)
         self.client.run(op)
 
@@ -365,7 +365,7 @@ class Engine:
         """
         Create a new memory location.
         """
-        if general_properties == None:
+        if general_properties is None:
             general_properties = MemoryLocationProperties(track_visibility=False)
         op = ops.CreateMemoryLocation(
             number=memory_number,
@@ -801,7 +801,7 @@ class Engine:
         """
         op = ops.SetSessionVideoRatePullSettings(video_rate_pull=pull_rate)
         self.client.run(op)
-        
+
     def simple_set_timeline_selection(self, in_time: str):
         """
         Set Selection at Timecode
@@ -810,21 +810,21 @@ class Engine:
         self.client.run(op)
 
     def create_new_tracks(self,
-                            number_of_tracks: int = None,
-                            track_name: str = None,
-                            track_format: TrackFormat = None,
-                            track_type: 'TrackType' = None,
-                            track_timebase: TrackTimebase = None
-                            ):
+                          number_of_tracks: int = None,
+                          track_name: str = None,
+                          track_format: TrackFormat = None,
+                          track_type: 'TrackType' = None,
+                          track_timebase: TrackTimebase = None
+                          ):
         """
         Create new Tracks
         """
         op = ops.CreateNewTracks(number_of_tracks=number_of_tracks,
-                                    track_name=track_name,
-                                    track_format=track_format,
-                                    track_type=track_type,
-                                    track_timebase=track_timebase
-                                    )
+                                 track_name=track_name,
+                                 track_format=track_format,
+                                 track_type=track_type,
+                                 track_timebase=track_timebase
+                                 )
         self.client.run(op)
 
     def cut(self, special: Optional['AutomationDataOptions'] = None):
