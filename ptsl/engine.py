@@ -365,7 +365,8 @@ class Engine:
                                time_properties: Optional[TimeProperties] = None,
                                reference: Optional[MemoryLocationReference] = None,
                                general_properties: Optional[MemoryLocationProperties] = None,
-                               comments: Optional[str] = None
+                               comments: Optional[str] = None,
+                               color_index: Optional[int] = None
                                ) -> None:
         """
         Create a new memory location.
@@ -382,7 +383,8 @@ class Engine:
             reference=reference,
             general_properties=general_properties,
             comments=comments,
-            location=location
+            location=location,
+            color_index=color_index
         )
         self.client.run(op)
 
