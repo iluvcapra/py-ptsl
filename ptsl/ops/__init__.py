@@ -84,11 +84,8 @@ from .toggle_play_state import \
     TogglePlayState, ToggleRecordEnable, \
     PlayHalfSpeed, RecordHalfSpeed
 
-
-
 from .memory_locations import EditMemoryLocation, \
     GetMemoryLocations, CreateMemoryLocation
 
 from .timeline_selection import SetTimelineSelection, GetTimelineSelection
 from .create_new_tracks import CreateNewTracks
-

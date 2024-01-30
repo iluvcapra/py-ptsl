@@ -27,7 +27,9 @@ from ptsl.PTSL_pb2 import SessionAudioFormat, BitDepth, FileLocation, \
     ExportFileType, ResolveDuplicateNamesBy, ExportFormat, \
     MemoryLocationReference, MemoryLocationProperties, \
     TimeProperties, CL_ClipLocation, \
-    TrackFormat, TrackType, TrackTimebase
+    TrackFormat, TrackType, TrackTimebase, \
+    AudioOperations, MediaDestination, MediaLocation, \
+    SpotLocationType, Start, TimeCode
 
 
 @contextmanager
@@ -219,27 +221,29 @@ class Engine:
 
     def import_audio(self,
                      file_list: List[str],
-                     destination_path: str = None,
-                     audio_operations: int = None,
-                     audio_destination: int = None,
-                     audio_location: int = None,
-                     timecode: str = None
-                     ):
+                     destination_path: Optional[str] = None,
+                     audio_operations: Optional[AudioOperations] = None,
+                     audio_destination: Optional[MediaDestination] = None,
+                     audio_location: Optional[MediaLocation] = None,
+                     timecode: Optional[str] = None,
+                     location_type: Optional[SpotLocationType] = Start,
+                     location_options: Optional[TrackOffsetOptions] = TimeCode
+                     ) -> None:
         """
         Import audio data into the currently-open session.
         location_data needs to be provided regardless if empty.
         Just a basic implementation for audio data import TC based only.
         """
-        spot_data = pt.SpotLocationData(location_type=0,
-                                        location_options=2,
-                                        location_value=timecode
-                                        )
+        location_data = pt.SpotLocationData(location_type=location_type,
+                                            location_options=location_options,
+                                            location_value=timecode
+                                            )
         audio_data = pt.AudioData(file_list=file_list,
                                   destination_path=destination_path,
                                   audio_operations=audio_operations,
                                   audio_destination=audio_destination,
                                   audio_location=audio_location,
-                                  location_data=spot_data
+                                  location_data=location_data
                                   )
         op = ops.Import(import_type=1, audio_data=audio_data)
         self.client.run(op)
@@ -361,7 +365,8 @@ class Engine:
                                time_properties: Optional[TimeProperties] = None,
                                reference: Optional[MemoryLocationReference] = None,
                                general_properties: Optional[MemoryLocationProperties] = None,
-                               comments: Optional[str] = None) -> None:
+                               comments: Optional[str] = None
+                               ) -> None:
         """
         Create a new memory location.
         """
@@ -810,11 +815,11 @@ class Engine:
         self.client.run(op)
 
     def create_new_tracks(self,
-                          number_of_tracks: int = None,
-                          track_name: str = None,
-                          track_format: TrackFormat = None,
-                          track_type: 'TrackType' = None,
-                          track_timebase: TrackTimebase = None
+                          number_of_tracks: Optional[int] = None,
+                          track_name: Optional[str] = None,
+                          track_format: Optional[TrackFormat] = None,
+                          track_type: Optional[TrackType] = None,
+                          track_timebase: Optional[TrackTimebase] = None
                           ):
         """
         Create new Tracks
