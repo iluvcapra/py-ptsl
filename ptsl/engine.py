@@ -29,7 +29,8 @@ from ptsl.PTSL_pb2 import SessionAudioFormat, BitDepth, FileLocation, \
     TimeProperties, CL_ClipLocation, \
     TrackFormat, TrackType, TrackTimebase, \
     AudioOperations, MediaDestination, MediaLocation, \
-    SpotLocationType, Start, TimeCode
+    SpotLocationType, Start, TimeCode, \
+    TimelineUpdateVideo
 
 
 @contextmanager
@@ -809,11 +810,28 @@ class Engine:
         op = ops.SetSessionVideoRatePullSettings(video_rate_pull=pull_rate)
         self.client.run(op)
 
-    def simple_set_timeline_selection(self, in_time: str):
+    def set_timeline_selection(self,
+                               in_time: Optional[str],
+                               play_start_marker_time: Optional[str] = None,
+                               out_time: Optional[str] = None,
+                               pre_roll_start_time: Optional[str] = None,
+                               post_roll_stop_time: Optional[str] = None,
+                               pre_roll_enabled: Optional[TripleBool] = None,
+                               update_video_to: Optional[TimelineUpdateVideo] = None,
+                               propagate_to_satellites: Optional[TripleBool] = None
+                               ):
         """
         Set Selection at Timecode
         """
-        op = ops.SetTimelineSelection(in_time=in_time)
+        op = ops.SetTimelineSelection(play_start_marker_time=play_start_marker_time,
+                                      in_time=in_time,
+                                      out_time=out_time,
+                                      pre_roll_start_time=pre_roll_start_time,
+                                      post_roll_stop_time=post_roll_stop_time,
+                                      pre_roll_enabled=pre_roll_enabled,
+                                      update_video_to=update_video_to,
+                                      propagate_to_satellites=propagate_to_satellites
+                                      )
         self.client.run(op)
 
     def create_new_tracks(self,
@@ -887,7 +905,7 @@ class Engine:
         op = ops.RefreshAllModifiedAudioFiles(file_list=files)
         self.client.run(op)
 
-    def refresh_all_modified_audio_flles(self):
+    def refresh_all_modified_audio_files(self):
         """
         Refreshes all modified audio files.
         """
