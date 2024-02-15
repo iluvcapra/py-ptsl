@@ -461,7 +461,7 @@ class Engine:
         if filters is None:
             filters = [pt.All_Files]
         op = ops.GetFileLocation(
-            page_limit=10000,
+            pagination_request=pt.PaginationRequest(limit=1000, offset=0),
             file_filters=filters)
         self.client.run(op)
 
@@ -659,7 +659,7 @@ class Engine:
                                                     is_inverted=False)]
 
         op = ops.GetTrackList(
-            page_limit=1000,
+            pagination_request=pt.PaginationRequest(limit=1000, offset=0),
             track_filter_list=filters
         )
 
