@@ -196,8 +196,9 @@ class Client:
         (for instance, if the server returns a symbold name or numeric string
         value, as it sometimes has done in the past. (See `errata`).
         """
-        error_dict = json.loads(json_in)
-        old_val = error_dict['command_error_type']
+        errors = json.loads(json_in)
+        error_dict = errors['errors'][0]
+        old_val = errors['errors'][0]['command_error_type']
         if isinstance(old_val, str):
             if old_val.isdigit():
                 error_dict['command_error_type'] = int(old_val)
@@ -206,7 +207,6 @@ class Client:
                     pt.CommandErrorType.Value(old_val)
             else:
                 error_dict['command_error_type'] = pt.PT_UnknownError
-
         return json.dumps(error_dict)
 
     def _handle_completed_response(self, operation, response):
