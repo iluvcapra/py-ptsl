@@ -30,8 +30,7 @@ from ptsl.PTSL_pb2 import SessionAudioFormat, BitDepth, FileLocation, \
     TrackFormat, TrackType, TrackTimebase, \
     AudioOperations, MediaDestination, MediaLocation, \
     SpotLocationType, Start, TimeCode, \
-    TimelineUpdateVideo
-
+    TimelineUpdateVideo, SelectionMode
 
 
 @contextmanager
@@ -357,24 +356,27 @@ class Engine:
         """
         self.client.run(ops.RecordHalfSpeed())
 
-    def create_memory_location(self,
-                               start_time: Optional[str] = None,
-                               memory_number: Optional[int] = None,
-                               name: Optional[str] = None,
-                               end_time: Optional[str] = None,
-                               location: Optional[str] = None,
-                               track_name: Optional[str] = None,
-                               time_properties: Optional[TimeProperties] = None,
-                               reference: Optional[MemoryLocationReference] = None,
-                               general_properties: Optional[MemoryLocationProperties] = None,
-                               comments: Optional[str] = None,
-                               color_index: Optional[int] = None
-                               ) -> None:
+    def create_memory_location(
+            self,
+            start_time: Optional[str] = None,
+            memory_number: Optional[int] = None,
+            name: Optional[str] = None,
+            end_time: Optional[str] = None,
+            location: Optional[str] = None,
+            track_name: Optional[str] = None,
+            time_properties:
+            Optional[TimeProperties] = None,
+            reference: Optional[MemoryLocationReference] = None,
+            general_properties: Optional[MemoryLocationProperties] = None,
+            comments: Optional[str] = None,
+            color_index: Optional[int] = None
+    ) -> None:
         """
         Create a new memory location.
         """
         if general_properties is None:
-            general_properties = MemoryLocationProperties(track_visibility=False)
+            general_properties = MemoryLocationProperties(
+                track_visibility=False)
         op = ops.CreateMemoryLocation(
             number=memory_number,
             name=name,
@@ -819,21 +821,24 @@ class Engine:
                                pre_roll_start_time: Optional[str] = None,
                                post_roll_stop_time: Optional[str] = None,
                                pre_roll_enabled: Optional[TripleBool] = None,
-                               update_video_to: Optional[TimelineUpdateVideo] = None,
-                               propagate_to_satellites: Optional[TripleBool] = None
+                               update_video_to:
+                               Optional[TimelineUpdateVideo] = None,
+                               propagate_to_satellites:
+                               Optional[TripleBool] = None
                                ):
         """
         Set Selection at Timecode
         """
-        op = ops.SetTimelineSelection(play_start_marker_time=play_start_marker_time,
-                                      in_time=in_time,
-                                      out_time=out_time,
-                                      pre_roll_start_time=pre_roll_start_time,
-                                      post_roll_stop_time=post_roll_stop_time,
-                                      pre_roll_enabled=pre_roll_enabled,
-                                      update_video_to=update_video_to,
-                                      propagate_to_satellites=propagate_to_satellites
-                                      )
+        op = ops.SetTimelineSelection(
+            play_start_marker_time=play_start_marker_time,
+            in_time=in_time,
+            out_time=out_time,
+            pre_roll_start_time=pre_roll_start_time,
+            post_roll_stop_time=post_roll_stop_time,
+            pre_roll_enabled=pre_roll_enabled,
+            update_video_to=update_video_to,
+            propagate_to_satellites=propagate_to_satellites
+        )
         self.client.run(op)
 
     def create_new_tracks(self,
@@ -906,12 +911,6 @@ class Engine:
         """
         op = ops.RefreshAllModifiedAudioFiles(file_list=files)
         self.client.run(op)
-
-    def refresh_all_modified_audio_files(self):
-        """
-        Deprecated: use refresh_all_modified_audio_files() instead
-        """
-        self.refresh_all_modified_audio_files()
 
     def refresh_all_modified_audio_files(self):
         """
