@@ -77,4 +77,17 @@ RecordHalfSpeed                       >=2023.3    :meth:`~ptsl.Engine.record_hal
 EditMemoryLocation                    >=2023.3    :meth:`~ptsl.Engine.edit_memory_location` 
 GetMemoryLocations                    >=2023.3    :meth:`~ptsl.Engine.get_memory_locations` 
 RegisterConnection                    >=2023.3    Implicit in :meth:`~ptsl.Client.__init__`
+CreateMemoryLocation                  >=2023.6     
+CreateNewTracks                       >=2023.7
+GetEditMode                           >=2023.7
+SetEditMode                           >=2023.7
+GetEditModeOptions                    >=2023.7
+SetEditModeOptions                    >=2023.7
+SelectTracksByName                    >=2023.7
+SetZoomPreset                         >=2023.7
+RecallZoomPreset                      >=2023.7
+GetEditTool                           >=2023.7
+SetEditTool                           >=2023.7
+GetTimelineSelection                  >=2023.7
+SetTimelineSelection                  >=2023.7
 ===================================   =========   =============================================================

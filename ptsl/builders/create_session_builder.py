@@ -1,4 +1,4 @@
-from ptsl.PTSL_pb2 import SAF_AIFF, SAF_WAVE,\
+from ptsl.PTSL_pb2 import SAF_AIFF, SAF_WAVE, \
     SR_48000, Bit16, Bit24, Bit32Float, \
     IO_Last, IO_StereoMix, IO_51SMPTEMix
 
@@ -58,7 +58,7 @@ class CreateSessionBuilder:
     def smpte51_io_settings(self):
         self._io_settings = IO_51SMPTEMix
 
-    def interlaved(self, value: bool):
+    def interleaved(self, value: bool):
         self._is_interleaved = value
 
     def create(self) -> None:

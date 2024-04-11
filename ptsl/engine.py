@@ -18,7 +18,7 @@ from ptsl.builders.import_builder import \
     ImportSessionDataBuilder
 
 import ptsl.PTSL_pb2 as pt
-from ptsl.PTSL_pb2 import SessionAudioFormat, BitDepth,  FileLocation, \
+from ptsl.PTSL_pb2 import SessionAudioFormat, BitDepth, FileLocation, \
     EM_FileType, EM_SourceInfo, EM_AudioInfo, EM_VideoInfo, \
     EM_LocationInfo, EM_DolbyAtmosInfo, TripleBool, SessionTimeCodeRate, \
     SessionFeetFramesRate, SessionRatePull, Track, \
@@ -323,6 +323,43 @@ class Engine:
         """
         self.client.run(ops.RecordHalfSpeed())
 
+    def create_memory_location(self,
+                               location_number: int,
+                               name: str,
+                               start_time: str,
+                               end_time: str,
+                               time_properties: TimeProperties,
+                               reference: MemoryLocationReference,
+                               general_properties: MemoryLocationProperties,
+                               comments: str) -> None:
+        """
+        Create a new memory location.
+        """
+        op = ops.CreateMemoryLocation(
+            number=location_number,
+            name=name,
+            start_time=start_time,
+            end_time=end_time,
+            time_properties=time_properties,
+            reference=reference,
+            general_properties=general_properties,
+            comments=comments
+        )
+
+        self.client.run(op)
+
+    def get_edit_mode(self):
+        """
+        :returns: The current edit mode and options:
+        """
+        op = ops.GetEditMode()
+        self.client.run(op)
+        # mode = op.response.current_setting
+
+        op2 = ops.GetEditModeOptions()
+        self.client.run(op2)
+        # options = op.response.edit_mode_options
+
     def edit_memory_location(self, location_number: int,
                              name: str,
                              start_time: str, end_time: str,
@@ -623,7 +660,8 @@ class Engine:
 
         op = ops.GetTrackList(
             page_limit=1000,
-            track_filter_list=filters
+            track_filter_list=filters,
+            pagination_request=pt.PaginationRequest(limit=1000, offset=0)
         )
 
         self.client.run(op)

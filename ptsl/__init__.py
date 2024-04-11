@@ -24,11 +24,11 @@ a particular form.
 - The third element increments with bug fixes or modifcations to docs,
   build system, etc.
 
-
 """
+
 
 from .client import Client
 from .engine import Engine, open_engine
 from .errors import CommandError
 
-__version__ = '101.1.0'
+__version__ = '301.0.0'

@@ -42,7 +42,7 @@ class TestSessionBuilder(TestCase):
                 builder.wave_format()
                 builder.bit_depth(32)
                 builder.smpte51_io_settings()
-                builder.interlaved(False)
+                builder.interleaved(False)
                 builder.create()
 
                 engine.client.run.assert_called()
