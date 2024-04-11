@@ -6,7 +6,7 @@
 ![](https://img.shields.io/pypi/pyversions/py-ptsl.svg) [![](https://img.shields.io/pypi/v/py-ptsl.svg)](https://pypi.org/project/py-ptsl/) ![](https://img.shields.io/pypi/wheel/py-ptsl.svg)
 
 [![Pro Tools Version - 2023.9](https://img.shields.io/static/v1?label=Pro+Tools+Version&message=2023.9&color=8f228f)](https://github.com/iluvcapra/py-ptsl/blob/master/docs/source/ptsl_versions.rst)
-[![PTSL Version - 1](https://img.shields.io/static/v1?label=PTSL+Version&message=1&color=0000ff)](https://github.com/iluvcapra/py-ptsl/blob/master/docs/source/ptsl_versions.rst)
+[![PTSL Version - 3](https://img.shields.io/static/v1?label=PTSL+Version&message=1&color=0000ff)](https://github.com/iluvcapra/py-ptsl/blob/master/docs/source/ptsl_versions.rst)
 
 # py-ptsl
 
@@ -48,6 +48,5 @@ from ptsl import open_engine
 
 with open_engine(company_name="MY_COMPANY", application_name="MY_TOOL") as engine:
     session_name = engine.session_name()
-
 ```
 
