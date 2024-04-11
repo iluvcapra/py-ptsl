@@ -90,7 +90,7 @@ class MockPtslStub:
         elif request.header.command == pt.Paste:
             status = pt.Failed
             error_body_json = """
-            { 
+            {
             "errors": [ {
                 "command_error_type": "PT_CopyOptionCopy",
                 "command_error_message": "Test error message",
