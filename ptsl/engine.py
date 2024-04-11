@@ -26,7 +26,7 @@ from ptsl.PTSL_pb2 import SessionAudioFormat, BitDepth, FileLocation, \
     PasteSpecialOptions, TrackOffsetOptions, TrackListInvertibleFilter, \
     ExportFileType, ResolveDuplicateNamesBy, ExportFormat, \
     MemoryLocationReference, MemoryLocationProperties, \
-    TimeProperties, CL_ClipLocation
+    TimeProperties, CL_ClipLocation, SelectionMode
 
 
 @contextmanager
@@ -836,13 +836,15 @@ class Engine:
         self.client.run(ops.RefreshAllModifiedAudioFiles())
 
     # PT 2023.9
-    # TODO add remaining new methods, add proper docstrings, expose remaining parameters
+    # TODO add remaining new methods, add proper docstrings, expose
+    # remaining parameters
     # CreateNewTracks
     # GetEditMode, SetEditMode, GetEditModeOptions, SetEditModeOptions
     # GetEditTool, SetEditTool
     # RecallZoomPreset
 
-    def select_tracks_by_name(self, names: List[str], mode: Optional['SelectionMode'] = pt.SM_Replace):
+    def select_tracks_by_name(self, names: List[str],
+                              mode: Optional['SelectionMode'] = pt.SM_Replace):
         """
         Selects all tracks matching any of the passed names literally.
         """
@@ -850,7 +852,8 @@ class Engine:
         op = ops.SelectTracksByName(track_names=names, selection_mode=mode)
         self.client.run(op)
 
-    def set_timeline_selection(self, start: str, end: str, playhead_time: Optional[str]):
+    def set_timeline_selection(self, start: str, end: str,
+                               playhead_time: Optional[str]):
         """
         Sets temporal selection range
         """
@@ -876,7 +879,8 @@ class Engine:
 
     def get_timeline_selection(self) -> pt.GetTimelineSelectionResponseBody:
         """
-        Returns data about the current temporal selection, including pre/post-roll settings
+        Returns data about the current temporal selection, including
+        pre/post-roll settings.
         """
         op = ops.GetMemoryLocations()
         self.client.run(op)
