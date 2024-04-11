@@ -19,7 +19,7 @@ from ptsl.errors import CommandError
 from ptsl.ops import Operation
 
 
-PTSL_VERSION = 1
+PTSL_VERSION = 3
 
 
 @contextmanager
@@ -153,11 +153,12 @@ class Client:
         operation.status = response.header.status
 
         if response.header.status == pt.Failed:
-            cleaned_response_error_json = self._response_error_json_cleanup(
-                response.response_error_json)
-            command_error = json_format.Parse(cleaned_response_error_json,
-                                              pt.CommandError())
-            raise CommandError(command_error)
+            cleaned_response_error_json = response.response_error_json
+            # self._response_error_json_cleanup(
+            # response.response_error_json)
+            command_errors = json_format.Parse(cleaned_response_error_json,
+                                               pt.ResponseError())
+            raise CommandError(command_errors.errors)
 
         elif response.header.status == pt.Completed:
             self._handle_completed_response(operation, response)
@@ -180,7 +181,6 @@ class Client:
         else:
             request_body_json = \
                 json_format.MessageToJson(operation.request,
-                                          including_default_value_fields=True,
                                           preserving_proto_field_name=True)
 
         self.auditor.request_json_before_cleanup(request_body_json)
@@ -196,9 +196,11 @@ class Client:
         (for instance, if the server returns a symbold name or numeric string
         value, as it sometimes has done in the past. (See `errata`).
         """
+
         errors = json.loads(json_in)
         error_dict = errors['errors'][0]
         old_val = errors['errors'][0]['command_error_type']
+
         if isinstance(old_val, str):
             if old_val.isdigit():
                 error_dict['command_error_type'] = int(old_val)

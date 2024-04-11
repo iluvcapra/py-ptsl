@@ -104,6 +104,7 @@ class CommandId(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     SetTrackFrozenState: _ClassVar[CommandId]
     SetTrackOnlineState: _ClassVar[CommandId]
     SetTrackOpenState: _ClassVar[CommandId]
+    GetSessionIDs: _ClassVar[CommandId]
 
 class TaskStatus(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
@@ -241,12 +242,16 @@ class TrackFormat(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     TF_5thOrderAmbisonics: _ClassVar[TrackFormat]
     TF_6thOrderAmbisonics: _ClassVar[TrackFormat]
     TF_7thOrderAmbisonics: _ClassVar[TrackFormat]
+    TF_None: _ClassVar[TrackFormat]
+    TF_2_1: _ClassVar[TrackFormat]
+    TF_Overhead: _ClassVar[TrackFormat]
 
 class TrackTimebase(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
     TTB_Unknown: _ClassVar[TrackTimebase]
     TTB_Samples: _ClassVar[TrackTimebase]
     TTB_Ticks: _ClassVar[TrackTimebase]
+    TTB_None: _ClassVar[TrackTimebase]
 
 class TrackAttributeState(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
@@ -796,6 +801,7 @@ SetTrackInactiveState: CommandId
 SetTrackFrozenState: CommandId
 SetTrackOnlineState: CommandId
 SetTrackOpenState: CommandId
+GetSessionIDs: CommandId
 Queued: TaskStatus
 Pending: TaskStatus
 InProgress: TaskStatus
@@ -921,9 +927,13 @@ TF_4thOrderAmbisonics: TrackFormat
 TF_5thOrderAmbisonics: TrackFormat
 TF_6thOrderAmbisonics: TrackFormat
 TF_7thOrderAmbisonics: TrackFormat
+TF_None: TrackFormat
+TF_2_1: TrackFormat
+TF_Overhead: TrackFormat
 TTB_Unknown: TrackTimebase
 TTB_Samples: TrackTimebase
 TTB_Ticks: TrackTimebase
+TTB_None: TrackTimebase
 None: TrackAttributeState
 SetExplicitly: TrackAttributeState
 SetImplicitly: TrackAttributeState
@@ -1304,7 +1314,7 @@ class PaginationResponse(_message.Message):
     def __init__(self, total: _Optional[int] = ..., limit: _Optional[int] = ..., offset: _Optional[int] = ...) -> None: ...
 
 class TrackAttributes(_message.Message):
-    __slots__ = ("is_inactive", "is_hidden", "is_selected", "contains_clips", "contains_automation", "is_soloed", "is_record_enabled", "is_input_monitoring_on", "is_smart_dsp_on", "is_locked", "is_muted", "is_frozen", "is_open", "is_online")
+    __slots__ = ("is_inactive", "is_hidden", "is_selected", "contains_clips", "contains_automation", "is_soloed", "is_record_enabled", "is_input_monitoring_on", "is_smart_dsp_on", "is_locked", "is_muted", "is_frozen", "is_open", "is_online", "is_record_enabled_safe", "is_smart_dsp_on_safe", "is_soloed_safe")
     IS_INACTIVE_FIELD_NUMBER: _ClassVar[int]
     IS_HIDDEN_FIELD_NUMBER: _ClassVar[int]
     IS_SELECTED_FIELD_NUMBER: _ClassVar[int]
@@ -1319,6 +1329,9 @@ class TrackAttributes(_message.Message):
     IS_FROZEN_FIELD_NUMBER: _ClassVar[int]
     IS_OPEN_FIELD_NUMBER: _ClassVar[int]
     IS_ONLINE_FIELD_NUMBER: _ClassVar[int]
+    IS_RECORD_ENABLED_SAFE_FIELD_NUMBER: _ClassVar[int]
+    IS_SMART_DSP_ON_SAFE_FIELD_NUMBER: _ClassVar[int]
+    IS_SOLOED_SAFE_FIELD_NUMBER: _ClassVar[int]
     is_inactive: TrackAttributeState
     is_hidden: TrackAttributeState
     is_selected: TrackAttributeState
@@ -1333,10 +1346,13 @@ class TrackAttributes(_message.Message):
     is_frozen: bool
     is_open: bool
     is_online: bool
-    def __init__(self, is_inactive: _Optional[_Union[TrackAttributeState, str]] = ..., is_hidden: _Optional[_Union[TrackAttributeState, str]] = ..., is_selected: _Optional[_Union[TrackAttributeState, str]] = ..., contains_clips: bool = ..., contains_automation: bool = ..., is_soloed: bool = ..., is_record_enabled: bool = ..., is_input_monitoring_on: _Optional[_Union[TrackAttributeState, str]] = ..., is_smart_dsp_on: bool = ..., is_locked: bool = ..., is_muted: bool = ..., is_frozen: bool = ..., is_open: bool = ..., is_online: bool = ...) -> None: ...
+    is_record_enabled_safe: bool
+    is_smart_dsp_on_safe: bool
+    is_soloed_safe: bool
+    def __init__(self, is_inactive: _Optional[_Union[TrackAttributeState, str]] = ..., is_hidden: _Optional[_Union[TrackAttributeState, str]] = ..., is_selected: _Optional[_Union[TrackAttributeState, str]] = ..., contains_clips: bool = ..., contains_automation: bool = ..., is_soloed: bool = ..., is_record_enabled: bool = ..., is_input_monitoring_on: _Optional[_Union[TrackAttributeState, str]] = ..., is_smart_dsp_on: bool = ..., is_locked: bool = ..., is_muted: bool = ..., is_frozen: bool = ..., is_open: bool = ..., is_online: bool = ..., is_record_enabled_safe: bool = ..., is_smart_dsp_on_safe: bool = ..., is_soloed_safe: bool = ...) -> None: ...
 
 class Track(_message.Message):
-    __slots__ = ("name", "type", "id", "index", "color", "track_attributes", "id_compressed")
+    __slots__ = ("name", "type", "id", "index", "color", "track_attributes", "id_compressed", "format", "timebase")
     NAME_FIELD_NUMBER: _ClassVar[int]
     TYPE_FIELD_NUMBER: _ClassVar[int]
     ID_FIELD_NUMBER: _ClassVar[int]
@@ -1344,6 +1360,8 @@ class Track(_message.Message):
     COLOR_FIELD_NUMBER: _ClassVar[int]
     TRACK_ATTRIBUTES_FIELD_NUMBER: _ClassVar[int]
     ID_COMPRESSED_FIELD_NUMBER: _ClassVar[int]
+    FORMAT_FIELD_NUMBER: _ClassVar[int]
+    TIMEBASE_FIELD_NUMBER: _ClassVar[int]
     name: str
     type: TrackType
     id: str
@@ -1351,7 +1369,9 @@ class Track(_message.Message):
     color: str
     track_attributes: TrackAttributes
     id_compressed: str
-    def __init__(self, name: _Optional[str] = ..., type: _Optional[_Union[TrackType, str]] = ..., id: _Optional[str] = ..., index: _Optional[int] = ..., color: _Optional[str] = ..., track_attributes: _Optional[_Union[TrackAttributes, _Mapping]] = ..., id_compressed: _Optional[str] = ...) -> None: ...
+    format: TrackFormat
+    timebase: TrackTimebase
+    def __init__(self, name: _Optional[str] = ..., type: _Optional[_Union[TrackType, str]] = ..., id: _Optional[str] = ..., index: _Optional[int] = ..., color: _Optional[str] = ..., track_attributes: _Optional[_Union[TrackAttributes, _Mapping]] = ..., id_compressed: _Optional[str] = ..., format: _Optional[_Union[TrackFormat, str]] = ..., timebase: _Optional[_Union[TrackTimebase, str]] = ...) -> None: ...
 
 class GetTaskStatusRequestBody(_message.Message):
     __slots__ = ("task_id",)
@@ -1588,20 +1608,22 @@ class RenameTargetTrackRequestBody(_message.Message):
     def __init__(self, track_id: _Optional[str] = ..., new_name: _Optional[str] = ..., current_name: _Optional[str] = ...) -> None: ...
 
 class ExportClipsAsFilesRequestBody(_message.Message):
-    __slots__ = ("file_path", "format", "file_type", "bit_depth", "duplicate_names", "enforce_avid_compatibility")
+    __slots__ = ("file_path", "format", "file_type", "bit_depth", "duplicate_names", "enforce_avid_compatibility", "sample_rate_custom")
     FILE_PATH_FIELD_NUMBER: _ClassVar[int]
     FORMAT_FIELD_NUMBER: _ClassVar[int]
     FILE_TYPE_FIELD_NUMBER: _ClassVar[int]
     BIT_DEPTH_FIELD_NUMBER: _ClassVar[int]
     DUPLICATE_NAMES_FIELD_NUMBER: _ClassVar[int]
     ENFORCE_AVID_COMPATIBILITY_FIELD_NUMBER: _ClassVar[int]
+    SAMPLE_RATE_CUSTOM_FIELD_NUMBER: _ClassVar[int]
     file_path: str
     format: ExportFormat
     file_type: ExportFileType
     bit_depth: BitDepth
     duplicate_names: ResolveDuplicateNamesBy
     enforce_avid_compatibility: bool
-    def __init__(self, file_path: _Optional[str] = ..., format: _Optional[_Union[ExportFormat, str]] = ..., file_type: _Optional[_Union[ExportFileType, str]] = ..., bit_depth: _Optional[_Union[BitDepth, str]] = ..., duplicate_names: _Optional[_Union[ResolveDuplicateNamesBy, str]] = ..., enforce_avid_compatibility: bool = ...) -> None: ...
+    sample_rate_custom: int
+    def __init__(self, file_path: _Optional[str] = ..., format: _Optional[_Union[ExportFormat, str]] = ..., file_type: _Optional[_Union[ExportFileType, str]] = ..., bit_depth: _Optional[_Union[BitDepth, str]] = ..., duplicate_names: _Optional[_Union[ResolveDuplicateNamesBy, str]] = ..., enforce_avid_compatibility: bool = ..., sample_rate_custom: _Optional[int] = ...) -> None: ...
 
 class ExportSelectedTracksAsAAFOMFRequestBody(_message.Message):
     __slots__ = ("file_type", "bit_depth", "copy_option", "enforce_media_composer_compatibility", "quantize_edits_to_frame_boundaries", "export_stereo_as_multichannel", "container_file_name", "container_file_location", "asset_file_location", "comments", "sequence_name")
@@ -2592,3 +2614,13 @@ class SetTrackOpenStateRequestBody(_message.Message):
     track_names: _containers.RepeatedScalarFieldContainer[str]
     enabled: bool
     def __init__(self, track_names: _Optional[_Iterable[str]] = ..., enabled: bool = ...) -> None: ...
+
+class GetSessionIDsResponseBody(_message.Message):
+    __slots__ = ("origin_id", "instance_id", "parent_id")
+    ORIGIN_ID_FIELD_NUMBER: _ClassVar[int]
+    INSTANCE_ID_FIELD_NUMBER: _ClassVar[int]
+    PARENT_ID_FIELD_NUMBER: _ClassVar[int]
+    origin_id: str
+    instance_id: str
+    parent_id: str
+    def __init__(self, origin_id: _Optional[str] = ..., instance_id: _Optional[str] = ..., parent_id: _Optional[str] = ...) -> None: ...
