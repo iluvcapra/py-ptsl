@@ -26,7 +26,7 @@ from ptsl.PTSL_pb2 import SessionAudioFormat, BitDepth, FileLocation, \
     PasteSpecialOptions, TrackOffsetOptions, TrackListInvertibleFilter, \
     ExportFileType, ResolveDuplicateNamesBy, ExportFormat, \
     MemoryLocationReference, MemoryLocationProperties, \
-    TimeProperties, CL_ClipLocation
+    TimeProperties, CL_ClipLocation, SelectionMode
 
 
 @contextmanager
@@ -825,6 +825,63 @@ class Engine:
 
     def refresh_all_modified_audio_flles(self):
         """
+        Deprecated: use refresh_all_modified_audio_files() instead
+        """
+        self.refresh_all_modified_audio_files()
+
+    def refresh_all_modified_audio_files(self):
+        """
         Refreshes all modified audio files.
         """
         self.client.run(ops.RefreshAllModifiedAudioFiles())
+
+    # PT 2023.9
+    # TODO add remaining new methods, add proper docstrings, expose
+    # remaining parameters
+    # CreateNewTracks
+    # GetEditMode, SetEditMode, GetEditModeOptions, SetEditModeOptions
+    # GetEditTool, SetEditTool
+    # RecallZoomPreset
+
+    def select_tracks_by_name(self, names: List[str],
+                              mode: Optional['SelectionMode'] = pt.SM_Replace):
+        """
+        Selects all tracks matching any of the passed names literally.
+        """
+        # TODO: handle pagination request?
+        op = ops.SelectTracksByName(track_names=names, selection_mode=mode)
+        self.client.run(op)
+
+    def set_timeline_selection(self, start: str, end: str,
+                               playhead_time: Optional[str]):
+        """
+        Sets temporal selection range
+        """
+        # TODO expose remaining arguments
+        # string 	pre_roll_start_time = 4
+        # string 	post_roll_stop_time = 5
+        # TripleBool 	pre_roll_enabled = 6
+        # TripleBool 	post_roll_enabled = 7
+        # TimelineUpdateVideo 	update_video_to = 8
+        # TripleBool 	propagate_to_satellites = 9
+
+        if playhead_time is None:
+            playhead_time = start
+
+        self.client.run(ops.SetTimelineSelection(
+            play_start_marker_time=playhead_time,
+            in_time=start,
+            out_time=end,
+            pre_roll_start_time=start,
+            post_roll_stop_time=end,
+            update_video_to=pt.TUV_None,
+        ))
+
+    def get_timeline_selection(self) -> pt.GetTimelineSelectionResponseBody:
+        """
+        Returns data about the current temporal selection, including
+        pre/post-roll settings.
+        """
+        op = ops.GetMemoryLocations()
+        self.client.run(op)
+        return op.response

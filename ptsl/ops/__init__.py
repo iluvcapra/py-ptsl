@@ -84,3 +84,13 @@ from .toggle_play_state import \
     PlayHalfSpeed, RecordHalfSpeed
 
 from .memory_locations import EditMemoryLocation, GetMemoryLocations
+
+# Pro Tools 2023.9
+
+from .create_new_tracks import CreateNewTracks
+from .select_tracks import SelectTracksByName
+from .edit_mode import GetEditMode, SetEditMode, GetEditModeOptions, \
+        SetEditModeOptions
+from .edit_tool import GetEditTool, SetEditTool
+from .zoom_preset import RecallZoomPreset
+from .timeline_selection import SetTimelineSelection, GetTimelineSelection
