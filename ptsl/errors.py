@@ -27,14 +27,14 @@ class CommandError(RuntimeError):
         """
         `True` if command error message is marked as a warning.
         """
-        return self.error_response[0].is_warning
+        return self.error_responses[0].is_warning
 
     @property
     def error_type(self) -> CommandErrorType:
         """
         :class:`ptsl.PTSL_pb2.CommandErrorType` enumeration value.
         """
-        return self.error_response[0].command_error_type
+        return self.error_responses[0].command_error_type
 
     @property
     def error_name(self) -> Optional[str]:
@@ -51,4 +51,4 @@ class CommandError(RuntimeError):
         """
         Error message as returned by the client.
         """
-        return self.error_response[0].command_error_message
+        return self.error_responses[0].command_error_message

@@ -51,7 +51,6 @@ class MockPtslStub:
     def message_to_json(self, message):
         return json_format.MessageToJson(
             message,
-            including_default_value_fields=True,
             preserving_proto_field_name=True)
 
     def SendGrpcRequest(
@@ -83,18 +82,20 @@ class MockPtslStub:
         elif request.header.command == pt.Copy:
             status = pt.Failed
             error_body_json = self.message_to_json(
-                pt.CommandError(
+                pt.ResponseError(errors=[pt.CommandError(
                     command_error_type=pt.PT_UnknownError,
                     command_error_message="Test error response",
                     is_warning=False)
-            )
+                ]))
         elif request.header.command == pt.Paste:
             status = pt.Failed
             error_body_json = """
-            {
-            "command_error_type": "PT_CopyOptionCopy",
-            "command_error_message": "Test error message",
-            "is_warning": true
+            { 
+            "errors": [ {
+                "command_error_type": "PT_CopyOptionCopy",
+                "command_error_message": "Test error message",
+                "is_warning": true
+                } ]
             }
             """
 
