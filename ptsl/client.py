@@ -286,9 +286,10 @@ class Client:
             company_name=company_name,
             application_name=application_name)
 
-        req_json = json_format.MessageToJson(req,
-                                             including_default_value_fields=True,
-                                             preserving_proto_field_name=True)
+        req_json = json_format.MessageToJson(
+            req,
+            including_default_value_fields=True,                                 
+            preserving_proto_field_name=True)
 
         response = self._send_sync_request(pt.RegisterConnection,
                                            req_json)
