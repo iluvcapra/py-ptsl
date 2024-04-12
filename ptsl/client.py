@@ -288,7 +288,7 @@ class Client:
 
         req_json = json_format.MessageToJson(
             req,
-            including_default_value_fields=True,                                 
+            including_default_value_fields=True,
             preserving_proto_field_name=True)
 
         response = self._send_sync_request(pt.RegisterConnection,
