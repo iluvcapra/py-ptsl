@@ -935,11 +935,12 @@ class Engine:
         op = ops.SelectTracksByName(track_names=names, selection_mode=mode)
         self.client.run(op)
 
-    def get_timeline_selection(self) -> pt.GetTimelineSelectionResponseBody:
+    def get_timeline_selection(self) -> Tuple[str, str]:
         """
-        Returns data about the current temporal selection, including
-        pre/post-roll settings.
+        Returns data about the current timeline selection.
+        :returns: a Tuple of the In and Out time.
         """
         op = ops.GetMemoryLocations()
-        self.client.run(op)
-        return op.response
+        response = self.client.run(op)
+
+        return (response.in_time, response.out_time)
