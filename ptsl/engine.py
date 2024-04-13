@@ -26,7 +26,11 @@ from ptsl.PTSL_pb2 import SessionAudioFormat, BitDepth, FileLocation, \
     PasteSpecialOptions, TrackOffsetOptions, TrackListInvertibleFilter, \
     ExportFileType, ResolveDuplicateNamesBy, ExportFormat, \
     MemoryLocationReference, MemoryLocationProperties, \
-    TimeProperties, CL_ClipLocation
+    TimeProperties, CL_ClipLocation, \
+    TrackFormat, TrackType, TrackTimebase, \
+    AudioOperations, MediaDestination, MediaLocation, \
+    SpotLocationType, Start, TimeCode, \
+    TimelineUpdateVideo, SelectionMode
 
 
 @contextmanager
@@ -216,6 +220,35 @@ class Engine:
         """
         return ImportSessionDataBuilder(self, session_path)
 
+    def import_audio(self,
+                     file_list: List[str],
+                     destination_path: Optional[str] = None,
+                     audio_operations: Optional[AudioOperations] = None,
+                     audio_destination: Optional[MediaDestination] = None,
+                     audio_location: Optional[MediaLocation] = None,
+                     timecode: Optional[str] = None,
+                     location_type: Optional[SpotLocationType] = Start,
+                     location_options: Optional[TrackOffsetOptions] = TimeCode
+                     ) -> None:
+        """
+        Import audio data into the currently-open session.
+        location_data needs to be provided regardless if empty.
+        Just a basic implementation for audio data import TC based only.
+        """
+        location_data = pt.SpotLocationData(location_type=location_type,
+                                            location_options=location_options,
+                                            location_value=timecode
+                                            )
+        audio_data = pt.AudioData(file_list=file_list,
+                                  destination_path=destination_path,
+                                  audio_operations=audio_operations,
+                                  audio_destination=audio_destination,
+                                  audio_location=audio_location,
+                                  location_data=location_data
+                                  )
+        op = ops.Import(import_type=1, audio_data=audio_data)
+        self.client.run(op)
+
     def select_all_clips_on_track(self, track_name: str):
         """
         Select all clips on track.
@@ -323,29 +356,40 @@ class Engine:
         """
         self.client.run(ops.RecordHalfSpeed())
 
-    def create_memory_location(self,
-                               location_number: int,
-                               name: str,
-                               start_time: str,
-                               end_time: str,
-                               time_properties: TimeProperties,
-                               reference: MemoryLocationReference,
-                               general_properties: MemoryLocationProperties,
-                               comments: str) -> None:
+    def create_memory_location(
+            self,
+            start_time: Optional[str] = None,
+            memory_number: Optional[int] = None,
+            name: Optional[str] = None,
+            end_time: Optional[str] = None,
+            location: Optional[str] = None,
+            track_name: Optional[str] = None,
+            time_properties:
+            Optional[TimeProperties] = None,
+            reference: Optional[MemoryLocationReference] = None,
+            general_properties: Optional[MemoryLocationProperties] = None,
+            comments: Optional[str] = None,
+            color_index: Optional[int] = None
+    ) -> None:
         """
         Create a new memory location.
         """
+        if general_properties is None:
+            general_properties = MemoryLocationProperties(
+                track_visibility=False)
         op = ops.CreateMemoryLocation(
-            number=location_number,
+            number=memory_number,
             name=name,
             start_time=start_time,
             end_time=end_time,
+            track_name=track_name,
             time_properties=time_properties,
             reference=reference,
             general_properties=general_properties,
-            comments=comments
+            comments=comments,
+            location=location,
+            color_index=color_index
         )
-
         self.client.run(op)
 
     def get_edit_mode(self):
@@ -659,8 +703,8 @@ class Engine:
                                                     is_inverted=False)]
 
         op = ops.GetTrackList(
-            pagination_request=pt.PaginationRequest(limit=1000, offset=0),
-            track_filter_list=filters
+            track_filter_list=filters,
+            pagination_request=pt.PaginationRequest(limit=1000, offset=0)
         )
 
         self.client.run(op)
@@ -769,6 +813,51 @@ class Engine:
         op = ops.SetSessionVideoRatePullSettings(video_rate_pull=pull_rate)
         self.client.run(op)
 
+    def set_timeline_selection(self,
+                               in_time: Optional[str],
+                               play_start_marker_time: Optional[str] = None,
+                               out_time: Optional[str] = None,
+                               pre_roll_start_time: Optional[str] = None,
+                               post_roll_stop_time: Optional[str] = None,
+                               pre_roll_enabled: Optional[TripleBool] = None,
+                               update_video_to:
+                               Optional[TimelineUpdateVideo] = None,
+                               propagate_to_satellites:
+                               Optional[TripleBool] = None
+                               ):
+        """
+        Set Selection at Timecode
+        """
+        op = ops.SetTimelineSelection(
+            play_start_marker_time=play_start_marker_time,
+            in_time=in_time,
+            out_time=out_time,
+            pre_roll_start_time=pre_roll_start_time,
+            post_roll_stop_time=post_roll_stop_time,
+            pre_roll_enabled=pre_roll_enabled,
+            update_video_to=update_video_to,
+            propagate_to_satellites=propagate_to_satellites
+        )
+        self.client.run(op)
+
+    def create_new_tracks(self,
+                          number_of_tracks: Optional[int] = None,
+                          track_name: Optional[str] = None,
+                          track_format: Optional[TrackFormat] = None,
+                          track_type: Optional[TrackType] = None,
+                          track_timebase: Optional[TrackTimebase] = None
+                          ):
+        """
+        Create new Tracks
+        """
+        op = ops.CreateNewTracks(number_of_tracks=number_of_tracks,
+                                 track_name=track_name,
+                                 track_format=track_format,
+                                 track_type=track_type,
+                                 track_timebase=track_timebase
+                                 )
+        self.client.run(op)
+
     def cut(self, special: Optional['AutomationDataOptions'] = None):
         """
         Execute an Edit > Cut.
@@ -822,8 +911,35 @@ class Engine:
         op = ops.RefreshAllModifiedAudioFiles(file_list=files)
         self.client.run(op)
 
-    def refresh_all_modified_audio_flles(self):
+    def refresh_all_modified_audio_files(self):
         """
         Refreshes all modified audio files.
         """
         self.client.run(ops.RefreshAllModifiedAudioFiles())
+
+    # PT 2023.9
+    # TODO add remaining new methods, add proper docstrings, expose
+    # remaining parameters
+    # CreateNewTracks
+    # GetEditMode, SetEditMode, GetEditModeOptions, SetEditModeOptions
+    # GetEditTool, SetEditTool
+    # RecallZoomPreset
+
+    def select_tracks_by_name(self, names: List[str],
+                              mode: Optional['SelectionMode'] = pt.SM_Replace):
+        """
+        Selects all tracks matching any of the passed names literally.
+        """
+        # TODO: handle pagination request?
+        op = ops.SelectTracksByName(track_names=names, selection_mode=mode)
+        self.client.run(op)
+
+    def get_timeline_selection(self) -> Tuple[str, str]:
+        """
+        Returns data about the current timeline selection.
+        :returns: a Tuple of the In and Out time.
+        """
+        op = ops.GetMemoryLocations()
+        response = self.client.run(op)
+
+        return (response.in_time, response.out_time)

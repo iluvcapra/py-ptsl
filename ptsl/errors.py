@@ -2,7 +2,7 @@
 ptsl Exceptions
 """
 
-from typing import Optional
+from typing import Optional, List
 
 from ptsl.PTSL_pb2 import CommandError as CommandErrorResponse
 from ptsl.PTSL_pb2 import CommandErrorType
@@ -12,10 +12,10 @@ class CommandError(RuntimeError):
     """
     A :class:`Exception` for :class:`CommandError` results
     """
-    error_response: CommandErrorResponse
+    error_responses: List[CommandErrorResponse]
 
-    def __init__(self, error_response: CommandErrorResponse) -> None:
-        self.error_response = error_response
+    def __init__(self, error_responses: List[CommandErrorResponse]) -> None:
+        self.error_responses = error_responses
         super().__init__()
 
     def __str__(self) -> str:
@@ -27,14 +27,14 @@ class CommandError(RuntimeError):
         """
         `True` if command error message is marked as a warning.
         """
-        return self.error_response.is_warning
+        return self.error_responses[0].is_warning
 
     @property
     def error_type(self) -> CommandErrorType:
         """
         :class:`ptsl.PTSL_pb2.CommandErrorType` enumeration value.
         """
-        return self.error_response.command_error_type
+        return self.error_responses[0].command_error_type
 
     @property
     def error_name(self) -> Optional[str]:
@@ -51,4 +51,4 @@ class CommandError(RuntimeError):
         """
         Error message as returned by the client.
         """
-        return self.error_response.command_error_message
+        return self.error_responses[0].command_error_message

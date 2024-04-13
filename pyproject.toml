@@ -28,7 +28,7 @@ keywords = [
 ]
 dependencies = [
     'grpcio >= 1.51.1', 
-    'protobuf >= 4.21.12'
+    'protobuf == 4.25.3'
 ]
 
 [tool.flit.module]
