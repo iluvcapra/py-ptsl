@@ -84,7 +84,8 @@ from .toggle_play_state import \
     TogglePlayState, ToggleRecordEnable, \
     PlayHalfSpeed, RecordHalfSpeed
 
-from .memory_locations import EditMemoryLocation, GetMemoryLocations
+from .memory_locations import EditMemoryLocation, \
+    GetMemoryLocations, CreateMemoryLocation
 
 # Pro Tools 2023.9
 
