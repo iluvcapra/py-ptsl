@@ -442,7 +442,7 @@ class Engine:
         """
         Get a list of all memory locations in currently-open session.
         """
-        op = ops.GetMemoryLocations()
+        op = ops.GetMemoryLocations(pagination_request=pt.PaginationRequest(limit=1000, offset=0))
         self.client.run(op)
         return op.response.memory_locations
 
