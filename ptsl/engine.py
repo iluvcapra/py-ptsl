@@ -936,12 +936,12 @@ class Engine:
         op = ops.SelectTracksByName(track_names=names, selection_mode=mode)
         self.client.run(op)
 
-    def get_timeline_selection(self) -> Tuple[str, str]:
+    def get_timeline_selection(self, format: pt.TrackOffsetOptions = pt.TrackOffsetOptions.TimeCode) -> Tuple[str, str]:
         """
         Returns data about the current timeline selection.
         :returns: a Tuple of the In and Out time.
         """
-        op = ops.GetMemoryLocations()
-        response = self.client.run(op)
+        op = ops.GetTimelineSelection(time_scale=format)
+        self.client.run(op)
 
-        return (response.in_time, response.out_time)
+        return (op.response.in_time, op.response.out_time)
