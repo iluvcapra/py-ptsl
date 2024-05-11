@@ -1,6 +1,42 @@
 Command Implementations in `Engine`
 ===================================
 
+How to Add a New Command Implementation 
+----------------------------------------
+
+#. Create a new :class:`~ptsl.ops.operation.Operation` subclass for the command.
+   
+  #. In the `ptsl/ops` directory, create a new source file for the command or commands you wish to implement. 
+       For the implementation to work correctly, the name of the operation
+       subclass must be identical to the name of the Command in the PTSL
+       protocol.
+
+       In general, this class shouldn't need to have any implementation (the
+       class block can simply be a ``pass``). The `Operation` class handles
+       looking up the request and response types, looks up the command ID, and
+       maps kwargs of the operation to request args. Sometimes some
+       implementation is required to clean up erroneous JSON data from the
+       server or to rationalize certain responses. 
+  #. In `ptsl/ops/__init__.py`, import the name of the operation class.
+
+#. Add a new method to :class:`ptsl.Engine`.
+
+  #. On the `Engine` class create a new method to offer callers.
+       This method should accept all request arguments in its signature. If the
+       method requres ptsl types that are not currently imported into
+       `engine.py`, you should import these at the time and refer to them by
+       their short name in the signature. Do not accept a PTSL Request type as
+       a parameter.
+  #. In the method body, create an instance of the :class:`~ptsl.ops.Operation` class you created in step 1. 
+       Pass all request arguments as kwargs to the operation's initializer. Use
+       the field names for your operation's corresponding request type.
+  #. Pass the operation to `client.run()`. 
+       This will encode the operation as a request, post it to the server and 
+       capture the response, if any.
+  #. If there was a response, it will be set on the operation object you created in the `response` field. 
+       Access that field's members and return fields from it to the caller. 
+
+
 PTSL Version 1
 --------------
 
