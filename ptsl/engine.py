@@ -444,7 +444,7 @@ class Engine:
         """
         op = ops.GetMemoryLocations(
             pagination_request=pt.PaginationRequest(limit=1000, offset=0)
-            )
+        )
         self.client.run(op)
         return op.response.memory_locations
 
@@ -932,9 +932,8 @@ class Engine:
         """
         Selects all tracks matching any of the passed names literally.
         """
-        op = ops.SelectTracksByName(track_names=names, selection_mode=mode, 
-                                    pagination_request=
-                                    pt.PaginationRequest(limit=1000, offset=0))
+        op = ops.SelectTracksByName(track_names=names, selection_mode=mode,
+                                    pagination_request=pt.PaginationRequest(limit=1000, offset=0))
         self.client.run(op)
 
     def get_timeline_selection(self, format: TrackOffsetOptions = TimeCode
