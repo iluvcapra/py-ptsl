@@ -97,4 +97,4 @@ from .edit_tool import GetEditTool, SetEditTool
 from .zoom_preset import RecallZoomPreset
 from .timeline_selection import SetTimelineSelection, GetTimelineSelection
 
-from .pt_202406_additions import *
+from .pt_202406_additions import GetSessionSystemDelayInfo
