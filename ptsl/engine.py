@@ -948,3 +948,13 @@ class Engine:
         self.client.run(op)
 
         return (op.response.in_time, op.response.out_time)
+
+    def get_system_delay(self) -> int:
+        """
+        Return the current system delay in samples.
+        """
+        op = ops.GetSessionSystemDelayInfo()
+        self.client.run(op)
+
+        return op.response.samples
+
