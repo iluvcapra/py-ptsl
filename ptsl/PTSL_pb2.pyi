@@ -105,6 +105,25 @@ class CommandId(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     SetTrackOnlineState: _ClassVar[CommandId]
     SetTrackOpenState: _ClassVar[CommandId]
     GetSessionIDs: _ClassVar[CommandId]
+    GetMemoryLocationsManageMode: _ClassVar[CommandId]
+    SetMemoryLocationsManageMode: _ClassVar[CommandId]
+    SetMainCounterFormat: _ClassVar[CommandId]
+    SetSubCounterFormat: _ClassVar[CommandId]
+    GetMainCounterFormat: _ClassVar[CommandId]
+    GetSubCounterFormat: _ClassVar[CommandId]
+    Undo: _ClassVar[CommandId]
+    Redo: _ClassVar[CommandId]
+    UndoAll: _ClassVar[CommandId]
+    RedoAll: _ClassVar[CommandId]
+    ClearUndoQueue: _ClassVar[CommandId]
+    SetTrackDSPModeSafeState: _ClassVar[CommandId]
+    GetSessionSystemDelayInfo: _ClassVar[CommandId]
+    GroupClips: _ClassVar[CommandId]
+    UngroupClips: _ClassVar[CommandId]
+    UngroupAllClips: _ClassVar[CommandId]
+    RegroupClips: _ClassVar[CommandId]
+    RepeatSelection: _ClassVar[CommandId]
+    DuplicateSelection: _ClassVar[CommandId]
 
 class TaskStatus(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
@@ -164,6 +183,10 @@ class CommandErrorType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     PT_ForbiddenTrackType: _ClassVar[CommandErrorType]
     PT_NoVideoEngineFound: _ClassVar[CommandErrorType]
     PT_NoDspHardwareFound: _ClassVar[CommandErrorType]
+    PT_UnsupportedCommand: _ClassVar[CommandErrorType]
+    PT_HostNotReady: _ClassVar[CommandErrorType]
+    PT_CannotBeDone: _ClassVar[CommandErrorType]
+    PT_ResponseLengthExceeded: _ClassVar[CommandErrorType]
     PT_Info: _ClassVar[CommandErrorType]
     SDK_VersionMismatch: _ClassVar[CommandErrorType]
     SDK_NotImplemented: _ClassVar[CommandErrorType]
@@ -654,6 +677,14 @@ class MarkerLocation(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     MLC_MainRuler: _ClassVar[MarkerLocation]
     MLC_Track: _ClassVar[MarkerLocation]
 
+class TrackInsertionPoint(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    TIPoint_Unknown: _ClassVar[TrackInsertionPoint]
+    TIPoint_Before: _ClassVar[TrackInsertionPoint]
+    TIPoint_After: _ClassVar[TrackInsertionPoint]
+    TIPoint_First: _ClassVar[TrackInsertionPoint]
+    TIPoint_Last: _ClassVar[TrackInsertionPoint]
+
 class EditMode(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
     EMO_Unknown: _ClassVar[EditMode]
@@ -705,6 +736,16 @@ class SelectionMode(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     SM_Replace: _ClassVar[SelectionMode]
     SM_Add: _ClassVar[SelectionMode]
     SM_Subtract: _ClassVar[SelectionMode]
+
+class TrackFromClipGroupExclusionReason(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    TCGEReason_Unknown: _ClassVar[TrackFromClipGroupExclusionReason]
+    TCGEReason_TrackTypeIsNotAllowed: _ClassVar[TrackFromClipGroupExclusionReason]
+    TCGEReason_TrackIsFrozen: _ClassVar[TrackFromClipGroupExclusionReason]
+    TCGEReason_TrackIsClosed: _ClassVar[TrackFromClipGroupExclusionReason]
+    TCGEReason_TrackIsLocked: _ClassVar[TrackFromClipGroupExclusionReason]
+    TCGEReason_TrackIsInPlaylistView: _ClassVar[TrackFromClipGroupExclusionReason]
+    TCGEReason_TrackIsElasticAudioWithFades: _ClassVar[TrackFromClipGroupExclusionReason]
 CreateSession: CommandId
 OpenSession: CommandId
 Import: CommandId
@@ -802,6 +843,25 @@ SetTrackFrozenState: CommandId
 SetTrackOnlineState: CommandId
 SetTrackOpenState: CommandId
 GetSessionIDs: CommandId
+GetMemoryLocationsManageMode: CommandId
+SetMemoryLocationsManageMode: CommandId
+SetMainCounterFormat: CommandId
+SetSubCounterFormat: CommandId
+GetMainCounterFormat: CommandId
+GetSubCounterFormat: CommandId
+Undo: CommandId
+Redo: CommandId
+UndoAll: CommandId
+RedoAll: CommandId
+ClearUndoQueue: CommandId
+SetTrackDSPModeSafeState: CommandId
+GetSessionSystemDelayInfo: CommandId
+GroupClips: CommandId
+UngroupClips: CommandId
+UngroupAllClips: CommandId
+RegroupClips: CommandId
+RepeatSelection: CommandId
+DuplicateSelection: CommandId
 Queued: TaskStatus
 Pending: TaskStatus
 InProgress: TaskStatus
@@ -855,6 +915,10 @@ PT_ArgumentOutOfRange: CommandErrorType
 PT_ForbiddenTrackType: CommandErrorType
 PT_NoVideoEngineFound: CommandErrorType
 PT_NoDspHardwareFound: CommandErrorType
+PT_UnsupportedCommand: CommandErrorType
+PT_HostNotReady: CommandErrorType
+PT_CannotBeDone: CommandErrorType
+PT_ResponseLengthExceeded: CommandErrorType
 PT_Info: CommandErrorType
 SDK_VersionMismatch: CommandErrorType
 SDK_NotImplemented: CommandErrorType
@@ -1182,6 +1246,11 @@ MLR_FollowTrackTimebase: MemoryLocationReference
 MLC_Unknown: MarkerLocation
 MLC_MainRuler: MarkerLocation
 MLC_Track: MarkerLocation
+TIPoint_Unknown: TrackInsertionPoint
+TIPoint_Before: TrackInsertionPoint
+TIPoint_After: TrackInsertionPoint
+TIPoint_First: TrackInsertionPoint
+TIPoint_Last: TrackInsertionPoint
 EMO_Unknown: EditMode
 EMO_Shuffle: EditMode
 EMO_Slip: EditMode
@@ -1222,6 +1291,13 @@ SM_Unknown: SelectionMode
 SM_Replace: SelectionMode
 SM_Add: SelectionMode
 SM_Subtract: SelectionMode
+TCGEReason_Unknown: TrackFromClipGroupExclusionReason
+TCGEReason_TrackTypeIsNotAllowed: TrackFromClipGroupExclusionReason
+TCGEReason_TrackIsFrozen: TrackFromClipGroupExclusionReason
+TCGEReason_TrackIsClosed: TrackFromClipGroupExclusionReason
+TCGEReason_TrackIsLocked: TrackFromClipGroupExclusionReason
+TCGEReason_TrackIsInPlaylistView: TrackFromClipGroupExclusionReason
+TCGEReason_TrackIsElasticAudioWithFades: TrackFromClipGroupExclusionReason
 
 class EmptyMessage(_message.Message):
     __slots__ = ()
@@ -1748,20 +1824,22 @@ class EM_SourceInfo(_message.Message):
     def __init__(self, source_type: _Optional[_Union[EM_SourceType, str]] = ..., name: _Optional[str] = ...) -> None: ...
 
 class EM_AudioInfo(_message.Message):
-    __slots__ = ("compression_type", "export_format", "bit_depth", "sample_rate", "pad_to_frame_boundary", "delivery_format")
+    __slots__ = ("compression_type", "export_format", "bit_depth", "sample_rate", "pad_to_frame_boundary", "delivery_format", "sample_rate_custom")
     COMPRESSION_TYPE_FIELD_NUMBER: _ClassVar[int]
     EXPORT_FORMAT_FIELD_NUMBER: _ClassVar[int]
     BIT_DEPTH_FIELD_NUMBER: _ClassVar[int]
     SAMPLE_RATE_FIELD_NUMBER: _ClassVar[int]
     PAD_TO_FRAME_BOUNDARY_FIELD_NUMBER: _ClassVar[int]
     DELIVERY_FORMAT_FIELD_NUMBER: _ClassVar[int]
+    SAMPLE_RATE_CUSTOM_FIELD_NUMBER: _ClassVar[int]
     compression_type: CompressionType
     export_format: ExportFormat
     bit_depth: BitDepth
     sample_rate: SampleRate
     pad_to_frame_boundary: TripleBool
     delivery_format: EM_DeliveryFormat
-    def __init__(self, compression_type: _Optional[_Union[CompressionType, str]] = ..., export_format: _Optional[_Union[ExportFormat, str]] = ..., bit_depth: _Optional[_Union[BitDepth, str]] = ..., sample_rate: _Optional[_Union[SampleRate, str]] = ..., pad_to_frame_boundary: _Optional[_Union[TripleBool, str]] = ..., delivery_format: _Optional[_Union[EM_DeliveryFormat, str]] = ...) -> None: ...
+    sample_rate_custom: int
+    def __init__(self, compression_type: _Optional[_Union[CompressionType, str]] = ..., export_format: _Optional[_Union[ExportFormat, str]] = ..., bit_depth: _Optional[_Union[BitDepth, str]] = ..., sample_rate: _Optional[_Union[SampleRate, str]] = ..., pad_to_frame_boundary: _Optional[_Union[TripleBool, str]] = ..., delivery_format: _Optional[_Union[EM_DeliveryFormat, str]] = ..., sample_rate_custom: _Optional[int] = ...) -> None: ...
 
 class PropertyContainer(_message.Message):
     __slots__ = ("container_name", "type", "value")
@@ -2163,6 +2241,16 @@ class ClearMemoryLocationRequestBody(_message.Message):
     location_list: _containers.RepeatedScalarFieldContainer[int]
     def __init__(self, location_list: _Optional[_Iterable[int]] = ...) -> None: ...
 
+class ClearMemoryLocationResponseBody(_message.Message):
+    __slots__ = ("success_count", "failure_count", "failure_list")
+    SUCCESS_COUNT_FIELD_NUMBER: _ClassVar[int]
+    FAILURE_COUNT_FIELD_NUMBER: _ClassVar[int]
+    FAILURE_LIST_FIELD_NUMBER: _ClassVar[int]
+    success_count: int
+    failure_count: int
+    failure_list: _containers.RepeatedScalarFieldContainer[int]
+    def __init__(self, success_count: _Optional[int] = ..., failure_count: _Optional[int] = ..., failure_list: _Optional[_Iterable[int]] = ...) -> None: ...
+
 class RenameSelectedClipRequestBody(_message.Message):
     __slots__ = ("clip_location", "new_name", "rename_file")
     CLIP_LOCATION_FIELD_NUMBER: _ClassVar[int]
@@ -2324,24 +2412,34 @@ class RegisterConnectionResponseBody(_message.Message):
     def __init__(self, session_id: _Optional[str] = ...) -> None: ...
 
 class CreateNewTracksRequestBody(_message.Message):
-    __slots__ = ("number_of_tracks", "track_name", "track_format", "track_type", "track_timebase")
+    __slots__ = ("number_of_tracks", "track_name", "track_format", "track_type", "track_timebase", "pagination_request", "insertion_point_position", "insertion_point_track_name")
     NUMBER_OF_TRACKS_FIELD_NUMBER: _ClassVar[int]
     TRACK_NAME_FIELD_NUMBER: _ClassVar[int]
     TRACK_FORMAT_FIELD_NUMBER: _ClassVar[int]
     TRACK_TYPE_FIELD_NUMBER: _ClassVar[int]
     TRACK_TIMEBASE_FIELD_NUMBER: _ClassVar[int]
+    PAGINATION_REQUEST_FIELD_NUMBER: _ClassVar[int]
+    INSERTION_POINT_POSITION_FIELD_NUMBER: _ClassVar[int]
+    INSERTION_POINT_TRACK_NAME_FIELD_NUMBER: _ClassVar[int]
     number_of_tracks: int
     track_name: str
     track_format: TrackFormat
     track_type: TrackType
     track_timebase: TrackTimebase
-    def __init__(self, number_of_tracks: _Optional[int] = ..., track_name: _Optional[str] = ..., track_format: _Optional[_Union[TrackFormat, str]] = ..., track_type: _Optional[_Union[TrackType, str]] = ..., track_timebase: _Optional[_Union[TrackTimebase, str]] = ...) -> None: ...
+    pagination_request: PaginationRequest
+    insertion_point_position: TrackInsertionPoint
+    insertion_point_track_name: str
+    def __init__(self, number_of_tracks: _Optional[int] = ..., track_name: _Optional[str] = ..., track_format: _Optional[_Union[TrackFormat, str]] = ..., track_type: _Optional[_Union[TrackType, str]] = ..., track_timebase: _Optional[_Union[TrackTimebase, str]] = ..., pagination_request: _Optional[_Union[PaginationRequest, _Mapping]] = ..., insertion_point_position: _Optional[_Union[TrackInsertionPoint, str]] = ..., insertion_point_track_name: _Optional[str] = ...) -> None: ...
 
 class CreateNewTracksResponseBody(_message.Message):
-    __slots__ = ("number_of_tracks",)
+    __slots__ = ("number_of_tracks", "created_track_names", "pagination_response")
     NUMBER_OF_TRACKS_FIELD_NUMBER: _ClassVar[int]
+    CREATED_TRACK_NAMES_FIELD_NUMBER: _ClassVar[int]
+    PAGINATION_RESPONSE_FIELD_NUMBER: _ClassVar[int]
     number_of_tracks: int
-    def __init__(self, number_of_tracks: _Optional[int] = ...) -> None: ...
+    created_track_names: _containers.RepeatedScalarFieldContainer[str]
+    pagination_response: PaginationResponse
+    def __init__(self, number_of_tracks: _Optional[int] = ..., created_track_names: _Optional[_Iterable[str]] = ..., pagination_response: _Optional[_Union[PaginationResponse, _Mapping]] = ...) -> None: ...
 
 class EditModeOptions(_message.Message):
     __slots__ = ("tab_to_transients", "link_timeline_and_edit_selection", "link_track_and_edit_selection", "insertion_follows_playback", "automation_follows_edit", "markers_follow_edit", "mirrored_midi_editing", "layered_editing")
@@ -2624,3 +2722,125 @@ class GetSessionIDsResponseBody(_message.Message):
     instance_id: str
     parent_id: str
     def __init__(self, origin_id: _Optional[str] = ..., instance_id: _Optional[str] = ..., parent_id: _Optional[str] = ...) -> None: ...
+
+class GetMemoryLocationsManageModeResponseBody(_message.Message):
+    __slots__ = ("enabled",)
+    ENABLED_FIELD_NUMBER: _ClassVar[int]
+    enabled: bool
+    def __init__(self, enabled: bool = ...) -> None: ...
+
+class SetMemoryLocationsManageModeRequestBody(_message.Message):
+    __slots__ = ("enabled",)
+    ENABLED_FIELD_NUMBER: _ClassVar[int]
+    enabled: bool
+    def __init__(self, enabled: bool = ...) -> None: ...
+
+class HostReadyCheckResponseBody(_message.Message):
+    __slots__ = ("is_host_ready",)
+    IS_HOST_READY_FIELD_NUMBER: _ClassVar[int]
+    is_host_ready: bool
+    def __init__(self, is_host_ready: bool = ...) -> None: ...
+
+class SetMainCounterFormatRequestBody(_message.Message):
+    __slots__ = ("time_scale",)
+    TIME_SCALE_FIELD_NUMBER: _ClassVar[int]
+    time_scale: TrackOffsetOptions
+    def __init__(self, time_scale: _Optional[_Union[TrackOffsetOptions, str]] = ...) -> None: ...
+
+class SetSubCounterFormatRequestBody(_message.Message):
+    __slots__ = ("time_scale",)
+    TIME_SCALE_FIELD_NUMBER: _ClassVar[int]
+    time_scale: TrackOffsetOptions
+    def __init__(self, time_scale: _Optional[_Union[TrackOffsetOptions, str]] = ...) -> None: ...
+
+class GetMainCounterFormatResponseBody(_message.Message):
+    __slots__ = ("current_setting", "possible_settings")
+    CURRENT_SETTING_FIELD_NUMBER: _ClassVar[int]
+    POSSIBLE_SETTINGS_FIELD_NUMBER: _ClassVar[int]
+    current_setting: TrackOffsetOptions
+    possible_settings: _containers.RepeatedScalarFieldContainer[TrackOffsetOptions]
+    def __init__(self, current_setting: _Optional[_Union[TrackOffsetOptions, str]] = ..., possible_settings: _Optional[_Iterable[_Union[TrackOffsetOptions, str]]] = ...) -> None: ...
+
+class GetSubCounterFormatResponseBody(_message.Message):
+    __slots__ = ("current_setting", "possible_settings")
+    CURRENT_SETTING_FIELD_NUMBER: _ClassVar[int]
+    POSSIBLE_SETTINGS_FIELD_NUMBER: _ClassVar[int]
+    current_setting: TrackOffsetOptions
+    possible_settings: _containers.RepeatedScalarFieldContainer[TrackOffsetOptions]
+    def __init__(self, current_setting: _Optional[_Union[TrackOffsetOptions, str]] = ..., possible_settings: _Optional[_Iterable[_Union[TrackOffsetOptions, str]]] = ...) -> None: ...
+
+class UndoHistoryOperation(_message.Message):
+    __slots__ = ("time", "operation", "details")
+    TIME_FIELD_NUMBER: _ClassVar[int]
+    OPERATION_FIELD_NUMBER: _ClassVar[int]
+    DETAILS_FIELD_NUMBER: _ClassVar[int]
+    time: str
+    operation: str
+    details: str
+    def __init__(self, time: _Optional[str] = ..., operation: _Optional[str] = ..., details: _Optional[str] = ...) -> None: ...
+
+class UndoRequestBody(_message.Message):
+    __slots__ = ("levels",)
+    LEVELS_FIELD_NUMBER: _ClassVar[int]
+    levels: int
+    def __init__(self, levels: _Optional[int] = ...) -> None: ...
+
+class UndoResponseBody(_message.Message):
+    __slots__ = ("operations",)
+    OPERATIONS_FIELD_NUMBER: _ClassVar[int]
+    operations: _containers.RepeatedCompositeFieldContainer[UndoHistoryOperation]
+    def __init__(self, operations: _Optional[_Iterable[_Union[UndoHistoryOperation, _Mapping]]] = ...) -> None: ...
+
+class RedoRequestBody(_message.Message):
+    __slots__ = ("levels",)
+    LEVELS_FIELD_NUMBER: _ClassVar[int]
+    levels: int
+    def __init__(self, levels: _Optional[int] = ...) -> None: ...
+
+class RedoResponseBody(_message.Message):
+    __slots__ = ("operations",)
+    OPERATIONS_FIELD_NUMBER: _ClassVar[int]
+    operations: _containers.RepeatedCompositeFieldContainer[UndoHistoryOperation]
+    def __init__(self, operations: _Optional[_Iterable[_Union[UndoHistoryOperation, _Mapping]]] = ...) -> None: ...
+
+class UndoAllResponseBody(_message.Message):
+    __slots__ = ("operations",)
+    OPERATIONS_FIELD_NUMBER: _ClassVar[int]
+    operations: _containers.RepeatedCompositeFieldContainer[UndoHistoryOperation]
+    def __init__(self, operations: _Optional[_Iterable[_Union[UndoHistoryOperation, _Mapping]]] = ...) -> None: ...
+
+class RedoAllResponseBody(_message.Message):
+    __slots__ = ("operations",)
+    OPERATIONS_FIELD_NUMBER: _ClassVar[int]
+    operations: _containers.RepeatedCompositeFieldContainer[UndoHistoryOperation]
+    def __init__(self, operations: _Optional[_Iterable[_Union[UndoHistoryOperation, _Mapping]]] = ...) -> None: ...
+
+class SetTrackDSPModeSafeStateRequestBody(_message.Message):
+    __slots__ = ("track_names", "enabled")
+    TRACK_NAMES_FIELD_NUMBER: _ClassVar[int]
+    ENABLED_FIELD_NUMBER: _ClassVar[int]
+    track_names: _containers.RepeatedScalarFieldContainer[str]
+    enabled: bool
+    def __init__(self, track_names: _Optional[_Iterable[str]] = ..., enabled: bool = ...) -> None: ...
+
+class GetSessionSystemDelayInfoResponseBody(_message.Message):
+    __slots__ = ("samples", "delay_compensation_enabled")
+    SAMPLES_FIELD_NUMBER: _ClassVar[int]
+    DELAY_COMPENSATION_ENABLED_FIELD_NUMBER: _ClassVar[int]
+    samples: int
+    delay_compensation_enabled: bool
+    def __init__(self, samples: _Optional[int] = ..., delay_compensation_enabled: bool = ...) -> None: ...
+
+class TrackExcludedFromClipGroupInfo(_message.Message):
+    __slots__ = ("track_name", "reason")
+    TRACK_NAME_FIELD_NUMBER: _ClassVar[int]
+    REASON_FIELD_NUMBER: _ClassVar[int]
+    track_name: str
+    reason: TrackFromClipGroupExclusionReason
+    def __init__(self, track_name: _Optional[str] = ..., reason: _Optional[_Union[TrackFromClipGroupExclusionReason, str]] = ...) -> None: ...
+
+class RepeatSelectionRequestBody(_message.Message):
+    __slots__ = ("num_repeats",)
+    NUM_REPEATS_FIELD_NUMBER: _ClassVar[int]
+    num_repeats: int
+    def __init__(self, num_repeats: _Optional[int] = ...) -> None: ...
