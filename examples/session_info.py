@@ -20,7 +20,7 @@
 # Session Audio Rate Pull: SRP_None
 # Session Video Rate Pull: SRP_None
 # -------------------------------
-# Transport State: TS_TransportStopped 
+# Transport State: TS_TransportStopped
 # Transport Arm: SAFE
 # Playback Modes: Normal
 # Record Mode: 0
