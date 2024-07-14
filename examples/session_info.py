@@ -53,7 +53,7 @@ with open_engine(company_name="py-ptsl",
         tc = engine.session_timecode_rate()
         print("Session Timecode Rate: %s" %
               pt.SessionTimeCodeRate.Name(engine.session_timecode_rate()))
-        
+
         print("Current System Delay (fs): %i" % engine.get_system_delay())
 
         print("Session Start Time: %s" % engine.session_start_time())
