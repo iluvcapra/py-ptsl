@@ -942,9 +942,21 @@ class Engine:
                                ) -> Tuple[str, str]:
         """
         Returns data about the current timeline selection.
+
         :returns: a Tuple of the In and Out time.
         """
         op = ops.GetTimelineSelection(time_scale=format)
         self.client.run(op)
 
         return (op.response.in_time, op.response.out_time)
+
+    def get_system_delay(self) -> int:
+        """
+        Get the current system delay.
+
+        :returns: the delay in samples.
+        """
+        op = ops.GetSessionSystemDelayInfo()
+        self.client.run(op)
+
+        return op.response.samples

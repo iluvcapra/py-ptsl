@@ -5,24 +5,25 @@
 #
 # ```sh
 # $ python3 examples/session_info.py
-# PTSL Version: 1
-# Session Name: Test2
-# Session Path: Macintosh HD:Users:jamie:Test2:Test2.ptx
+# PTSL Version: 4
+# Session Name: Test PTSL 3
+# Session Path: /Volumes/Projects/Tests/Test PTSL 3/Test PTSL 3.ptx
 # Session Sample Rate: 48000
 # Session Audio Format: SAF_WAVE
 # Session Bit Depth: Bit24
 # Session Audio Interlaved: TRUE
-# Session Timecode Rate: STCR_Fps2997
-# Session Start Time: 01:58:00:00.00
-# Session Length: 20:00:00:00
-# Session feet+frames rate: SFFR_Fps23976
+# Session Timecode Rate: STCR_Fps23976
+# Current System Delay (fs): 0
+# Session Start Time: 00:59:57:00.00
+# Session Length: 24:00:00:00
+# Session feet+frames rate: SFFR_Fps24
 # Session Audio Rate Pull: SRP_None
 # Session Video Rate Pull: SRP_None
 # -------------------------------
 # Transport State: TS_TransportStopped
 # Transport Arm: SAFE
 # Playback Modes: Normal
-# Record Mode: RM_Loop
+# Record Mode: 0
 # ```
 
 
@@ -53,6 +54,8 @@ with open_engine(company_name="py-ptsl",
         tc = engine.session_timecode_rate()
         print("Session Timecode Rate: %s" %
               pt.SessionTimeCodeRate.Name(engine.session_timecode_rate()))
+
+        print("Current System Delay (fs): %i" % engine.get_system_delay())
 
         print("Session Start Time: %s" % engine.session_start_time())
         print("Session Length: %s" % engine.session_length())
