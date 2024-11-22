@@ -158,7 +158,7 @@ class Client:
             # response.response_error_json)
             command_errors = json_format.Parse(cleaned_response_error_json,
                                                pt.ResponseError())
-            raise CommandError(command_errors.errors)
+            raise CommandError(list(command_errors.errors))
 
         elif response.header.status == pt.Completed:
             self._handle_completed_response(operation, response)
@@ -180,10 +180,11 @@ class Client:
             request_body_json = ""
         else:
             request_body_json = \
-                json_format.MessageToJson(operation.request,
-                                          always_print_fields_with_no_presence=True,
-                                          # including_default_value_fields=True,
-                                          preserving_proto_field_name=True)
+                json_format.MessageToJson(
+                    operation.request,
+                    always_print_fields_with_no_presence=True,
+                    # including_default_value_fields=True,
+                    preserving_proto_field_name=True)
 
         self.auditor.request_json_before_cleanup(request_body_json)
         request_body_json = operation.json_messup(request_body_json)
