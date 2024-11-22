@@ -10,8 +10,8 @@ from ptsl import PTSL_pb2 as pt
 
 class ToolShell(cmd.Cmd):
     intro = """
-Toolshell is a demonstration command interpreter that 
-can remotely operate Pro Tools. Type `help` or `?` to 
+Toolshell is a demonstration command interpreter that
+can remotely operate Pro Tools. Type `help` or `?` to
 list commands.
 
 To begin, type `connect`.
@@ -20,7 +20,8 @@ To begin, type `connect`.
 
     client = None
 
-    def run_command_on_session(self, command_id: pt.CommandId, args: dict) -> Optional[dict]:
+    def run_command_on_session(self, command_id: pt.CommandId,
+                               args: dict) -> Optional[dict]:
         if self.client is None:
             print("Command failed, not connected")
             return None
@@ -32,7 +33,7 @@ To begin, type `connect`.
             if e.error_type == pt.PT_NoOpenedSession:
                 print("command failed, no session is currently open")
                 return None
-        except:
+        except Exception:
             print("Command failed, Pro Tools may not be running")
             return None
 
@@ -41,7 +42,7 @@ To begin, type `connect`.
         self.client = ptsl.client.Client(company_name="py-ptsl",
                                          application_name="Toolshell")
         if self.client is not None:
-            self.prompt = f"(pt/connected) "
+            self.prompt = "(pt/connected) "
 
     def do_sinfo(self, _):
         'Print info about the open session: SINFO'
@@ -75,7 +76,7 @@ To begin, type `connect`.
         self.client.run_command(pt.CreateSession, command_args)
 
     def do_locate(self, args):
-        'Locate to a given time in the current main counter format: LOCATE time'
+        'Locate to a given time: LOCATE time'
         time = args.strip()
         command_args = {'play_start_marker_time': time,
                         'in_time': time,

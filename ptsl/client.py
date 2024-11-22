@@ -16,7 +16,7 @@ from google.protobuf import json_format
 from ptsl import PTSL_pb2_grpc
 from ptsl import PTSL_pb2 as pt
 from ptsl.errors import CommandError
-from ptsl.ops import Operation 
+from ptsl.ops import Operation
 
 
 PTSL_VERSION = 5
@@ -137,7 +137,7 @@ class Client:
 
             raise grpc_error
 
-    def run_command(self, command_id: pt.CommandId, 
+    def run_command(self, command_id: pt.CommandId,
                     request: dict) -> Optional[dict]:
         """
         Run a command on the client with a JSON request.
