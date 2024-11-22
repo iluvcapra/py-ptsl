@@ -37,19 +37,9 @@ Tracker = "https://github.com/iluvcapra/py-ptsl/issues"
 python = "^3.8"
 grpcio = ">= 1.51.1"
 protobuf = "~= 5.26.1"
-
-[tool.poetry.group.dev]
-optional = true
-
-[tool.poetry.group.dev.dependencies]
-grpcio-tools = {version=">= 1.53.0", extras=['dev']}
-
-[tool.poetry.group.doc]
-optional = true
-
-[tool.poetry.group.doc.dependencies]
-sphinx = {version= '>= 5.3.0', extras= ['doc']}
-sphinx_rtd_theme = {version= '>= 1.1.1', extras= ['doc']}
+grpcio-tools = {version=">= 1.53.0", extras =['dev'], optional=true}
+sphinx_rtd_theme = {version= '>= 1.1.1', extras = ['doc'], optional=true}
+sphinx = {version= '>= 5.3.0', extras = ['doc'], optional=true}
 
 [tool.poetry.extras]
 doc = ['sphinx', 'sphinx_rtd_theme']
