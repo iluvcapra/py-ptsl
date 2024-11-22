@@ -2,6 +2,7 @@
 
 import cmd
 import shlex
+import os.path
 from typing import Optional
 
 import ptsl
@@ -61,7 +62,7 @@ To begin, type `connect`.
         name, path, sr = shlex.split(args)
         print(f"Creating new session {name} at {path} and SR {sr}")
         command_args = {'session_name': name,
-                        'session_location': path,
+                        'session_location': os.path.expanduser(path),
                         'file_type': 'FT_WAVE',
                         'sample_rate': 'SR_' + str(sr),
                         'bit_depth': 'Bit24',
@@ -74,6 +75,18 @@ To begin, type `connect`.
                         }
         assert self.client
         self.client.run_command(pt.CreateSession, command_args)
+
+    def do_newtracks(self, args):
+        'Create new audio track: NEWTRACKS count format'
+        count, fmt = shlex.split(args)
+        command_args = {'number_of_tracks': count,
+                        'track_name': "New Track",
+                        'track_format': 'TF_' + fmt,
+                        'track_type': 'TT_Audio',
+                        'track_timebase': 'TTB_Samples',
+                        'insertion_point_position': 'TIPoint_Unknown',
+                        }
+        self.run_command_on_session(pt.CreateNewTracks, command_args)
 
     def do_locate(self, args):
         'Locate to a given time: LOCATE time'
