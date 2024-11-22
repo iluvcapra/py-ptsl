@@ -42,14 +42,18 @@ protobuf = "~= 5.26.1"
 optional = true
 
 [tool.poetry.group.dev.dependencies]
-grpcio-tools = ">= 1.53.0"
+grpcio-tools = {version=">= 1.53.0", extras=['dev']}
 
 [tool.poetry.group.doc]
 optional = true
 
 [tool.poetry.group.doc.dependencies]
-sphinx = '>= 5.3.0'
-sphinx_rtd_theme = '>= 1.1.1'
+sphinx = {version= '>= 5.3.0', extras= ['doc']}
+sphinx_rtd_theme = {version= '>= 1.1.1', extras= ['doc']}
+
+[tool.poetry.extras]
+doc = ['sphinx', 'sphinx_rtd_theme']
+dev = ["grpcio-tools"]
 
 [build-system]
 requires = ["poetry-core"]
