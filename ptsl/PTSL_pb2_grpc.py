@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-from . import PTSL_pb2 as PTSL__pb2
+from . from . from . import PTSL_pb2 as PTSL__pb2
 
 GRPC_GENERATED_VERSION = '1.64.1'
 GRPC_VERSION = grpc.__version__
