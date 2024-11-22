@@ -17,7 +17,7 @@ list commands.
 
 To begin, type `connect`.
     """
-    prompt = "(pt) "
+    prompt = "(not connected) "
 
     client = None
 
@@ -43,7 +43,7 @@ To begin, type `connect`.
         self.client = ptsl.client.Client(company_name="py-ptsl",
                                          application_name="Toolshell")
         if self.client is not None:
-            self.prompt = "(pt/connected) "
+            self.prompt = "(pt) "
 
     def do_sinfo(self, _):
         'Print info about the open session: SINFO'
