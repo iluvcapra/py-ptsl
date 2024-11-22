@@ -18,6 +18,7 @@ classifiers = [
   "Programming Language :: Python :: 3.8",
   "Topic :: Multimedia :: Sound/Audio :: Editors",
 ]
+homepage = "https://github.com/iluvcapra/py-ptsl"
 repository = "https://github.com/iluvcapra/py-ptsl"
 documentation = "https://py-ptsl.readthedocs.io"
 keywords = [
@@ -29,13 +30,22 @@ keywords = [
 ]
 packages = [{ include = 'ptsl' }]
 
+[tool.poetry.urls]
+Tracker = "https://github.com/iluvcapra/py-ptsl/issues"
+
 [tool.poetry.dependencies]
 python = "^3.8"
 grpcio = ">= 1.51.1"
 protobuf = "~= 5.26.1"
 
+[tool.poetry.group.dev]
+optional = true
+
 [tool.poetry.group.dev.dependencies]
 grpcio-tools = ">= 1.53.0"
+
+[tool.poetry.group.doc]
+optional = true
 
 [tool.poetry.group.doc.dependencies]
 sphinx = '>= 5.3.0'
