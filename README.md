@@ -37,6 +37,8 @@ client.
   options to be set from the terminal.
 - [pt_pasteboard.py](examples/pt_pasteboard.py) - Demonstrates
   triggering cut/copy/paste actions.
+- [toolshell.py](examples/toolshell.py) - Implements a command line 
+  interface for Pro Tools.
 
 
 ### Sending Commands To Pro Tools with the `Engine` class

@@ -19,7 +19,7 @@ from ptsl.errors import CommandError
 from ptsl.ops import Operation
 
 
-PTSL_VERSION = 3
+PTSL_VERSION = 5
 
 
 @contextmanager
@@ -137,20 +137,19 @@ class Client:
 
             raise grpc_error
 
-    def run(self, operation: Operation) -> None:
+    def run_command(self, command_id: pt.CommandId,
+                    request: dict) -> Optional[dict]:
         """
-        Run an operation on the client.
+        Run a command on the client with a JSON request.
 
-        :raises: `CommandError` if the server returns an error
+        :param command_id: The command to run
+        :param request: The request parameters. This dict will be converted to
+            JSON.
+        :returns: The response if any. This is the JSON response returned by
+            the server and converted to a dict.
         """
-
-        self.auditor.run_called(operation.command_id())
-
-        # convert the request body into JSON
-        request_body_json = self._prepare_operation_request_json(operation)
-        response = self._send_sync_request(operation.command_id(),
-                                           request_body_json)
-        operation.status = response.header.status
+        request_body_json = json.dumps(request)
+        response = self._send_sync_request(command_id, request_body_json)
 
         if response.header.status == pt.Failed:
             cleaned_response_error_json = response.response_error_json
@@ -161,7 +160,42 @@ class Client:
             raise CommandError(list(command_errors.errors))
 
         elif response.header.status == pt.Completed:
-            self._handle_completed_response(operation, response)
+            if len(response.response_body_json) > 0:
+                return json.loads(response.response_body_json)
+            else:
+                return None
+        else:
+            # FIXME: dump out for now, will be on the lookout for when
+            # this happens
+            assert False, \
+                f"Unexpected response code {response.header.status} " + \
+                f"({pt.TaskStatus.Name(response.header.status)})"
+
+    def run(self, op: Operation) -> None:
+        """
+        Run an operation on the client.
+
+        :raises: `CommandError` if the server returns an error
+        """
+
+        self.auditor.run_called(op.command_id())
+
+        # convert the request body into JSON
+        request_body_json = self._prepare_operation_request_json(op)
+        response = self._send_sync_request(op.command_id(),
+                                           request_body_json)
+        op.status = response.header.status
+
+        if response.header.status == pt.Failed:
+            cleaned_response_error_json = response.response_error_json
+            # self._response_error_json_cleanup(
+            # response.response_error_json)
+            command_errors = json_format.Parse(cleaned_response_error_json,
+                                               pt.ResponseError())
+            raise CommandError(list(command_errors.errors))
+
+        elif response.header.status == pt.Completed:
+            self._handle_completed_response(op, response)
         else:
             # FIXME: dump out for now, will be on the lookout for when
             # this happens
