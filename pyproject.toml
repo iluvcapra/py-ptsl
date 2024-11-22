@@ -1,14 +1,12 @@
-[build-system]
-requires = ["flit_core >=3.2,<4"]
-build-backend = "flit_core.buildapi"
+# https://python-poetry.org/docs/pyproject/
 
-[project]
+[tool.poetry]
 name = "py-ptsl"
-authors = [{name = "Jamie Hardt", email = "jamiehardt@me.com"}]
+version = "500.0.0"
+description = "Native Python PTSL (Pro Tools Scripting Library) RPC interface"
+authors = ["Jamie Hardt <jamiehardt@me.com>"]
+license = "BSD-3-Clause"
 readme = "README.md"
-dynamic = ["version", "description"]
-license = {file = 'LICENSE'}
-requires-python = "~=3.8"
 classifiers = [
   "Development Status :: 4 - Beta",
   "License :: OSI Approved :: BSD License",
@@ -20,6 +18,9 @@ classifiers = [
   "Programming Language :: Python :: 3.8",
   "Topic :: Multimedia :: Sound/Audio :: Editors",
 ]
+homepage = "https://github.com/iluvcapra/py-ptsl"
+repository = "https://github.com/iluvcapra/py-ptsl"
+documentation = "https://py-ptsl.readthedocs.io"
 keywords = [
   "pro tools", 
   "scripting", 
@@ -27,28 +28,32 @@ keywords = [
   "automation", 
   "avid"
 ]
-dependencies = [
-    'grpcio >= 1.51.1', 
-    'protobuf ~= 5.26.1'
-]
+packages = [{ include = 'ptsl' }]
 
-[tool.flit.module]
-name = "ptsl"
-
-[project.optional-dependencies]
-doc = [
-    'sphinx >= 5.3.0',
-    'sphinx_rtd_theme >= 1.1.1',
-]
-dev = [
-    'grpcio-tools >= 1.53.0'
-]
-
-[project.urls]
-Home = "https://github.com/iluvcapra/py-ptsl"
-Source = "https://github.com/iluvcapra/py-ptsl"
+[tool.poetry.urls]
 Tracker = "https://github.com/iluvcapra/py-ptsl/issues"
-Documentation = "https://py-ptsl.readthedocs.io"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+grpcio = ">= 1.51.1"
+protobuf = "~= 5.26.1"
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+grpcio-tools = ">= 1.53.0"
+
+[tool.poetry.group.doc]
+optional = true
+
+[tool.poetry.group.doc.dependencies]
+sphinx = '>= 5.3.0'
+sphinx_rtd_theme = '>= 1.1.1'
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
 
 [tool.pylint.'MESSAGES CONTROL']
 ignored-modules = [
