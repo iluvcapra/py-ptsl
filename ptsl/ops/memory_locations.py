@@ -11,6 +11,3 @@ class GetMemoryLocations(Operation):
 
 class CreateMemoryLocation(Operation):
     pass
-
-class ClearAllMemoryLocations(Operation):
-    pass
