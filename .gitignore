@@ -7,3 +7,4 @@ ptsl.egg-info/*
 docs/build/
 .vscode/settings.json
 dist/
+poetry.lock
