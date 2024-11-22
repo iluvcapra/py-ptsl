@@ -19,7 +19,7 @@ from ptsl.errors import CommandError
 from ptsl.ops import Operation
 
 
-PTSL_VERSION = 3
+PTSL_VERSION = 5
 
 
 @contextmanager
