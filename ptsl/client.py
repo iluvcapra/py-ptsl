@@ -169,7 +169,6 @@ class Client:
             assert False, \
                 f"Unexpected response code {response.header.status} " + \
                 f"({pt.TaskStatus.Name(response.header.status)})"
-        
 
     def run(self, operation: Operation) -> None:
         """
