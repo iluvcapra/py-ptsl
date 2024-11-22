@@ -159,7 +159,10 @@ class Client:
             raise CommandError(list(command_errors.errors))
 
         elif response.header.status == pt.Completed:
-            return json.loads(response.response_body_json)
+            if len(response.response_body_json) > 0:
+                return json.loads(response.response_body_json)
+            else:
+                return None
         else:
             # FIXME: dump out for now, will be on the lookout for when
             # this happens
