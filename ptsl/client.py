@@ -167,7 +167,7 @@ class Client:
             # this happens
             assert False, \
                 f"Unexpected response code {response.header.status} " + \
-                "({pt.TaskStatus.Name(response.header.status)})"
+                f"({pt.TaskStatus.Name(response.header.status)})"
 
         self.auditor.run_returning()
 
@@ -181,6 +181,7 @@ class Client:
         else:
             request_body_json = \
                 json_format.MessageToJson(operation.request,
+                                          always_print_fields_with_no_presence=True,
                                           # including_default_value_fields=True,
                                           preserving_proto_field_name=True)
 
