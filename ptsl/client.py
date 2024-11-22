@@ -158,7 +158,7 @@ class Client:
             # response.response_error_json)
             command_errors = json_format.Parse(cleaned_response_error_json,
                                                pt.ResponseError())
-            raise CommandError(command_errors.errors)
+            raise CommandError(list(command_errors.errors))
 
         elif response.header.status == pt.Completed:
             self._handle_completed_response(operation, response)
