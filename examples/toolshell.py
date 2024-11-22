@@ -7,6 +7,7 @@ from typing import Optional
 import ptsl
 from ptsl import PTSL_pb2 as pt
 
+
 class ToolShell(cmd.Cmd):
     intro = """
 Toolshell is a demonstration command interpreter that 
@@ -48,7 +49,7 @@ To begin, type `connect`.
 
         assert r, "Failed to receive a response"
         session_name = r['session_name']
-        r = self.run_command_on_session(pt.GetSessionIDs, {})        
+        r = self.run_command_on_session(pt.GetSessionIDs, {})
         assert r
         print(f"Connected to Pro Tools session \"{session_name}\"")
         print(f"Session origin ID: {r['origin_id']}")
@@ -64,12 +65,12 @@ To begin, type `connect`.
                         'sample_rate': 'SR_' + str(sr),
                         'bit_depth': 'Bit24',
                         'input_output_settings': "IO_Last",
-	 	                "is_interleaved": True,
-	                    "is_cloud_project": False,
-	                    "create_from_template": False,
-	                    "template_group": "",
-	                    "template_name": ""
-                }
+                        "is_interleaved": True,
+                        "is_cloud_project": False,
+                        "create_from_template": False,
+                        "template_group": "",
+                        "template_name": ""
+                        }
         assert self.client
         self.client.run_command(pt.CreateSession, command_args)
 
@@ -96,12 +97,12 @@ To begin, type `connect`.
                             'track_heights': False,
                             'group_enables': False,
                             'window_configuration': False,
-                            },
+                        },
                         'comments': "Created by toolshell",
                         'color_index': 1,
                         'location': 'MLC_MainRuler'
-                            }
-        
+                        }
+
         self.run_command_on_session(pt.CreateMemoryLocation, command_args)
 
     def do_play(self, _):
