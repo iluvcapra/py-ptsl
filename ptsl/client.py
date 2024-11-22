@@ -16,7 +16,7 @@ from google.protobuf import json_format
 from ptsl import PTSL_pb2_grpc
 from ptsl import PTSL_pb2 as pt
 from ptsl.errors import CommandError
-from ptsl.ops import Operation
+from ptsl.ops import Operation, operation
 
 
 PTSL_VERSION = 5
@@ -136,6 +136,37 @@ class Client:
                       "may not be running.", file=sys.stderr)
 
             raise grpc_error
+
+    def run_command(self, command_id: pt.CommandId, request: dict) -> Optional[dict]:
+        """
+        Run a command on the client with a JSON request.
+
+        :param command_id: The command to run 
+        :param request: The request parameters. This dict will be converted to 
+            JSON.
+        :returns: The response if any. This is the JSON response returned by 
+            the server and converted to a dict.
+        """
+        request_body_json = json.dumps(request)
+        response = self._send_sync_request(command_id, request_body_json)
+
+        if response.header.status == pt.Failed:
+            cleaned_response_error_json = response.response_error_json
+            # self._response_error_json_cleanup(
+            # response.response_error_json)
+            command_errors = json_format.Parse(cleaned_response_error_json,
+                                               pt.ResponseError())
+            raise CommandError(list(command_errors.errors))
+
+        elif response.header.status == pt.Completed:
+            return json.loads(response.response_body_json)
+        else:
+            # FIXME: dump out for now, will be on the lookout for when
+            # this happens
+            assert False, \
+                f"Unexpected response code {response.header.status} " + \
+                f"({pt.TaskStatus.Name(response.header.status)})"
+        
 
     def run(self, operation: Operation) -> None:
         """
