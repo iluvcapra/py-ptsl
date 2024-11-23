@@ -3,6 +3,7 @@
 import cmd
 import shlex
 import os.path
+import sys
 from typing import Optional
 
 import ptsl
@@ -41,7 +42,7 @@ To begin, type `connect`.
     def do_connect(self, _):
         'Connect to Pro Tools'
         self.client = ptsl.client.Client(company_name="py-ptsl",
-                                         application_name="Toolshell")
+                                         application_name=sys.argv[0])
         if self.client is not None:
             self.prompt = "(pt) "
 
