@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.abspath('../..'))
 # -- Project information -----------------------------------------------------
 
 project = "py-ptsl: Pro Tools Scripting Library for Python"
-copyright = f"{ datetime.date.today().year }, Jamie Hardt"
+copyright = f"{datetime.date.today().year}, Jamie Hardt"
 author = "Jamie Hardt"
 
 
