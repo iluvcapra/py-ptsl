@@ -8,10 +8,11 @@ from ptsl import open_engine, CommandError
 import ptsl.PTSL_pb2 as pt
 
 import sys
+from typing import Any
 
 
 def process_option(opts, name, tipo, set_method):
-    val: str = getattr(opts, name)
+    val: Any = getattr(opts, name)
 
     if val is None:
         return
