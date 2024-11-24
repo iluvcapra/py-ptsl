@@ -2,7 +2,7 @@
 
 [tool.poetry]
 name = "py-ptsl"
-version = "500.1.0"
+version = "500.1.1"
 description = "Native Python PTSL (Pro Tools Scripting Library) RPC interface"
 authors = ["Jamie Hardt <jamiehardt@me.com>"]
 license = "BSD-3-Clause"
