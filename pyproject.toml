@@ -1,5 +1,9 @@
 # https://python-poetry.org/docs/pyproject/
 
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
 [tool.poetry]
 name = "py-ptsl"
 version = "500.1.1"
@@ -34,6 +38,9 @@ packages = [{ include = 'ptsl' }]
 [tool.poetry.urls]
 Tracker = "https://github.com/iluvcapra/py-ptsl/issues"
 
+[tool.poetry.extras]
+doc = ['sphinx', 'sphinx_rtd_theme']
+
 [tool.poetry.dependencies]
 python = "^3.8"
 grpcio = ">= 1.51.1"
@@ -43,13 +50,6 @@ sphinx = {version= '>= 5.3.0', optional=true}
 
 [tool.poetry.group.dev.dependencies]
 grpcio-tools = {version=">= 1.53.0", optional=true}
-
-[tool.poetry.extras]
-doc = ['sphinx', 'sphinx_rtd_theme']
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
 
 [tool.pylint.'MESSAGES CONTROL']
 ignored-modules = [
