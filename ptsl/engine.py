@@ -22,11 +22,11 @@ from ptsl.PTSL_pb2 import SessionAudioFormat, BitDepth, FileLocation, \
     EM_FileType, EM_SourceInfo, EM_AudioInfo, EM_VideoInfo, \
     EM_LocationInfo, EM_DolbyAtmosInfo, TripleBool, SessionTimeCodeRate, \
     SessionFeetFramesRate, SessionRatePull, Track, \
-    PM_PlaybackMode, RM_RecordMode, AutomationDataOptions, \
+    PlaybackMode, RecordMode, AutomationDataOptions, \
     PasteSpecialOptions, TrackOffsetOptions, TrackListInvertibleFilter, \
     ExportFileType, ResolveDuplicateNamesBy, ExportFormat, \
     MemoryLocationReference, MemoryLocationProperties, \
-    TimeProperties, CL_ClipLocation, \
+    TimeProperties, ClipLocation, \
     TrackFormat, TrackType, TrackTimebase, \
     AudioOperations, MediaDestination, MediaLocation, \
     SpotLocationType, Start, TimeCode, \
@@ -305,7 +305,7 @@ class Engine:
             self,
             new_name: str,
             rename_file: bool = True,
-            clip_location: 'CL_ClipLocation' = pt.CL_Timeline):
+            clip_location: 'ClipLocation' = pt.CL_Timeline):
         """
         Renames a clip in the current session.
 
@@ -660,7 +660,7 @@ class Engine:
         """
         op = ops.GetTransportState()
         self.client.run(op)
-        return pt.TS_TransportState.Name(op.response.current_setting)
+        return pt.TransportState.Name(op.response.current_setting)
 
     def transport_armed(self) -> bool:
         """
@@ -682,7 +682,7 @@ class Engine:
                 pt.PM_Loop in op.response.current_settings,
                 pt.PM_DynamicTransport in op.response.current_settings)
 
-    def record_mode(self) -> 'RM_RecordMode':
+    def record_mode(self) -> 'RecordMode':
         """
         Transport's current record mode.
         """
@@ -713,7 +713,7 @@ class Engine:
 
         return op.track_list
 
-    def set_playback_mode(self, new_mode: 'PM_PlaybackMode'):
+    def set_playback_mode(self, new_mode: 'PlaybackMode'):
         """
         Set the playback mode.
         """
@@ -722,7 +722,7 @@ class Engine:
 
     def set_record_mode(
             self,
-            new_mode: 'RM_RecordMode',
+            new_mode: 'RecordMode',
             record_arm_transport: bool):
         """
         Set the record mode.

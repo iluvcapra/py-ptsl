@@ -20,7 +20,6 @@ classifiers = [
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.8",
   "Topic :: Multimedia :: Sound/Audio :: Editors",
 ]
 homepage = "https://github.com/iluvcapra/py-ptsl"
@@ -42,7 +41,7 @@ Tracker = "https://github.com/iluvcapra/py-ptsl/issues"
 doc = ['sphinx', 'sphinx_rtd_theme']
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 grpcio = ">= 1.51.1"
 protobuf = "~= 5.26.1"
 sphinx_rtd_theme = {version= '>= 1.1.1', optional=true}
