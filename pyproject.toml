@@ -46,6 +46,7 @@ grpcio = ">= 1.51.1"
 protobuf = "~= 5.26.1"
 sphinx_rtd_theme = {version= '>= 1.1.1', optional=true}
 sphinx = {version= '>= 5.3.0', optional=true}
+pytest = "^8.4.2"
 
 [tool.poetry.group.dev.dependencies]
 grpcio-tools = {version=">= 1.53.0", optional=true}
