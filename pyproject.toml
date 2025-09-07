@@ -6,7 +6,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "py-ptsl"
-version = "500.1.1"
+version = "600.0.0"
 description = "Native Python PTSL (Pro Tools Scripting Library) RPC interface"
 authors = ["Jamie Hardt <jamiehardt@me.com>"]
 license = "BSD-3-Clause"
@@ -43,7 +43,7 @@ doc = ['sphinx', 'sphinx_rtd_theme']
 [tool.poetry.dependencies]
 python = "^3.9"
 grpcio = "==1.74.0"
-protobuf = "~= 5.26.1"
+protobuf = "~= 6.31.1"
 sphinx_rtd_theme = {version= '>= 1.1.1', optional=true}
 sphinx = {version= '>= 5.3.0', optional=true}
 pytest = "^8.4.2"
