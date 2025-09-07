@@ -658,7 +658,7 @@ class Engine:
         """
         Current transport state.
         """
-        op = ops.GetTransportState()
+        op = ops.CId_GetTransportState()
         self.client.run(op)
         return pt.TransportState.Name(op.response.current_setting)
 
