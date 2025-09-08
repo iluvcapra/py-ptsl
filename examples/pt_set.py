@@ -56,9 +56,9 @@ p.add_option("--length", nargs=1)
 with open_engine(company_name="py-ptsl", application_name=sys.argv[0]) as e:
     try:
         process_option(options, 'playback_mode',
-                       pt.PM_PlaybackMode, e.set_playback_mode)
+                       pt.PlaybackMode, e.set_playback_mode)
         process_option(options, 'record_mode',
-                       pt.RM_RecordMode, lambda x: e.set_record_mode(x, False))
+                       pt.RecordMode, lambda x: e.set_record_mode(x, False))
         process_option(options, 'bit_depth',
                        pt.BitDepth, e.set_session_bit_depth)
         process_option(options, 'audio_format',
