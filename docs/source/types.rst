@@ -163,7 +163,9 @@ Common Settings and Value Types
 Transport Modes
 ---------------
 
-.. class:: RM_RecordMode
+.. class:: RecordMode
+
+    Renamed in PTSL 2025.6.0 from RM_RecordMode
 
 	.. attribute:: RM_Normal
 		:value: 0
@@ -178,7 +180,9 @@ Transport Modes
 	.. attribute:: RM_DestructivePunch
 		:value: 5
 
-.. class:: PM_PlaybackMode
+.. class:: PlaybackMode
+
+    Renamed in PTSL 2025.6.0 from PM_PlaybackMode
 
 	.. py:attribute:: PM_Normal
 		:value: 0
@@ -694,7 +698,9 @@ Exporting Clips and Mixes
 Working With Clips
 ------------------
 
-.. class:: CL_ClipLocation
+.. class:: ClipLocation
+
+    Renamed in PTSL 2025.6.0 from CL_ClipLocation
     
     Describes a named clip's location.
 

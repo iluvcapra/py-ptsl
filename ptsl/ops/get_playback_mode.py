@@ -11,7 +11,7 @@ class GetPlaybackMode(Operation):
     def json_cleanup(self, in_json: str) -> str:
 
         def xform(x):
-           return pt.PlaybackMode.Value(x)
+            return pt.PlaybackMode.Value(x)
 
         decoder = json.JSONDecoder()
         decoded = decoder.decode(in_json)
