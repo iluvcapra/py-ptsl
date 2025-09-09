@@ -15,6 +15,7 @@ If you would like to submit code fixes or new features, please follow these guid
 3. New features should also have [tests](#unit-tests) implemented.
 4. Any new code to be contributed should pass flake8 using the settings in the `.flake8` file
   in the root directory.
+5. The documentation and README should be updated to reflect all changes.
 
 ## Unit Tests
 
