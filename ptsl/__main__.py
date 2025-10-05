@@ -47,8 +47,11 @@ def main(tool_name="ptsl"):
         request = dict()
 
     response = client.run_command(command_id=command_id, request=request)
-
-    print(response)
+    
+    if response:
+        print(response)
+    else:
+        print(">> PTSL returned no response")
 
 if __name__ == "__main__":
     main()
