@@ -8,24 +8,25 @@ from typing import Optional
 from .client import Client
 from .PTSL_pb2 import CommandId
 
+
 def main(tool_name="ptsl"):
     oparse = OptionParser()
-    oparse.usage= f"{tool_name} [-v] [-j JSON] COMMAND"
-    oparse.add_option('-v','--verbose', action='store_true', 
+    oparse.usage = f"{tool_name} [-v] [-j JSON] COMMAND"
+    oparse.add_option('-v', '--verbose', action='store_true',
                       help="Verbose output")
-    oparse.add_option('-j','--json', action='store', 
+    oparse.add_option('-j', '--json', action='store',
                       help="Request JSON to pass (instead of stdin)")
-    
+
     (options, args) = oparse.parse_args()
 
     assert len(args) == 1, ("Incorrect number of arguments, only one "
-                             "commmand allowed")
+                            "commmand allowed")
 
     client = Client(company_name="py-ptsl", application_name="ptsl")
 
     if options.verbose:
         client.auditor.enabled = True
-    
+
     request_json: Optional[str] = None
     if options.json:
         request_json = options.json
@@ -47,11 +48,12 @@ def main(tool_name="ptsl"):
         request = dict()
 
     response = client.run_command(command_id=command_id, request=request)
-    
+
     if response:
         print(response)
     else:
         print(">> PTSL returned no response")
+
 
 if __name__ == "__main__":
     main()
