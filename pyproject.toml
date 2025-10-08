@@ -4,11 +4,11 @@
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-[tool.poetry]
+[project]
 name = "py-ptsl"
 version = "600.0.0"
 description = "Native Python PTSL (Pro Tools Scripting Library) RPC interface"
-authors = ["Jamie Hardt <jamiehardt@me.com>"]
+authors = [{name = "Jamie Hardt", email = "jamiehardt@me.com"}]
 license = "BSD-3-Clause"
 readme = "README.md"
 classifiers = [
@@ -32,6 +32,8 @@ keywords = [
   "automation", 
   "avid"
 ]
+
+[tool.poetry]
 packages = [{ include = 'ptsl' }]
 
 [tool.poetry.urls]

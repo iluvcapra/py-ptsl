@@ -51,4 +51,22 @@ from ptsl import open_engine
 with open_engine(company_name="MY_COMPANY", application_name="MY_TOOL") as engine:
     session_name = engine.session_name()
 ```
+### Sending Commands to Pro Tools from the Command Line
 
+The module implements a main function that can be called from the shell. Pass
+request JSON to the standard input and any response will be passed to standard
+output.
+
+```bash
+bash-3.2$ poetry run python3 -m ptsl GetTrackList <<JSON 
+{"pagination_request": {
+  "limit": 100, "offset": 0
+  },
+"track_filter_list": [
+  {"filter": 0, "is_inverted": false}
+  ]
+}
+JSON
+{'pagination_response': {'total': 4, 'offset': 0, 'limit': 100}, 'track_list':
+[{'name': 'Au dio 1', 'type': 'TT_Audio', 'format': 'TF_Mono', ...
+```
