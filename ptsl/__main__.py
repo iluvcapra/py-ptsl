@@ -16,6 +16,8 @@ def main(tool_name="ptsl"):
                       help="Verbose output")
     oparse.add_option('-f', '--file', action='store', metavar="FILE",
                       help="Get Request JSON from FILE instead of stdin")
+    oparse.add_option('-n', '--no-input', action='store_true',
+                      help="Request JSON should be empty, ignore stdin")
     oparse.add_option('--list', action='store_true',
                       help="Print all available commands and exit")
 
@@ -33,7 +35,9 @@ def main(tool_name="ptsl"):
                             "commmand allowed")
 
     request_json: Optional[str] = None
-    if options.file:
+    if options.no_input:
+        pass
+    elif options.file:
         with open(options.file, 'r') as f:
             request_json = f.read()
     else:
@@ -47,7 +51,7 @@ def main(tool_name="ptsl"):
     assert command_id is not None, f"Command `{args[0]}` was not recognized"
 
     if request_json:
-        request = json.loads(request_json)
+        request = json.loads(request_json or "{}")
         assert isinstance(request, dict), "Provided JSON must be an object"
 
     else:
