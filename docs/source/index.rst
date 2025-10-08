@@ -12,6 +12,7 @@ Welcome to py-ptsl's documentation!
    :maxdepth: 2
    :caption: Notes:
 
+   command
    engine
    builders
    types
