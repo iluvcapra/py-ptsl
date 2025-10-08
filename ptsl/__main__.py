@@ -16,7 +16,7 @@ def main(tool_name="ptsl"):
                       help="Verbose output")
     oparse.add_option('-f', '--file', action='store', metavar="FILE",
                       help="Get Request JSON from FILE instead of stdin")
-    oparse.add_option('-n', '--no-input', action='store_true', 
+    oparse.add_option('-n', '--no-input', action='store_true',
                       help="Request JSON should be empty, ignore stdin")
     oparse.add_option('--list', action='store_true',
                       help="Print all available commands and exit")
