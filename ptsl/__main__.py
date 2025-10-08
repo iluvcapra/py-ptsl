@@ -44,7 +44,6 @@ def main(tool_name="ptsl"):
         if args[0] == command_name:
             command_id = CommandId.Value(args[0])
 
-
     assert command_id is not None, f"Command `{args[0]}` was not recognized"
 
     if request_json:
@@ -69,11 +68,12 @@ def main(tool_name="ptsl"):
 
         else:
             print(">>> No Response", file=sys.stderr)
-    
+
     except CommandError as e:
         print(e, file=sys.stderr)
         for response in e.error_responses:
             print(e, file=sys.stderr)
+
 
 if __name__ == "__main__":
     main()
