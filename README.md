@@ -70,3 +70,8 @@ JSON
 {'pagination_response': {'total': 4, 'offset': 0, 'limit': 100}, 'track_list':
 [{'name': 'Au dio 1', 'type': 'TT_Audio', 'format': 'TF_Mono', ...
 ```
+
+```bash
+bash-3.2$ poetry run python3 -m ptsl -n GetPTSLVersion
+{"version": 2025}
+```
