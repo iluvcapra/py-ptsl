@@ -31,6 +31,8 @@ Options
 
 -f FILE, --file FILE    Get Request JSON from FILE instead of stdin
 
+-n, --no-input   Request JSON is iempty, ignore stdin
+
 --list    Print all available commands and exit
 
 --help  Print help summary and exit
