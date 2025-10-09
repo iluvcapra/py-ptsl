@@ -82,6 +82,7 @@ def main(tool_name="ptsl") -> int:
 
     return 0
 
+
 if __name__ == "__main__":
     retval: int = main()
     exit(retval)
