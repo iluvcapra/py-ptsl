@@ -10,7 +10,7 @@ from .errors import CommandError
 from .PTSL_pb2 import CommandId
 
 
-def main(tool_name="ptsl"):
+def main(tool_name="ptsl") -> int:
     oparse = OptionParser(usage=f"python3 -m {tool_name} [options] COMMAND")
     oparse.add_option('-v', '--verbose', action='store_true',
                       help="Verbose output")
@@ -27,7 +27,7 @@ def main(tool_name="ptsl"):
         for command_name in CommandId.keys():
             print(command_name)
 
-        return
+        return 0
 
     assert len(args) > 0, ("Command not given")
 
@@ -52,7 +52,7 @@ def main(tool_name="ptsl"):
 
     if request_json:
         request = json.loads(request_json or "{}")
-        assert isinstance(request, dict), "Provided JSON must be an object"
+        assert isinstance(request, dict), "Request JSON must be an object"
 
     else:
         request = dict()
@@ -71,13 +71,17 @@ def main(tool_name="ptsl"):
             print(response_json)
 
         else:
-            print(">>> No Response", file=sys.stderr)
+            print("< No Response >", file=sys.stderr)
 
     except CommandError as e:
         print(e, file=sys.stderr)
         for response in e.error_responses:
             print(e, file=sys.stderr)
 
+        return 2
+
+    return 0
 
 if __name__ == "__main__":
-    main()
+    retval: int = main()
+    exit(retval)
