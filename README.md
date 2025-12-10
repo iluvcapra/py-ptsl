@@ -5,8 +5,8 @@
 
 ![](https://img.shields.io/pypi/pyversions/py-ptsl.svg) [![](https://img.shields.io/pypi/v/py-ptsl.svg)](https://pypi.org/project/py-ptsl/) ![](https://img.shields.io/pypi/wheel/py-ptsl.svg)
 
-[![Pro Tools Version - 2025.6.1](https://img.shields.io/static/v1?label=Pro+Tools+Version&message=2025.6.1&color=8f228f)](https://github.com/iluvcapra/py-ptsl/blob/master/docs/source/ptsl_versions.rst)
-[![PTSL Version - 2025.6.0](https://img.shields.io/static/v1?label=PTSL+Version&message=2025.6.0&color=0000ff)](https://github.com/iluvcapra/py-ptsl/blob/master/docs/source/ptsl_versions.rst)
+[![Pro Tools Version - 2025.10.0](https://img.shields.io/static/v1?label=Pro+Tools+Version&message=2025.6.1&color=8f228f)](https://github.com/iluvcapra/py-ptsl/blob/master/docs/source/ptsl_versions.rst)
+[![PTSL Version - 2025.10.0](https://img.shields.io/static/v1?label=PTSL+Version&message=2025.6.0&color=0000ff)](https://github.com/iluvcapra/py-ptsl/blob/master/docs/source/ptsl_versions.rst)
 
 # py-ptsl
 
