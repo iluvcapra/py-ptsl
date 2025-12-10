@@ -960,3 +960,11 @@ class Engine:
         self.client.run(op)
 
         return op.response.samples
+
+    def set_track_record_enable(self, *tracks: Track, new_state: bool) -> None:
+        """
+        Sets the record enabled state of one or more tracks
+        """
+        for track in tracks:
+            op = ops.SetTrackRecordEnableState(track.name, new_state)
+            self.client.run(op)
