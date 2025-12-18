@@ -966,5 +966,5 @@ class Engine:
         Sets the record enabled state of one or more tracks
         """
         for track in tracks:
-            op = ops.SetTrackRecordEnableState(track.name, new_state)
+            op = ops.SetTrackRecordEnableState(track_names=track.name, enabled=new_state)
             self.client.run(op)
