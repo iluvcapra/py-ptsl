@@ -557,9 +557,7 @@ class TestEngine(TestCase):
 
     def test_set_track_record_enable_state(self):
         with open_engine_with_mock_client() as engine:
-            from ptsl.PTSL_pb2 import Track
-            test_track = Track
-            test_track.name = "xyz1"
+            test_track = "xyz1"
             self.assertIsNone(
                 engine.set_track_record_enable(test_track,
                                                      new_state=True)
