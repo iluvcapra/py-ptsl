@@ -962,7 +962,7 @@ class Engine:
         return op.response.samples
 
     def set_track_record_enable(self, *track_names: str, new_state: bool
-                                )-> None:
+                                ) -> None:
         """
         Sets the record enabled state of one or more tracks
         """
