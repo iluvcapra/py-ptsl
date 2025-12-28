@@ -560,6 +560,5 @@ class TestEngine(TestCase):
             test_track = "xyz1"
             self.assertIsNone(
                 engine.set_track_record_enable(test_track,
-                                                     new_state=True)
+                                               new_state=True)
             )
-
