@@ -554,3 +554,11 @@ class TestEngine(TestCase):
             self.assertIsNone(
                 engine.set_session_interleaved_state(new_state=True)
             )
+
+    def test_set_track_record_enable_state(self):
+        with open_engine_with_mock_client() as engine:
+            test_track = "xyz1"
+            self.assertIsNone(
+                engine.set_track_record_enable(test_track,
+                                               new_state=True)
+            )

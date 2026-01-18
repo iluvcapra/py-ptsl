@@ -98,3 +98,7 @@ from .zoom_preset import RecallZoomPreset
 from .timeline_selection import SetTimelineSelection, GetTimelineSelection
 
 from .pt_202406_additions import GetSessionSystemDelayInfo
+
+# Pro Tools 2025.10
+
+from .set_track_record_enable_state import SetTrackRecordEnableState

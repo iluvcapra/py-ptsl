@@ -20,6 +20,8 @@ PTSL Versions/Pro Tools Versions
 +--------------+--------------------+
 | 2025.6.0     | 2025.6             |
 +--------------+--------------------+
+| 2025.10.0     | 2025.10           |
++--------------+--------------------+
 
 Pro Tools Scripting API has changed its versioning system with the release of 2025.6.0.
 Versions are now indicated with a major version (2025), minor version (6), and revision (0).
