@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class Clear(Operation):
+class CId_Clear(Operation):
     pass

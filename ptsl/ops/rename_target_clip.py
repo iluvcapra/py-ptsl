@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class RenameTargetClip(Operation):
+class CId_RenameTargetClip(Operation):
     pass

@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class GetFileLocation(Operation):
+class CId_GetFileLocation(Operation):
     pass

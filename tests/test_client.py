@@ -8,7 +8,7 @@ from google.protobuf import json_format
 import ptsl.PTSL_pb2 as pt
 from ptsl.client import Client
 from ptsl.errors import CommandError
-from ptsl.ops import GetTrackList, Copy, Paste
+from ptsl.ops import CId_GetTrackList, CId_Copy, CId_Paste
 
 
 class MockPtslStub:
@@ -20,13 +20,13 @@ class MockPtslStub:
       properly-formed `~ptsl.PTSL_pb2.Response` with a
       `~ptsl.PTSL_pb2.RegisterConnectionResponseBody`.
 
-    - The `~ptsl.PTSL_pb2.GetTrackList` action returns a successful response
-      with an empty track list.
+    - The `~ptsl.PTSL_pb2.CId_GetTrackList` action returns
+      a successful response with an empty track list.
 
-    - The `~ptsl.PTSL_pb2.Copy` action returns a failed response with a well-
-      formed error json.
+    - The `~ptsl.PTSL_pb2.CId_Copy` action returns a
+      failed response with a well-formed error json.
 
-    - The `~ptsl.PTSL_pb2.Paste` action returns a failed response with a
+    - The `~ptsl.PTSL_pb2.CId_Paste` action returns a failed response with a
       malformed error json meant to trigger the client's cleanup machinery.
     """
 
@@ -68,7 +68,7 @@ class MockPtslStub:
                 pt.RegisterConnectionResponseBody(session_id=self.session_id)
             )
             self.register_connection_run = True
-        elif request.header.command == pt.GetTrackList:
+        elif request.header.command == pt.CId_GetTrackList:
             status = pt.Completed
             self.get_track_list_called = True
             response_body_json = self.message_to_json(
@@ -79,7 +79,7 @@ class MockPtslStub:
                         offset=0),
                     track_list=[])
             )
-        elif request.header.command == pt.Copy:
+        elif request.header.command == pt.CId_Copy:
             status = pt.Failed
             error_body_json = self.message_to_json(
                 pt.ResponseError(errors=[pt.CommandError(
@@ -87,7 +87,7 @@ class MockPtslStub:
                     command_error_message="Test error response",
                     is_warning=False)
                 ]))
-        elif request.header.command == pt.Paste:
+        elif request.header.command == pt.CId_Paste:
             status = pt.Failed
             error_body_json = """
             {
@@ -129,20 +129,20 @@ class TestClient(TestCase):
                     MockPtslStub,
                     client.raw_client).assert_register_connection_run()
 
-                op = GetTrackList(page_limit=1,
-                                  track_filter_list=[],
-                                  is_filter_list_additive=True)
+                op = CId_GetTrackList(page_limit=1,
+                                      track_filter_list=[],
+                                      is_filter_list_additive=True)
 
                 client.run(op)
                 tracks = op.track_list
 
                 self.assertEqual(len(tracks), 0)
 
-                op = Copy()
+                op = CId_Copy()
                 with self.assertRaises(expected_exception=CommandError):
                     client.run(op)
 
-                op = Paste()
+                op = CId_Paste()
                 with self.assertRaises(expected_exception=CommandError):
                     client.run(op)
 

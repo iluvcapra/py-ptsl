@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class SetSessionFeetFramesRate(Operation):
+class CId_SetSessionFeetFramesRate(Operation):
     pass

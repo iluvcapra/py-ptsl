@@ -3,7 +3,7 @@ import json
 from ptsl.ops import Operation
 
 
-class GetSessionInterleavedState(Operation):
+class CId_GetSessionInterleavedState(Operation):
 
     # Reported https://duc.avid.com/showthread.php?t=423087
     #

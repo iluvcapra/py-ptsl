@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class SetTrackRecordEnableState(Operation):
+class CId_SetTrackRecordEnableState(Operation):
     pass

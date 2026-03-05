@@ -1,17 +1,17 @@
 from ptsl.ops import Operation
 
 
-class TogglePlayState(Operation):
+class CId_TogglePlayState(Operation):
     pass
 
 
-class ToggleRecordEnable(Operation):
+class CId_ToggleRecordEnable(Operation):
     pass
 
 
-class PlayHalfSpeed(Operation):
+class CId_PlayHalfSpeed(Operation):
     pass
 
 
-class RecordHalfSpeed(Operation):
+class CId_RecordHalfSpeed(Operation):
     pass

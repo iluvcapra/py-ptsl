@@ -1,9 +1,9 @@
 from ptsl.ops import Operation
 
 
-class GetTimelineSelection(Operation):
+class CId_GetTimelineSelection(Operation):
     pass
 
 
-class SetTimelineSelection(Operation):
+class CId_SetTimelineSelection(Operation):
     pass

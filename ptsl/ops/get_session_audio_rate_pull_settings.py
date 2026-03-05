@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class GetSessionAudioRatePullSettings(Operation):
+class CId_GetSessionAudioRatePullSettings(Operation):
     pass

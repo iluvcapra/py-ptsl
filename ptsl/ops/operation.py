@@ -22,11 +22,21 @@ class Operation(Generic[Q, R]):
 
     @classmethod
     def request_body(cls) -> Q:
-        return getattr(pt, cls.__name__ + "RequestBody", None)  # type: ignore
+        if cls.__name__.startswith("CId_"):
+            cls_name = cls.__name__[4:]
+            return getattr(pt, cls_name + "RequestBody", None)
+        else:
+            return getattr(
+                pt, cls.__name__ + "RequestBody", None)  # type: ignore
 
     @classmethod
     def response_body(cls) -> R:
-        return getattr(pt, cls.__name__ + "ResponseBody", None)  # type: ignore
+        if cls.__name__.startswith("CId_"):
+            cls_name = cls.__name__[4:]
+            return getattr(pt, cls_name + "ResponseBody", None)
+        else:
+            return getattr(
+                pt, cls.__name__ + "ResponseBody", None)  # type: ignore
 
     @classmethod
     def command_id(cls):

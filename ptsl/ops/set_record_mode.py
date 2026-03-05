@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class SetRecordMode(Operation):
+class CId_SetRecordMode(Operation):
     pass

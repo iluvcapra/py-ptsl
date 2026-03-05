@@ -1,5 +1,5 @@
 from .operation import Operation
 
 
-class CreateFadesBasedOnPreset(Operation):
+class CId_CreateFadesBasedOnPreset(Operation):
     pass

@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class SelectAllClipsOnTrack(Operation):
+class CId_SelectAllClipsOnTrack(Operation):
     pass

@@ -86,7 +86,7 @@ class ExportSessionTextBuilder:
         self._encoding = TextEdit
 
     def export_file(self, path: str) -> None:
-        op = ops.ExportSessionInfoAsText(
+        op = ops.CId_ExportSessionInfoAsText(
             include_clip_list=self._include_clip_list,
             include_file_list=self._include_file_list,
             include_markers=self._include_markers,
@@ -104,7 +104,7 @@ class ExportSessionTextBuilder:
         self._engine.client.run(op)
 
     def export_string(self) -> str:
-        op = ops.ExportSessionInfoAsText(
+        op = ops.CId_ExportSessionInfoAsText(
             include_clip_list=self._include_clip_list,
             include_file_list=self._include_file_list,
             include_markers=self._include_markers,

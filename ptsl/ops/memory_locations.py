@@ -1,13 +1,13 @@
 from ptsl.ops import Operation
 
 
-class EditMemoryLocation(Operation):
+class CId_EditMemoryLocation(Operation):
     pass
 
 
-class GetMemoryLocations(Operation):
+class CId_GetMemoryLocations(Operation):
     pass
 
 
-class CreateMemoryLocation(Operation):
+class CId_CreateMemoryLocation(Operation):
     pass

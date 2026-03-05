@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class ExportSelectedTracksAsAAFOMF(Operation):
+class CId_ExportSelectedTracksAsAAFOMF(Operation):
     pass

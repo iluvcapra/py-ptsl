@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class HostReadyCheck(Operation):
+class CId_HostReadyCheck(Operation):
     pass

@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class GetTaskStatus(Operation):
+class CId_GetTaskStatus(Operation):
     pass

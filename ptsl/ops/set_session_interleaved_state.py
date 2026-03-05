@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class SetSessionInterleavedState(Operation):
+class CId_SetSessionInterleavedState(Operation):
     pass

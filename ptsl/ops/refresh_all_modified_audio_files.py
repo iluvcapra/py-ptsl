@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class RefreshAllModifiedAudioFiles(Operation):
+class CId_RefreshAllModifiedAudioFiles(Operation):
     pass

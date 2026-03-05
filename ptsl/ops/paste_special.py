@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class PasteSpecial(Operation):
+class CId_PasteSpecial(Operation):
     pass

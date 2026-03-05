@@ -30,7 +30,9 @@ from ptsl.PTSL_pb2 import SessionAudioFormat, BitDepth, FileLocation, \
     TrackFormat, TrackType, TrackTimebase, \
     AudioOperations, MediaDestination, MediaLocation, \
     SpotLocationType, Start, TimeCode, \
-    TimelineUpdateVideo, SelectionMode
+    TimelineUpdateVideo, SelectionMode, \
+    TimelineLocationType, TLType_TimeCode, \
+    EditMode, EditTool
 
 
 @contextmanager
@@ -98,7 +100,7 @@ class Engine:
         :returns: The server's PTSL version number.
         :rtype: int
         """
-        op = ops.GetPTSLVersion()
+        op = ops.CId_GetPTSLVersion()
         self.client.run(op)
         assert isinstance(
             op.response, pt.GetPTSLVersionResponseBody), \
@@ -114,7 +116,7 @@ class Engine:
         .. note:: This method will succeed even if the client
             connection is not registered.
         """
-        self.client.run(ops.HostReadyCheck())
+        self.client.run(ops.CId_HostReadyCheck())
 
     def create_session(self,
                        name: str,
@@ -179,21 +181,21 @@ class Engine:
         """
         Open a session.
         """
-        op = ops.OpenSession(session_path=path)
+        op = ops.CId_OpenSession(session_path=path)
         self.client.run(op)
 
     def close_session(self, save_on_close: bool):
         """
         Close the currently-open session.
         """
-        op = ops.CloseSession(save_on_close=save_on_close)
+        op = ops.CId_CloseSession(save_on_close=save_on_close)
         self.client.run(op)
 
     def save_session(self):
         """
         Save the currently-open session.
         """
-        op = ops.SaveSession()
+        op = ops.CId_SaveSession()
         self.client.run(op)
 
     def save_session_as(self, path: str, name: str):
@@ -203,7 +205,7 @@ class Engine:
         :param str path: Path to the new session
         :param str name: New name for the session
         """
-        op = ops.SaveSessionAs(session_name=name, session_location=path)
+        op = ops.CId_SaveSessionAs(session_name=name, session_location=path)
         self.client.run(op)
 
     def export_session_as_text(self) -> ExportSessionTextBuilder:
@@ -246,7 +248,7 @@ class Engine:
                                   audio_location=audio_location,
                                   location_data=location_data
                                   )
-        op = ops.Import(import_type=1, audio_data=audio_data)
+        op = ops.CId_Import(import_type=1, audio_data=audio_data)
         self.client.run(op)
 
     def select_all_clips_on_track(self, track_name: str):
@@ -255,7 +257,7 @@ class Engine:
 
         :param str track_name: Name of the track to select all clips on.
         """
-        op = ops.SelectAllClipsOnTrack(track_name=track_name)
+        op = ops.CId_SelectAllClipsOnTrack(track_name=track_name)
         self.client.run(op)
 
     def extend_selection_to_target_tracks(self, tracks: List[str]):
@@ -265,14 +267,14 @@ class Engine:
         :param List[str] tracks: A list of track names to extend
             the selection to.
         """
-        op = ops.ExtendSelectionToTargetTracks(tracks_to_extend_to=tracks)
+        op = ops.CId_ExtendSelectionToTargetTracks(tracks_to_extend_to=tracks)
         self.client.run(op)
 
     def trim_to_selection(self):
         """
         Trim selected clips to the edit selection range.
         """
-        op = ops.TrimToSelection()
+        op = ops.CId_TrimToSelection()
         self.client.run(op)
 
     def create_batch_fades(self, preset_name: str, adjust_bounds: bool):
@@ -286,7 +288,7 @@ class Engine:
         rq = pt.CreateFadesBasedOnPresetRequestBody()
         rq.fade_preset_name = preset_name
         rq.auto_adjust_bounds = adjust_bounds
-        op = ops.CreateFadesBasedOnPreset()
+        op = ops.CId_CreateFadesBasedOnPreset()
         op.request = rq
         self.client.run(op)
 
@@ -297,8 +299,8 @@ class Engine:
         :param str old_name: The name of the track to rename.
         :param str new_name: The new name to give the track.
         """
-        op = ops.RenameTargetTrack(current_name=old_name,
-                                   new_name=new_name)
+        op = ops.CId_RenameTargetTrack(current_name=old_name,
+                                       new_name=new_name)
         self.client.run(op)
 
     def rename_selected_clip(
@@ -314,9 +316,9 @@ class Engine:
         :param CL_ClipLocation clip_location: Clip selection location,
             defaults to :attr:`~ptsl.PTSL_pb2.CL_ClipLocation.CL_Timeline`
         """
-        op = ops.RenameSelectedClip(clip_location=clip_location,
-                                    new_name=new_name,
-                                    rename_file=rename_file)
+        op = ops.CId_RenameSelectedClip(clip_location=clip_location,
+                                        new_name=new_name,
+                                        rename_file=rename_file)
 
         self.client.run(op)
 
@@ -326,9 +328,9 @@ class Engine:
         """
         Renames a named clip in the current session.
         """
-        op = ops.RenameTargetClip(clip_name=clip_name,
-                                  new_name=new_name,
-                                  rename_file=rename_file)
+        op = ops.CId_RenameTargetClip(clip_name=clip_name,
+                                      new_name=new_name,
+                                      rename_file=rename_file)
 
         self.client.run(op)
 
@@ -336,25 +338,25 @@ class Engine:
         """
         Toggle the play state.
         """
-        self.client.run(ops.TogglePlayState())
+        self.client.run(ops.CId_TogglePlayState())
 
     def toggle_record_enable(self):
         """
         Toggle record enable.
         """
-        self.client.run(ops.ToggleRecordEnable())
+        self.client.run(ops.CId_ToggleRecordEnable())
 
     def play_half_speed(self):
         """
         Play at half speed.
         """
-        self.client.run(ops.PlayHalfSpeed())
+        self.client.run(ops.CId_PlayHalfSpeed())
 
     def record_half_speed(self):
         """
         Record at half speed.
         """
-        self.client.run(ops.RecordHalfSpeed())
+        self.client.run(ops.CId_RecordHalfSpeed())
 
     def create_memory_location(
             self,
@@ -377,7 +379,7 @@ class Engine:
         if general_properties is None:
             general_properties = MemoryLocationProperties(
                 track_visibility=False)
-        op = ops.CreateMemoryLocation(
+        op = ops.CId_CreateMemoryLocation(
             number=memory_number,
             name=name,
             start_time=start_time,
@@ -391,18 +393,6 @@ class Engine:
             color_index=color_index
         )
         self.client.run(op)
-
-    def get_edit_mode(self):
-        """
-        :returns: The current edit mode and options:
-        """
-        op = ops.GetEditMode()
-        self.client.run(op)
-        # mode = op.response.current_setting
-
-        op2 = ops.GetEditModeOptions()
-        self.client.run(op2)
-        # options = op.response.edit_mode_options
 
     def edit_memory_location(self, location_number: int,
                              name: str,
@@ -425,7 +415,7 @@ class Engine:
         :param MemoryLocationProperties general_properties: Location properties
         :param str comments: Comment field
         """
-        op = ops.EditMemoryLocation(
+        op = ops.CId_EditMemoryLocation(
             number=location_number,
             name=name,
             start_time=start_time,
@@ -442,7 +432,7 @@ class Engine:
         """
         Get a list of all memory locations in currently-open session.
         """
-        op = ops.GetMemoryLocations(
+        op = ops.CId_GetMemoryLocations(
             pagination_request=pt.PaginationRequest(limit=1000, offset=0)
         )
         self.client.run(op)
@@ -452,7 +442,7 @@ class Engine:
         """
         Consolidate time selection.
         """
-        op = ops.ConsolidateClip()
+        op = ops.CId_ConsolidateClip()
         self.client.run(op)
 
     def export_clips_as_files(
@@ -488,7 +478,7 @@ class Engine:
         if ex_format is not None:
             rq.format = ex_format
 
-        op = ops.ExportClipsAsFiles()
+        op = ops.CId_ExportClipsAsFiles()
         op.request = rq
         self.client.run(op)
 
@@ -506,7 +496,7 @@ class Engine:
         """
         if filters is None:
             filters = [pt.All_Files]
-        op = ops.GetFileLocation(
+        op = ops.CId_GetFileLocation(
             pagination_request=pt.PaginationRequest(limit=1000, offset=0),
             file_filters=filters)
         self.client.run(op)
@@ -538,7 +528,7 @@ class Engine:
         :param EM_DolbyAtmosInfo dolby_atmos_info: Dolby Atmos output settings
         :param bool offline_bounce: Bounce offline option
         """
-        op = ops.ExportMix(
+        op = ops.CId_ExportMix(
             file_name=base_name,
             file_type=file_type,
             mix_source_list=sources,
@@ -554,7 +544,7 @@ class Engine:
         """
         Name of the current open session.
         """
-        op = ops.GetSessionName()
+        op = ops.CId_GetSessionName()
         self.client.run(op)
         return op.response.session_name
 
@@ -562,7 +552,7 @@ class Engine:
         """
         Path to the current open session.
         """
-        op = ops.GetSessionPath()
+        op = ops.CId_GetSessionPath()
         self.client.run(op)
         return op.response.session_path.path
 
@@ -570,7 +560,7 @@ class Engine:
         """
         Open session sample rate.
         """
-        op = ops.GetSessionSampleRate()
+        op = ops.CId_GetSessionSampleRate()
         self.client.run(op)
         map_dict = {
             pt.SR_192000: 192000,
@@ -586,12 +576,12 @@ class Engine:
         """
         Open session audio format.
         """
-        op = ops.GetSessionAudioFormat()
+        op = ops.CId_GetSessionAudioFormat()
         self.client.run(op)
         return op.response.current_setting
 
     def session_bit_depth(self) -> 'BitDepth':
-        op = ops.GetSessionBitDepth()
+        op = ops.CId_GetSessionBitDepth()
         self.client.run(op)
         return op.response.current_setting
 
@@ -599,7 +589,7 @@ class Engine:
         """
         Session audio file interleaved state.
         """
-        op = ops.GetSessionInterleavedState()
+        op = ops.CId_GetSessionInterleavedState()
         self.client.run(op)
         return op.response.current_setting
 
@@ -607,7 +597,7 @@ class Engine:
         """
         Session timecode rate.
         """
-        op = ops.GetSessionTimeCodeRate()
+        op = ops.CId_GetSessionTimeCodeRate()
         self.client.run(op)
         return op.response.current_setting
 
@@ -615,7 +605,7 @@ class Engine:
         """
         Session start time.
         """
-        op = ops.GetSessionStartTime()
+        op = ops.CId_GetSessionStartTime()
         self.client.run(op)
         return op.response.session_start_time
 
@@ -626,7 +616,7 @@ class Engine:
         :returns: Session length, as a string in the current
             time code format.
         """
-        op = ops.GetSessionLength()
+        op = ops.CId_GetSessionLength()
         self.client.run(op)
         return op.response.session_length
 
@@ -634,7 +624,7 @@ class Engine:
         """
         Session feet-frames rate.
         """
-        op = ops.GetSessionFeetFramesRate()
+        op = ops.CId_GetSessionFeetFramesRate()
         self.client.run(op)
         return op.response.current_setting
 
@@ -642,7 +632,7 @@ class Engine:
         """
         Audio pull setting of the currently-open session.
         """
-        op = ops.GetSessionAudioRatePullSettings()
+        op = ops.CId_GetSessionAudioRatePullSettings()
         self.client.run(op)
         return op.response.current_setting
 
@@ -650,7 +640,7 @@ class Engine:
         """
         Video pull setting of the currently-open session.
         """
-        op = ops.GetSessionVideoRatePullSettings()
+        op = ops.CId_GetSessionVideoRatePullSettings()
         self.client.run(op)
         return op.response.current_setting
 
@@ -658,7 +648,7 @@ class Engine:
         """
         Current transport state.
         """
-        op = ops.GetTransportState()
+        op = ops.CId_GetTransportState()
         self.client.run(op)
         return pt.TransportState.Name(op.response.current_setting)
 
@@ -666,7 +656,7 @@ class Engine:
         """
         Transport record-arm state.
         """
-        op = ops.GetTransportArmed()
+        op = ops.CId_GetTransportArmed()
         self.client.run(op)
         return op.response.is_transport_armed
 
@@ -676,7 +666,7 @@ class Engine:
 
         :returns: A Tuple of (`is_normal`, `is_loop`, `is_dynamic_transport`)
         """
-        op = ops.GetPlaybackMode()
+        op = ops.CId_GetPlaybackMode()
         self.client.run(op)
         return (pt.PM_Normal in op.response.current_settings,
                 pt.PM_Loop in op.response.current_settings,
@@ -686,7 +676,7 @@ class Engine:
         """
         Transport's current record mode.
         """
-        op = ops.GetRecordMode()
+        op = ops.CId_GetRecordMode()
         self.client.run(op)
         return op.response.current_setting
 
@@ -704,7 +694,7 @@ class Engine:
             filters = [pt.TrackListInvertibleFilter(filter=pt.All,
                                                     is_inverted=False)]
 
-        op = ops.GetTrackList(
+        op = ops.CId_GetTrackList(
             track_filter_list=filters,
             pagination_request=pt.PaginationRequest(limit=1000, offset=0)
         )
@@ -717,7 +707,7 @@ class Engine:
         """
         Set the playback mode.
         """
-        op = ops.SetPlaybackMode(playback_mode=new_mode)
+        op = ops.CId_SetPlaybackMode(playback_mode=new_mode)
         self.client.run(op)
 
     def set_record_mode(
@@ -727,7 +717,7 @@ class Engine:
         """
         Set the record mode.
         """
-        op = ops.SetRecordMode(
+        op = ops.CId_SetRecordMode(
             record_mode=new_mode,
             record_arm_transport=record_arm_transport
         )
@@ -737,14 +727,14 @@ class Engine:
         """
         Set session bit depth.
         """
-        op = ops.SetSessionBitDepth(bit_depth=new_bit_depth)
+        op = ops.CId_SetSessionBitDepth(bit_depth=new_bit_depth)
         self.client.run(op)
 
     def set_session_audio_format(self, new_audio_format: 'SessionAudioFormat'):
         """
         Set session audio format.
         """
-        op = ops.SetSessionAudioFormat(audio_format=new_audio_format)
+        op = ops.CId_SetSessionAudioFormat(audio_format=new_audio_format)
         self.client.run(op)
 
     def set_session_start_time(
@@ -761,7 +751,7 @@ class Engine:
         :param maintain_relative: If `True`, clips will retain their time
             position relative to the beginning of the session.
         """
-        op = ops.SetSessionStartTime(
+        op = ops.CId_SetSessionStartTime(
             session_start_time=new_start,
             track_offset_opts=track_offset_opts,
             maintain_relative_position=maintain_relative
@@ -777,70 +767,105 @@ class Engine:
             than "06:00:00:00", the PTSL server will reject the
             change and return an error otherwise.
         """
-        op = ops.SetSessionLength(session_length=new_length)
+        op = ops.CId_SetSessionLength(session_length=new_length)
         self.client.run(op)
 
     def set_session_interleaved_state(self, new_state: bool):
         """
         Set session interleaved state.
         """
-        op = ops.SetSessionInterleavedState(interleaved_state=new_state)
+        op = ops.CId_SetSessionInterleavedState(interleaved_state=new_state)
         self.client.run(op)
 
     def set_session_time_code_rate(self, tc_rate: 'SessionTimeCodeRate'):
         """
         Set session timecode rate.
         """
-        op = ops.SetSessionTimeCodeRate(time_code_rate=tc_rate)
+        op = ops.CId_SetSessionTimeCodeRate(time_code_rate=tc_rate)
         self.client.run(op)
 
     def set_session_feet_frames_rate(self, ff_rate: 'SessionFeetFramesRate'):
         """
         Set session feet+frames rate.
         """
-        op = ops.SetSessionFeetFramesRate(feet_frames_rate=ff_rate)
+        op = ops.CId_SetSessionFeetFramesRate(feet_frames_rate=ff_rate)
         self.client.run(op)
 
     def set_session_audio_rate_pull(self, pull_rate: 'SessionRatePull'):
         """
         Set session audio rate pull.
         """
-        op = ops.SetSessionAudioRatePullSettings(audio_rate_pull=pull_rate)
+        op = ops.CId_SetSessionAudioRatePullSettings(audio_rate_pull=pull_rate)
         self.client.run(op)
 
     def set_session_video_rate_pull(self, pull_rate: 'SessionRatePull'):
         """
         Set session video rate pull.
         """
-        op = ops.SetSessionVideoRatePullSettings(video_rate_pull=pull_rate)
+        op = ops.CId_SetSessionVideoRatePullSettings(video_rate_pull=pull_rate)
         self.client.run(op)
 
-    def set_timeline_selection(self,
-                               in_time: Optional[str],
-                               play_start_marker_time: Optional[str] = None,
-                               out_time: Optional[str] = None,
-                               pre_roll_start_time: Optional[str] = None,
-                               post_roll_stop_time: Optional[str] = None,
-                               pre_roll_enabled: Optional[TripleBool] = None,
-                               update_video_to:
-                               Optional[TimelineUpdateVideo] = None,
-                               propagate_to_satellites:
-                               Optional[TripleBool] = None
-                               ):
+    def cut(self, special: Optional['AutomationDataOptions'] = None):
         """
-        Set Selection at Timecode
+        Execute an Edit > Cut.
         """
-        op = ops.SetTimelineSelection(
-            play_start_marker_time=play_start_marker_time,
-            in_time=in_time,
-            out_time=out_time,
-            pre_roll_start_time=pre_roll_start_time,
-            post_roll_stop_time=post_roll_stop_time,
-            pre_roll_enabled=pre_roll_enabled,
-            update_video_to=update_video_to,
-            propagate_to_satellites=propagate_to_satellites
-        )
+        if special is not None:
+            op = ops.CId_CutSpecial(automation_data_option=special)
+        else:
+            op = ops.CId_Cut()
+
         self.client.run(op)
+
+    def copy(self, special: Optional['AutomationDataOptions'] = None):
+        """
+        Execute an Edit > Copy.
+        """
+        if special is not None:
+            op = ops.CId_CopySpecial(automation_data_option=special)
+        else:
+            op = ops.CId_Copy()
+
+        self.client.run(op)
+
+    def paste(self, special: Optional['PasteSpecialOptions'] = None):
+        """
+        Execute an Edit > Paste.
+        """
+        if special is not None:
+            op = ops.CId_PasteSpecial(paste_special_option=special)
+        else:
+            op = ops.CId_Paste()
+
+        self.client.run(op)
+
+    def clear(self, special: Optional['AutomationDataOptions'] = None):
+        """
+        Execute an Edit > Clear.
+        """
+        if special is not None:
+            op = ops.CId_ClearSpecial(automation_data_option=special)
+        else:
+            op = ops.CId_Clear()
+
+        self.client.run(op)
+
+    def refresh_target_audio_files(self, files: List[str]):
+        """
+        Refresh target audio files.
+
+        :param files: A list of files to refresh.
+        """
+        op = ops.CId_RefreshAllModifiedAudioFiles(file_list=files)
+        self.client.run(op)
+
+    def refresh_all_modified_audio_files(self):
+        """
+        Refreshes all modified audio files.
+        """
+        self.client.run(ops.CId_RefreshAllModifiedAudioFiles())
+
+    # PT 2023.9
+    # TODO add GetEditModeOptions, SetEditModeOptions
 
     def create_new_tracks(self,
                           number_of_tracks: Optional[int] = None,
@@ -852,103 +877,382 @@ class Engine:
         """
         Create new Tracks
         """
-        op = ops.CreateNewTracks(number_of_tracks=number_of_tracks,
-                                 track_name=track_name,
-                                 track_format=track_format,
-                                 track_type=track_type,
-                                 track_timebase=track_timebase
-                                 )
+        op = ops.CId_CreateNewTracks(number_of_tracks=number_of_tracks,
+                                     track_name=track_name,
+                                     track_format=track_format,
+                                     track_type=track_type,
+                                     track_timebase=track_timebase
+                                     )
         self.client.run(op)
-
-    def cut(self, special: Optional['AutomationDataOptions'] = None):
-        """
-        Execute an Edit > Cut.
-        """
-        if special is not None:
-            op = ops.CutSpecial(automation_data_option=special)
-        else:
-            op = ops.Cut()
-
-        self.client.run(op)
-
-    def copy(self, special: Optional['AutomationDataOptions'] = None):
-        """
-        Execute an Edit > Copy.
-        """
-        if special is not None:
-            op = ops.CopySpecial(automation_data_option=special)
-        else:
-            op = ops.Copy()
-
-        self.client.run(op)
-
-    def paste(self, special: Optional['PasteSpecialOptions'] = None):
-        """
-        Execute an Edit > Paste.
-        """
-        if special is not None:
-            op = ops.PasteSpecial(paste_special_option=special)
-        else:
-            op = ops.Paste()
-
-        self.client.run(op)
-
-    def clear(self, special: Optional['AutomationDataOptions'] = None):
-        """
-        Execute an Edit > Clear.
-        """
-        if special is not None:
-            op = ops.ClearSpecial(automation_data_option=special)
-        else:
-            op = ops.Clear()
-
-        self.client.run(op)
-
-    def refresh_target_audio_files(self, files: List[str]):
-        """
-        Refresh target audio files.
-
-        :param files: A list of files to refresh.
-        """
-        op = ops.RefreshAllModifiedAudioFiles(file_list=files)
-        self.client.run(op)
-
-    def refresh_all_modified_audio_files(self):
-        """
-        Refreshes all modified audio files.
-        """
-        self.client.run(ops.RefreshAllModifiedAudioFiles())
-
-    # PT 2023.9
-    # TODO add remaining new methods, add proper docstrings, expose
-    # remaining parameters
-    # CreateNewTracks
-    # GetEditMode, SetEditMode, GetEditModeOptions, SetEditModeOptions
-    # GetEditTool, SetEditTool
-    # RecallZoomPreset
 
     def select_tracks_by_name(self, names: List[str],
                               mode: Optional['SelectionMode'] = pt.SM_Replace):
         """
         Selects all tracks matching any of the passed names literally.
         """
-        op = ops.SelectTracksByName(
+        op = ops.CId_SelectTracksByName(
             track_names=names, selection_mode=mode,
             pagination_request=pt.PaginationRequest(limit=1000, offset=0))
 
         self.client.run(op)
 
-    def get_timeline_selection(self, format: TrackOffsetOptions = TimeCode
+    def get_edit_mode(self) -> dict[str, EditMode | list[EditMode]]:
+        """
+        Gets the current session edit mode as well as all possible options
+
+        :returns: A dictionary containing the current edit mode
+        and all possible edit modes
+        """
+        op = ops.CId_GetEditMode()
+        self.client.run(op)
+        return op.response
+
+    def set_edit_mode(self, mode: EditMode) -> None:
+        """
+        Sets the current session edit mode
+        """
+        op = ops.CId_SetEditMode(edit_mode=mode)
+        self.client.run(op)
+
+    def get_edit_tool(self) -> dict[str, EditTool | list[EditTool]]:
+        """
+        Gets the current session edit tool as well as all possible options
+
+        :returns: A dictionary containing the current edit tool
+        and all possible edit tools
+        """
+        op = ops.CId_GetEditTool()
+        self.client.run(op)
+        return op.response
+
+    def set_edit_tool(self, tool: EditTool) -> None:
+        """
+        Sets the current session edit tool
+        """
+        op = ops.CId_SetEditTool(edit_tool=tool)
+        self.client.run(op)
+
+    def recall_zoom_preset(self, preset: int) -> None:
+        """
+        Recall a zoom preset in Pro Tools.
+        """
+        op = ops.CId_RecallZoomPreset(zoom_preset=preset)
+        self.client.run(op)
+
+    def get_timeline_selection(self,
+                               format: TimelineLocationType = TLType_TimeCode
                                ) -> Tuple[str, str]:
         """
         Returns data about the current timeline selection.
 
         :returns: a Tuple of the In and Out time.
         """
-        op = ops.GetTimelineSelection(time_scale=format)
+        op = ops.CId_GetTimelineSelection(location_type=format)
         self.client.run(op)
 
-        return (op.response.in_time, op.response.out_time)
+        return op.response.in_time, op.response.out_time
+
+    def set_timeline_selection(self,
+                               in_time: Optional[str],
+                               play_start_marker_time: Optional[str] = None,
+                               out_time: Optional[str] = None,
+                               pre_roll_start_time: Optional[str] = None,
+                               post_roll_stop_time: Optional[str] = None,
+                               pre_roll_enabled: Optional[TripleBool] = None,
+                               post_roll_enabled: Optional[TripleBool] = None,
+                               update_video_to:
+                               Optional[TimelineUpdateVideo] = None,
+                               propagate_to_satellites:
+                               Optional[TripleBool] = None,
+                               location_type:
+                               TimelineLocationType = TLType_TimeCode
+                               ) -> None:
+        """
+        Set Selection at Timecode
+        """
+        op = ops.CId_SetTimelineSelection(
+            play_start_marker_time=play_start_marker_time,
+            in_time=in_time,
+            out_time=out_time,
+            pre_roll_start_time=pre_roll_start_time,
+            post_roll_stop_time=post_roll_stop_time,
+            pre_roll_enabled=pre_roll_enabled,
+            post_roll_enabled=post_roll_enabled,
+            update_video_to=update_video_to,
+            propagate_to_satellites=propagate_to_satellites,
+            location_type=location_type
+        )
+        self.client.run(op)
+
+    # PT 2023.12
+    # TODO add ImportVideo
+
+    def select_memory_location(self, mem_loc_id: int) -> None:
+        """
+        Select a memory location given an index value
+        """
+        op = ops.CId_SelectMemoryLocation(number=mem_loc_id)
+        self.client.run(op)
+
+    def set_track_mute_state(
+            self, track_names: List[str], new_state: bool) -> None:
+        """
+        Sets the mute state of the specified tracks
+        (except Video and MasterFader types of tracks).
+        """
+        op = ops.CId_SetTrackMuteState(
+            track_names=track_names, enabled=new_state)
+        self.client.run(op)
+
+    def set_track_solo_state(
+            self, track_names: List[str], new_state: bool) -> None:
+        """
+        Sets the solo state of the specified tracks
+        (except Video and MasterFader types of tracks).
+        """
+        op = ops.CId_SetTrackSoloState(
+            track_names=track_names, enabled=new_state)
+        self.client.run(op)
+
+    def set_track_solo_safe_state(
+            self, track_names: List[str], new_state: bool) -> None:
+        """
+        Sets the solo safe state of the specified tracks
+        (except Video and MasterFader types of tracks)
+        """
+        op = ops.CId_SetTrackSoloSafeState(
+            track_names=track_names, enabled=new_state)
+        self.client.run(op)
+
+    def set_track_record_enable_state(
+            self,
+            track_names: List[str],
+            new_state: bool) -> None:
+        """
+        Sets the record enable state of the specified tracks
+        (Audio, Instrument, Midi and VCA types of tracks only).
+        """
+        op = ops.CId_SetTrackRecordEnableState(track_names=track_names,
+                                               enabled=new_state)
+        self.client.run(op)
+
+    def set_track_record_safe_enable_state(
+            self, track_names: List[str], new_state: bool) -> None:
+        """
+        Sets the record safe enable state of the specified tracks
+        (Audio, Instrument, Midi and VCA types of tracks only).
+        """
+        op = ops.CId_SetTrackRecordSafeEnableState(track_names=track_names,
+                                                   enabled=new_state)
+        self.client.run(op)
+
+    def set_track_input_monitor_state(
+            self, track_names: List[str], new_state: bool) -> None:
+        """
+        Sets the input monitor state of Audio, Instrument and VCA track types.
+        """
+        op = ops.CId_SetTrackInputMonitorState(track_names=track_names,
+                                               enabled=new_state)
+        self.client.run(op)
+
+    def set_track_smart_dsp_state(
+            self, track_names: List[str], new_state: bool) -> None:
+        """
+        Sets the smart DSP state of the specified tracks
+        (except Video, Midi, VCA and Basic Folder types of tracks).
+        """
+        op = ops.CId_SetTrackSmartDspState(track_names=track_names,
+                                           enabled=new_state)
+        self.client.run(op)
+
+    def set_track_hidden_state(
+            self, track_names: List[str], new_state: bool) -> None:
+        """
+        Sets the hidden state of the specified tracks.
+        """
+        op = ops.CId_SetTrackHiddenState(track_names=track_names,
+                                         enabled=new_state)
+        self.client.run(op)
+
+    def set_track_inactive_state(
+            self, track_names: List[str], new_state: bool) -> None:
+        """
+        Set the inactive state of the specified tracks (except Video tracks).
+        """
+        op = ops.CId_SetTrackInactiveState(track_names=track_names,
+                                           enabled=new_state)
+        self.client.run(op)
+
+    def set_track_frozen_state(
+            self, track_names: List[str], new_state: bool) -> None:
+        """
+        Sets the frozen state of the specified tracks
+        (Audio, Instrument, AuxInput and Routing Folder types of tracks only).
+        """
+        op = ops.CId_SetTrackFrozenState(track_names=track_names,
+                                         enabled=new_state)
+        self.client.run(op)
+
+    def set_track_online_state(self, track_name: str, new_state: bool) -> None:
+        """
+        Sets the online state of the specified track (Video tracks only).
+        """
+        op = ops.CId_SetTrackOnlineState(track_name=track_name,
+                                         enabled=new_state)
+        self.client.run(op)
+
+    def set_track_open_state(
+            self, track_names: List[str], new_state: bool) -> None:
+        """
+        Sets the open state of the specified tracks (Folder tracks only).
+        """
+        op = ops.CId_SetTrackOpenState(track_names=track_names,
+                                       enabled=new_state)
+        self.client.run(op)
+
+    # PT 2024.03
+
+    def get_session_ids(self) -> dict[str, str]:
+        """
+        Provides originId, instanceId and
+        parentId of the current opened session:
+
+        originId is the main ID of the session (or project),
+        and it remains the same in all variations of the session
+        through Save As, Save Copy In, etc.
+        instanceId is unique for each session variation.
+        In a new/original session file, the instanceId is equal to originId.
+        When variants are introduced via Save As,
+        Save Copy In, and several others, instanceId is set to a new unique ID.
+        parentId is set to the instanceId of the source session
+        for sessions based off of a previous session.
+        For new/original sessions, the parentId is set to zeros.
+        That means parentId is equal to originId for first-generation variants,
+        and is different for second and later generation variations.
+
+        :returns: A dictionary containing the originId, instanceId,
+        and parentId of the current opened session
+        """
+        op = ops.CId_GetSessionsIDs()
+        self.client.run(op)
+
+        return op.response
+
+    # PT 2024.06
+
+    def get_memory_locations_manage_mode(self) -> bool:
+        """
+        Returns the Memory Locations Manage Mode state
+        (see menu Window -> Memory Locations in the UI).
+        """
+        op = ops.CId_GetMemoryLocationsManageMode()
+        self.client.run(op)
+
+        return op.response.enabled
+
+    def set_memory_locations_manage_mode(self, new_mode: bool) -> None:
+        """
+        Sets the Memory Locations Manage Mode
+        (see menu Window -> Memory Locations in the UI).
+        """
+        op = ops.CId_SetMemoryLocationsManageMode(enabled=new_mode)
+        self.client.run(op)
+
+    def set_main_counter_format(
+            self, new_loc_type: TimelineLocationType) -> None:
+        """
+        Sets the time format of the Main Counter.
+        """
+        op = ops.CId_SetMainCounterFormat(location_type=new_loc_type)
+        self.client.run(op)
+
+    def set_sub_counter_format(
+            self, new_loc_type: TimelineLocationType) -> None:
+        """
+        Sets the time format of the Sub Counter.
+        """
+        op = ops.CId_SetSubCounterFormat(location_type=new_loc_type)
+        self.client.run(op)
+
+    def get_main_counter_format(self) -> dict[str, str]:
+        """
+        Gets the time format of the Main Counter
+        as well as all possible options.
+        """
+        op = ops.CId_GetMainCounterFormat()
+        self.client.run(op)
+
+        return op.response
+
+    def get_sub_counter_format(self) -> dict[str, str]:
+        """
+        Gets the time format of the Sub Counter
+        as well as all possible options.
+        """
+        op = ops.CId_GetSubCounterFormat()
+        self.client.run(op)
+
+        return op.response
+
+    def undo(self, depth: int = 1) -> dict[str, list[dict[str, str]]]:
+        """
+        Undoes the last number of operations, according to depth parameter.
+
+        :returns: A dictionary of successfully undone operations
+        """
+        op = ops.CId_Undo(levels=depth)
+        self.client.run(op)
+
+        return op.response
+
+    def redo(self, depth: int = 1) -> dict[str, list[str]]:
+        """
+        Redos the last number of operations, according to depth parameter.
+
+        :returns: A dictionary of successfully redone operations
+        """
+        op = ops.CId_Redo(levels=depth)
+        self.client.run(op)
+
+        return op.response
+
+    def undoall(self) -> dict[str, list[str]]:
+        """
+        Undoes all operations in Undo History.
+
+        :returns: A dictionary of successfully undone operations
+        """
+        op = ops.CId_UndoAll()
+        self.client.run(op)
+
+        return op.response
+
+    def redoall(self) -> dict[str, list[str]]:
+        """
+        Redoes all operations in Redo History.
+
+        :returns: A dictionary of successfully redone operations
+        """
+        op = ops.CId_RedoAll()
+        self.client.run(op)
+
+        return op.response
+
+    def clear_undo_queue(self) -> None:
+        """
+        Clears the undo queue.
+        """
+        op = ops.CId_ClearUndoQueue()
+        self.client.run(op)
+
+    def set_track_dsp_mode_safe_state(
+            self, track_names: List[str], new_state: bool) -> None:
+        """
+        Sets the DSP Mode Safe state for the specified tracks.
+        """
+        op = ops.CId_SetTrackDSPModeSafeState(track_names=track_names,
+                                              enabled=new_state)
+        self.client.run(op)
 
     def get_system_delay(self) -> int:
         """
@@ -956,16 +1260,110 @@ class Engine:
 
         :returns: the delay in samples.
         """
-        op = ops.GetSessionSystemDelayInfo()
+        op = ops.CId_GetSessionSystemDelayInfo()
         self.client.run(op)
 
         return op.response.samples
 
-    def set_track_record_enable(self, track_names: List[str], new_state: bool
-                                ) -> None:
+    def group_clips(self) -> None:
         """
-        Sets the record enabled state of one or more tracks
+        Creates a new clip group based on the
+        Edit selection made across tracks.
         """
-        op = ops.SetTrackRecordEnableState(track_names=track_names,
-                                           enabled=new_state)
+        op = ops.CId_GroupClips()
         self.client.run(op)
+
+    def ungroup_clips(self) -> None:
+        """
+        Reveals all underlying clips and any nested clip groups
+        within a selected clip group,
+        making them independent and editable.
+        """
+        op = ops.CId_UngroupClips()
+        self.client.run(op)
+
+    def ungroup_all_clips(self) -> None:
+        """
+        Reveals all clips within a selected clip group
+        and any of its nested clip groups,
+        making them independent and editable.
+        """
+        op = ops.CId_UngroupAllClips()
+        self.client.run(op)
+
+    def regroup_clips(self) -> None:
+        """
+        Reassembles a previously ungrouped clip group,
+        including any nested clip groups,
+        restoring its original structure.
+        """
+        op = ops.CId_RegroupClips()
+        self.client.run(op)
+
+    def repeat_selection(self, repeats: int = 1) -> None:
+        """
+        Duplicate selected material by the number passed in to repeats
+        """
+        op = ops.CId_RepeatSelection(num_repeats=repeats)
+        self.client.run(op)
+
+    def duplicate_selection(self) -> None:
+        """
+        Copies a selection and places it immediately
+        after the end of the selection.
+        """
+        op = ops.CId_DuplicateSelection()
+        self.client.run(op)
+
+    # PT 2024.10
+
+    def clear_all_memory_locations(self) -> None:
+        """
+        Clears all the memory locations in the session.
+        """
+        op = ops.CId_ClearAllMemoryLocations()
+        self.client.run(op)
+
+    # PT 2025.6
+    # TODO add GetTimeAsType, SubtractLocations
+    # TODO add AddLengthToLocation, SubtractPositions,
+    # TODO add AddLengthToPosition
+    # TODO add ImportAudioToClipList, SpotClipsByID, GetClipList
+    # TODO add GetMediaFileInfo, CreateAudioClips,
+    # TODO add GetExportMixSourceList
+    # TODO add BounceTrack
+
+    def get_monitor_output_path(self) -> str:
+        """
+        Gets monitor output path from I/O Setup.
+
+        :returns: a string containing the monitor output path
+        """
+        op = ops.CId_GetMonitorOutputPath()
+        self.client.run(op)
+
+        return op.response.monitor_path
+
+    def get_edit_selection(
+            self, loc_type: TimelineLocationType = TLType_TimeCode
+                           ) -> Tuple[str, str]:
+        """
+        Returns data about the current edit selection.
+
+        :returns: a Tuple of the In and Out time.
+        """
+        op = ops.CId_GetEditSelection(location_type=loc_type)
+        self.client.run(op)
+
+        return (op.response.in_time, op.response.out_time)
+
+    # PT 2025.10
+    # TODO add CreateSignalPath,
+    # TODO add SetTrackMainOutputAssignments,
+    # TODO add SetTrackColor, GetTrackPlaylists, SetTrackTimebase,
+    # TODO add GetColorPalette
+
+    # TODO add DeleteTracks
+    # TODO add WriteSelectedTranscriptionToJSONFile
+    # TODO add CreateBatchJob, GetBatchJobStatus, CompleteBatchJob,
+    # TODO add CancelBatchJob

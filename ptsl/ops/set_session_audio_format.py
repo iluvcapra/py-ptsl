@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class SetSessionAudioFormat(Operation):
+class CId_SetSessionAudioFormat(Operation):
     pass

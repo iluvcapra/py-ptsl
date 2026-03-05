@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class RegisterConnection(Operation):
+class CId_RegisterConnection(Operation):
     pass
