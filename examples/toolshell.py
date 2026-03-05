@@ -40,26 +40,26 @@ To begin, type `connect`.
             return None
 
     def do_connect(self, _):
-        'Connect to Pro Tools'
+        """Connect to Pro Tools"""
         self.client = ptsl.client.Client(company_name="py-ptsl",
                                          application_name=sys.argv[0])
         if self.client is not None:
             self.prompt = "(pt) "
 
     def do_sinfo(self, _):
-        'Print info about the open session: SINFO'
-        r = self.run_command_on_session(pt.GetSessionName, {})
+        """Print info about the open session: SINFO"""
+        r = self.run_command_on_session(pt.CId_GetSessionName, {})
 
         assert r, "Failed to receive a response"
         session_name = r['session_name']
-        r = self.run_command_on_session(pt.GetSessionIDs, {})
+        r = self.run_command_on_session(pt.CId_GetSessionIDs, {})
         assert r
         print(f"Connected to Pro Tools session \"{session_name}\"")
         print(f"Session origin ID: {r['origin_id']}")
         print(f"Session instance ID: {r['instance_id']}")
 
     def do_newsession(self, args):
-        'Create a new session: NEWSESSION name save-path sample-rate'
+        """Create a new session: NEWSESSION name save-path sample-rate"""
         name, path, sr = shlex.split(args)
         print(f"Creating new session {name} at {path} and SR {sr}")
         command_args = {'session_name': name,
@@ -78,7 +78,7 @@ To begin, type `connect`.
         self.client.run_command(pt.CreateSession, command_args)
 
     def do_newtracks(self, args):
-        'Create new audio track: NEWTRACKS count format'
+        """Create new audio track: NEWTRACKS count format"""
         count, fmt = shlex.split(args)
         command_args = {'number_of_tracks': count,
                         'track_name': "New Track",
@@ -87,19 +87,19 @@ To begin, type `connect`.
                         'track_timebase': 'TTB_Samples',
                         'insertion_point_position': 'TIPoint_Unknown',
                         }
-        self.run_command_on_session(pt.CreateNewTracks, command_args)
+        self.run_command_on_session(pt.CId_CreateNewTracks, command_args)
 
     def do_locate(self, args):
-        'Locate to a given time: LOCATE time'
+        """Locate to a given time: LOCATE time"""
         time = args.strip()
         command_args = {'play_start_marker_time': time,
                         'in_time': time,
                         'out_time': time,
                         }
-        self.run_command_on_session(pt.SetTimelineSelection, command_args)
+        self.run_command_on_session(pt.CId_SetTimelineSelection, command_args)
 
     def do_newmemloc(self, args):
-        'Create a new marker memory location: NEWMEMLOC start-time'
+        """Create a new marker memory location: NEWMEMLOC start-time"""
         command_args = {'name': 'New Marker',
                         'start_time': args.strip(),
                         'end_time': args.strip(),
@@ -118,10 +118,10 @@ To begin, type `connect`.
                         'location': 'MLC_MainRuler'
                         }
 
-        self.run_command_on_session(pt.CreateMemoryLocation, command_args)
+        self.run_command_on_session(pt.CId_CreateMemoryLocation, command_args)
 
     def do_play(self, _):
-        'Toggle the play state of the transport: PLAY'
+        """Toggle the play state of the transport: PLAY"""
         assert self.client
         try:
             self.client.run_command(pt.CommandId.TogglePlayState, {})
@@ -131,8 +131,8 @@ To begin, type `connect`.
                 return False
 
     def do_bye(self, _):
-        'Quit Toolshell and return to your shell: BYE'
-        print("Tooshell quitting...")
+        """Quit Toolshell and return to your shell: BYE"""
+        print("Toolshell quitting...")
         if self.client:
             self.client.close()
         return True
