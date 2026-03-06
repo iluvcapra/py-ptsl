@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class CreateNewTracks(Operation):
+class CId_CreateNewTracks(Operation):
     pass

@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class GetSessionVideoRatePullSettings(Operation):
+class CId_GetSessionVideoRatePullSettings(Operation):
     pass

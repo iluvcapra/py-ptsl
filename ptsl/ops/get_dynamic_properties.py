@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class GetDynamicProperties(Operation):
+class CId_GetDynamicProperties(Operation):
     pass

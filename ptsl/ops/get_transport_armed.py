@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class GetTransportArmed(Operation):
+class CId_GetTransportArmed(Operation):
     pass

@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class ConsolidateClip(Operation):
+class CId_ConsolidateClip(Operation):
     pass

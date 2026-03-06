@@ -271,6 +271,20 @@ class CommandId(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     CId_UpdateVideo: _ClassVar[CommandId]
     CId_EnableAPI: _ClassVar[CommandId]
     CId_ExchangePublicKeys: _ClassVar[CommandId]
+    CId_CreateSignalPath: _ClassVar[CommandId]
+    CId_SetTrackMainOutputAssignments: _ClassVar[CommandId]
+    CId_GetTrackControlInfo: _ClassVar[CommandId]
+    CId_GetTrackControlBreakpoints: _ClassVar[CommandId]
+    CId_SetTrackControlBreakpoints: _ClassVar[CommandId]
+    CId_InstallMenuHandler: _ClassVar[CommandId]
+    CId_UninstallMenuHandler: _ClassVar[CommandId]
+    CId_SetTrackColor: _ClassVar[CommandId]
+    CId_GetTrackPlaylists: _ClassVar[CommandId]
+    CId_SetTrackTimebase: _ClassVar[CommandId]
+    CId_GetColorPalette: _ClassVar[CommandId]
+    CId_DeleteTracks: _ClassVar[CommandId]
+    CId_GetPlaylistElements: _ClassVar[CommandId]
+    CId_WriteSelectedTranscriptionToJSONFile: _ClassVar[CommandId]
 
 class EventId(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
@@ -278,6 +292,12 @@ class EventId(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     EId_SessionOpened: _ClassVar[EventId]
     EId_SessionCreated: _ClassVar[EventId]
     EId_SessionClosed: _ClassVar[EventId]
+    EId_TrackRecordEnabledStateChanged: _ClassVar[EventId]
+    EId_MenuItemSelected: _ClassVar[EventId]
+    EId_TrackInputMonitorStateChanged: _ClassVar[EventId]
+    EId_TrackSoloStateChanged: _ClassVar[EventId]
+    EId_TrackMuteStateChanged: _ClassVar[EventId]
+    EId_BatchJobStatusChanged: _ClassVar[EventId]
 
 class TaskStatus(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
@@ -403,6 +423,7 @@ class CommandErrorType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     CEType_PT_HostIsBusy: _ClassVar[CommandErrorType]
     CEType_PT_DeprecatedParameter: _ClassVar[CommandErrorType]
     CEType_PT_DeprecatedParameterValue: _ClassVar[CommandErrorType]
+    CEType_PT_GlobalRendererRequired: _ClassVar[CommandErrorType]
     PT_Info: _ClassVar[CommandErrorType]
     CEType_PT_Info: _ClassVar[CommandErrorType]
     SDK_VersionMismatch: _ClassVar[CommandErrorType]
@@ -919,12 +940,13 @@ class TripleBool(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
 class EM_SourceType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
     EMSType_Unknown: _ClassVar[EM_SourceType]
-    PhysicalOut: _ClassVar[EM_SourceType]
     EMSType_PhysicalOut: _ClassVar[EM_SourceType]
-    Bus: _ClassVar[EM_SourceType]
     EMSType_Bus: _ClassVar[EM_SourceType]
-    Output: _ClassVar[EM_SourceType]
     EMSType_Output: _ClassVar[EM_SourceType]
+    EMSType_Renderer: _ClassVar[EM_SourceType]
+    PhysicalOut: _ClassVar[EM_SourceType]
+    Bus: _ClassVar[EM_SourceType]
+    Output: _ClassVar[EM_SourceType]
 
 class CompressionType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
@@ -965,21 +987,22 @@ class EM_VideoExportOptions(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
 class EM_FileType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
     EMFType_Unknown: _ClassVar[EM_FileType]
-    EM_None: _ClassVar[EM_FileType]
     EMFType_None: _ClassVar[EM_FileType]
-    EM_MOV: _ClassVar[EM_FileType]
     EMFType_MOV: _ClassVar[EM_FileType]
-    EM_WAV: _ClassVar[EM_FileType]
     EMFType_WAV: _ClassVar[EM_FileType]
-    EM_AIFF: _ClassVar[EM_FileType]
     EMFType_AIFF: _ClassVar[EM_FileType]
-    EM_MP3: _ClassVar[EM_FileType]
     EMFType_MP3: _ClassVar[EM_FileType]
-    EM_MXFOPAtom: _ClassVar[EM_FileType]
     EMFType_MXFOPAtom: _ClassVar[EM_FileType]
-    EM_WAVADM: _ClassVar[EM_FileType]
     EMFType_WAVADM: _ClassVar[EM_FileType]
     EMFType_M4A: _ClassVar[EM_FileType]
+    EMFType_Null: _ClassVar[EM_FileType]
+    EM_None: _ClassVar[EM_FileType]
+    EM_MOV: _ClassVar[EM_FileType]
+    EM_WAV: _ClassVar[EM_FileType]
+    EM_AIFF: _ClassVar[EM_FileType]
+    EM_MP3: _ClassVar[EM_FileType]
+    EM_MXFOPAtom: _ClassVar[EM_FileType]
+    EM_WAVADM: _ClassVar[EM_FileType]
 
 class EM_FileDestination(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
@@ -1419,6 +1442,13 @@ class BasicTimeType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     BTType_Ticks: _ClassVar[BasicTimeType]
     BTType_Frames: _ClassVar[BasicTimeType]
 
+class ClipInstanceLockedState(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    CILState_Unknown: _ClassVar[ClipInstanceLockedState]
+    CILState_Unlocked: _ClassVar[ClipInstanceLockedState]
+    CILState_TimeLocked: _ClassVar[ClipInstanceLockedState]
+    CILState_EditLocked: _ClassVar[ClipInstanceLockedState]
+
 class ClipType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
     ClipType_Unknown: _ClassVar[ClipType]
@@ -1562,15 +1592,130 @@ class StemChannel(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     SChannel_62: _ClassVar[StemChannel]
     SChannel_63: _ClassVar[StemChannel]
 
+class SignalPathType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    SPType_Unknown: _ClassVar[SignalPathType]
+    SPType_Input: _ClassVar[SignalPathType]
+    SPType_Output: _ClassVar[SignalPathType]
+    SPType_Bus: _ClassVar[SignalPathType]
+    SPType_RendererBed: _ClassVar[SignalPathType]
+    SPType_RendererObject: _ClassVar[SignalPathType]
+
 class BatchJobStatus(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = ()
-    BatchJobStatus_Unknown: _ClassVar[BatchJobStatus]
-    BatchJobStatus_Pending: _ClassVar[BatchJobStatus]
-    BatchJobStatus_Running: _ClassVar[BatchJobStatus]
-    BatchJobStatus_Completed: _ClassVar[BatchJobStatus]
-    BatchJobStatus_TimedOut: _ClassVar[BatchJobStatus]
-    BatchJobStatus_Failed: _ClassVar[BatchJobStatus]
-    BatchJobStatus_Canceled: _ClassVar[BatchJobStatus]
+    BJStatus_Unknown: _ClassVar[BatchJobStatus]
+    BJStatus_Pending: _ClassVar[BatchJobStatus]
+    BJStatus_Running: _ClassVar[BatchJobStatus]
+    BJStatus_Completed: _ClassVar[BatchJobStatus]
+    BJStatus_TimedOut: _ClassVar[BatchJobStatus]
+    BJStatus_Failed: _ClassVar[BatchJobStatus]
+    BJStatus_Canceled: _ClassVar[BatchJobStatus]
+
+class TrackSectionId(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    TSId_Unknown: _ClassVar[TrackSectionId]
+    TSId_MainOut: _ClassVar[TrackSectionId]
+    TSId_SendA: _ClassVar[TrackSectionId]
+    TSId_SendB: _ClassVar[TrackSectionId]
+    TSId_SendC: _ClassVar[TrackSectionId]
+    TSId_SendD: _ClassVar[TrackSectionId]
+    TSId_SendE: _ClassVar[TrackSectionId]
+    TSId_SendF: _ClassVar[TrackSectionId]
+    TSId_SendG: _ClassVar[TrackSectionId]
+    TSId_SendH: _ClassVar[TrackSectionId]
+    TSId_SendI: _ClassVar[TrackSectionId]
+    TSId_SendJ: _ClassVar[TrackSectionId]
+    TSId_InsertA: _ClassVar[TrackSectionId]
+    TSId_InsertB: _ClassVar[TrackSectionId]
+    TSId_InsertC: _ClassVar[TrackSectionId]
+    TSId_InsertD: _ClassVar[TrackSectionId]
+    TSId_InsertE: _ClassVar[TrackSectionId]
+    TSId_InsertF: _ClassVar[TrackSectionId]
+    TSId_InsertG: _ClassVar[TrackSectionId]
+    TSId_InsertH: _ClassVar[TrackSectionId]
+    TSId_InsertI: _ClassVar[TrackSectionId]
+    TSId_InsertJ: _ClassVar[TrackSectionId]
+
+class TrackControlType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    TCType_Unknown: _ClassVar[TrackControlType]
+    TCType_Volume: _ClassVar[TrackControlType]
+    TCType_Pan: _ClassVar[TrackControlType]
+    TCType_Lfe: _ClassVar[TrackControlType]
+    TCType_Mute: _ClassVar[TrackControlType]
+    TCType_PluginParameter: _ClassVar[TrackControlType]
+
+class PanControlParameter(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    PCParameter_Unknown: _ClassVar[PanControlParameter]
+    PCParameter_Pan: _ClassVar[PanControlParameter]
+    PCParameter_PosFront: _ClassVar[PanControlParameter]
+    PCParameter_PosRear: _ClassVar[PanControlParameter]
+    PCParameter_PosFrontRear: _ClassVar[PanControlParameter]
+    PCParameter_CenterPct: _ClassVar[PanControlParameter]
+    PCParameter_DivFront: _ClassVar[PanControlParameter]
+    PCParameter_DivRear: _ClassVar[PanControlParameter]
+    PCParameter_DivFrontRear: _ClassVar[PanControlParameter]
+    PCParameter_Distance: _ClassVar[PanControlParameter]
+    PCParameter_Azimuth: _ClassVar[PanControlParameter]
+    PCParameter_Elevation: _ClassVar[PanControlParameter]
+    PCParameter_X: _ClassVar[PanControlParameter]
+    PCParameter_Y: _ClassVar[PanControlParameter]
+    PCParameter_Z: _ClassVar[PanControlParameter]
+    PCParameter_Size: _ClassVar[PanControlParameter]
+
+class PanSpace(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    PSpace_Unknown: _ClassVar[PanSpace]
+    PSpace_Stereo: _ClassVar[PanSpace]
+    PSpace_Surround2d: _ClassVar[PanSpace]
+    PSpace_3dCart2layer: _ClassVar[PanSpace]
+    PSpace_3dCart3layer: _ClassVar[PanSpace]
+    PSpace_3dSphere2layer: _ClassVar[PanSpace]
+    PSpace_3dSphere3layer: _ClassVar[PanSpace]
+
+class MenuArea(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    MArea_Unknown: _ClassVar[MenuArea]
+    MArea_Import: _ClassVar[MenuArea]
+    MArea_Export: _ClassVar[MenuArea]
+
+class PlaylistType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    PType_Unknown: _ClassVar[PlaylistType]
+    PType_Main: _ClassVar[PlaylistType]
+    PType_Alternate: _ClassVar[PlaylistType]
+
+class ColorPaletteTarget(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    CPTarget_Unknown: _ClassVar[ColorPaletteTarget]
+    CPTarget_Tracks: _ClassVar[ColorPaletteTarget]
+    CPTarget_ClipInstances: _ClassVar[ColorPaletteTarget]
+    CPTarget_Clips: _ClassVar[ColorPaletteTarget]
+    CPTarget_Groups: _ClassVar[ColorPaletteTarget]
+    CPTarget_Markers: _ClassVar[ColorPaletteTarget]
+
+class FadeSlope(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    FSlope_Unknown: _ClassVar[FadeSlope]
+    FSlope_None: _ClassVar[FadeSlope]
+    FSlope_EqualPower: _ClassVar[FadeSlope]
+    FSlope_EqualGain: _ClassVar[FadeSlope]
+
+class FadeShape(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    FShape_Unknown: _ClassVar[FadeShape]
+    FShape_Standard: _ClassVar[FadeShape]
+    FShape_SShaped: _ClassVar[FadeShape]
+    FShape_Legacy: _ClassVar[FadeShape]
+
+class FadeType(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
+    __slots__ = ()
+    FadeType_Unknown: _ClassVar[FadeType]
+    FadeType_None: _ClassVar[FadeType]
+    FadeType_In: _ClassVar[FadeType]
+    FadeType_Out: _ClassVar[FadeType]
+    FadeType_X: _ClassVar[FadeType]
 CreateSession: CommandId
 CId_CreateSession: CommandId
 OpenSession: CommandId
@@ -1833,10 +1978,30 @@ CId_EnableCueProVideoPlugIn: CommandId
 CId_UpdateVideo: CommandId
 CId_EnableAPI: CommandId
 CId_ExchangePublicKeys: CommandId
+CId_CreateSignalPath: CommandId
+CId_SetTrackMainOutputAssignments: CommandId
+CId_GetTrackControlInfo: CommandId
+CId_GetTrackControlBreakpoints: CommandId
+CId_SetTrackControlBreakpoints: CommandId
+CId_InstallMenuHandler: CommandId
+CId_UninstallMenuHandler: CommandId
+CId_SetTrackColor: CommandId
+CId_GetTrackPlaylists: CommandId
+CId_SetTrackTimebase: CommandId
+CId_GetColorPalette: CommandId
+CId_DeleteTracks: CommandId
+CId_GetPlaylistElements: CommandId
+CId_WriteSelectedTranscriptionToJSONFile: CommandId
 EId_Unknown: EventId
 EId_SessionOpened: EventId
 EId_SessionCreated: EventId
 EId_SessionClosed: EventId
+EId_TrackRecordEnabledStateChanged: EventId
+EId_MenuItemSelected: EventId
+EId_TrackInputMonitorStateChanged: EventId
+EId_TrackSoloStateChanged: EventId
+EId_TrackMuteStateChanged: EventId
+EId_BatchJobStatusChanged: EventId
 Queued: TaskStatus
 TStatus_Queued: TaskStatus
 Pending: TaskStatus
@@ -1956,6 +2121,7 @@ PT_HostIsBusy: CommandErrorType
 CEType_PT_HostIsBusy: CommandErrorType
 CEType_PT_DeprecatedParameter: CommandErrorType
 CEType_PT_DeprecatedParameterValue: CommandErrorType
+CEType_PT_GlobalRendererRequired: CommandErrorType
 PT_Info: CommandErrorType
 CEType_PT_Info: CommandErrorType
 SDK_VersionMismatch: CommandErrorType
@@ -2379,12 +2545,13 @@ TBool_False: TripleBool
 TB_True: TripleBool
 TBool_True: TripleBool
 EMSType_Unknown: EM_SourceType
-PhysicalOut: EM_SourceType
 EMSType_PhysicalOut: EM_SourceType
-Bus: EM_SourceType
 EMSType_Bus: EM_SourceType
-Output: EM_SourceType
 EMSType_Output: EM_SourceType
+EMSType_Renderer: EM_SourceType
+PhysicalOut: EM_SourceType
+Bus: EM_SourceType
+Output: EM_SourceType
 CType_Unknown: CompressionType
 CT_None: CompressionType
 CType_None: CompressionType
@@ -2413,21 +2580,22 @@ EMVEOptions_SameAsSource: EM_VideoExportOptions
 VE_Transcode: EM_VideoExportOptions
 EMVEOptions_Transcode: EM_VideoExportOptions
 EMFType_Unknown: EM_FileType
-EM_None: EM_FileType
 EMFType_None: EM_FileType
-EM_MOV: EM_FileType
 EMFType_MOV: EM_FileType
-EM_WAV: EM_FileType
 EMFType_WAV: EM_FileType
-EM_AIFF: EM_FileType
 EMFType_AIFF: EM_FileType
-EM_MP3: EM_FileType
 EMFType_MP3: EM_FileType
-EM_MXFOPAtom: EM_FileType
 EMFType_MXFOPAtom: EM_FileType
-EM_WAVADM: EM_FileType
 EMFType_WAVADM: EM_FileType
 EMFType_M4A: EM_FileType
+EMFType_Null: EM_FileType
+EM_None: EM_FileType
+EM_MOV: EM_FileType
+EM_WAV: EM_FileType
+EM_AIFF: EM_FileType
+EM_MP3: EM_FileType
+EM_MXFOPAtom: EM_FileType
+EM_WAVADM: EM_FileType
 EMFDestination_Unknown: EM_FileDestination
 EM_FD_None: EM_FileDestination
 EMFDestination_None: EM_FileDestination
@@ -2779,6 +2947,10 @@ BTType_Unknown: BasicTimeType
 BTType_Samples: BasicTimeType
 BTType_Ticks: BasicTimeType
 BTType_Frames: BasicTimeType
+CILState_Unknown: ClipInstanceLockedState
+CILState_Unlocked: ClipInstanceLockedState
+CILState_TimeLocked: ClipInstanceLockedState
+CILState_EditLocked: ClipInstanceLockedState
 ClipType_Unknown: ClipType
 ClipType_Audio: ClipType
 ClipType_Midi: ClipType
@@ -2913,13 +3085,95 @@ SChannel_60: StemChannel
 SChannel_61: StemChannel
 SChannel_62: StemChannel
 SChannel_63: StemChannel
-BatchJobStatus_Unknown: BatchJobStatus
-BatchJobStatus_Pending: BatchJobStatus
-BatchJobStatus_Running: BatchJobStatus
-BatchJobStatus_Completed: BatchJobStatus
-BatchJobStatus_TimedOut: BatchJobStatus
-BatchJobStatus_Failed: BatchJobStatus
-BatchJobStatus_Canceled: BatchJobStatus
+SPType_Unknown: SignalPathType
+SPType_Input: SignalPathType
+SPType_Output: SignalPathType
+SPType_Bus: SignalPathType
+SPType_RendererBed: SignalPathType
+SPType_RendererObject: SignalPathType
+BJStatus_Unknown: BatchJobStatus
+BJStatus_Pending: BatchJobStatus
+BJStatus_Running: BatchJobStatus
+BJStatus_Completed: BatchJobStatus
+BJStatus_TimedOut: BatchJobStatus
+BJStatus_Failed: BatchJobStatus
+BJStatus_Canceled: BatchJobStatus
+TSId_Unknown: TrackSectionId
+TSId_MainOut: TrackSectionId
+TSId_SendA: TrackSectionId
+TSId_SendB: TrackSectionId
+TSId_SendC: TrackSectionId
+TSId_SendD: TrackSectionId
+TSId_SendE: TrackSectionId
+TSId_SendF: TrackSectionId
+TSId_SendG: TrackSectionId
+TSId_SendH: TrackSectionId
+TSId_SendI: TrackSectionId
+TSId_SendJ: TrackSectionId
+TSId_InsertA: TrackSectionId
+TSId_InsertB: TrackSectionId
+TSId_InsertC: TrackSectionId
+TSId_InsertD: TrackSectionId
+TSId_InsertE: TrackSectionId
+TSId_InsertF: TrackSectionId
+TSId_InsertG: TrackSectionId
+TSId_InsertH: TrackSectionId
+TSId_InsertI: TrackSectionId
+TSId_InsertJ: TrackSectionId
+TCType_Unknown: TrackControlType
+TCType_Volume: TrackControlType
+TCType_Pan: TrackControlType
+TCType_Lfe: TrackControlType
+TCType_Mute: TrackControlType
+TCType_PluginParameter: TrackControlType
+PCParameter_Unknown: PanControlParameter
+PCParameter_Pan: PanControlParameter
+PCParameter_PosFront: PanControlParameter
+PCParameter_PosRear: PanControlParameter
+PCParameter_PosFrontRear: PanControlParameter
+PCParameter_CenterPct: PanControlParameter
+PCParameter_DivFront: PanControlParameter
+PCParameter_DivRear: PanControlParameter
+PCParameter_DivFrontRear: PanControlParameter
+PCParameter_Distance: PanControlParameter
+PCParameter_Azimuth: PanControlParameter
+PCParameter_Elevation: PanControlParameter
+PCParameter_X: PanControlParameter
+PCParameter_Y: PanControlParameter
+PCParameter_Z: PanControlParameter
+PCParameter_Size: PanControlParameter
+PSpace_Unknown: PanSpace
+PSpace_Stereo: PanSpace
+PSpace_Surround2d: PanSpace
+PSpace_3dCart2layer: PanSpace
+PSpace_3dCart3layer: PanSpace
+PSpace_3dSphere2layer: PanSpace
+PSpace_3dSphere3layer: PanSpace
+MArea_Unknown: MenuArea
+MArea_Import: MenuArea
+MArea_Export: MenuArea
+PType_Unknown: PlaylistType
+PType_Main: PlaylistType
+PType_Alternate: PlaylistType
+CPTarget_Unknown: ColorPaletteTarget
+CPTarget_Tracks: ColorPaletteTarget
+CPTarget_ClipInstances: ColorPaletteTarget
+CPTarget_Clips: ColorPaletteTarget
+CPTarget_Groups: ColorPaletteTarget
+CPTarget_Markers: ColorPaletteTarget
+FSlope_Unknown: FadeSlope
+FSlope_None: FadeSlope
+FSlope_EqualPower: FadeSlope
+FSlope_EqualGain: FadeSlope
+FShape_Unknown: FadeShape
+FShape_Standard: FadeShape
+FShape_SShaped: FadeShape
+FShape_Legacy: FadeShape
+FadeType_Unknown: FadeType
+FadeType_None: FadeType
+FadeType_In: FadeType
+FadeType_Out: FadeType
+FadeType_X: FadeType
 
 class EmptyMessage(_message.Message):
     __slots__ = ()
@@ -3312,16 +3566,20 @@ class GetTrackListResponseBody(_message.Message):
     def __init__(self, stats: _Optional[_Union[Pagination, _Mapping]] = ..., track_list: _Optional[_Iterable[_Union[Track, _Mapping]]] = ..., pagination_response: _Optional[_Union[PaginationResponse, _Mapping]] = ...) -> None: ...
 
 class SelectAllClipsOnTrackRequestBody(_message.Message):
-    __slots__ = ("track_name",)
+    __slots__ = ("track_name", "track_id")
     TRACK_NAME_FIELD_NUMBER: _ClassVar[int]
+    TRACK_ID_FIELD_NUMBER: _ClassVar[int]
     track_name: str
-    def __init__(self, track_name: _Optional[str] = ...) -> None: ...
+    track_id: str
+    def __init__(self, track_name: _Optional[str] = ..., track_id: _Optional[str] = ...) -> None: ...
 
 class SelectAllClipsOnTrackResponseBody(_message.Message):
-    __slots__ = ("track_name",)
+    __slots__ = ("track_name", "track_id")
     TRACK_NAME_FIELD_NUMBER: _ClassVar[int]
+    TRACK_ID_FIELD_NUMBER: _ClassVar[int]
     track_name: str
-    def __init__(self, track_name: _Optional[str] = ...) -> None: ...
+    track_id: str
+    def __init__(self, track_name: _Optional[str] = ..., track_id: _Optional[str] = ...) -> None: ...
 
 class ExtendSelectionToTargetTracksRequestBody(_message.Message):
     __slots__ = ("tracks_to_extend_to",)
@@ -4712,10 +4970,14 @@ class ImportAudioToClipListResponseBody(_message.Message):
     def __init__(self, file_list: _Optional[_Iterable[_Union[ImportAudioToClipListResponseEntry, _Mapping]]] = ..., failure_list: _Optional[_Iterable[_Union[ImportFailureInfo, _Mapping]]] = ...) -> None: ...
 
 class ClipInstanceAttributes(_message.Message):
-    __slots__ = ("color_index",)
+    __slots__ = ("color_index", "is_muted", "locked_states")
     COLOR_INDEX_FIELD_NUMBER: _ClassVar[int]
+    IS_MUTED_FIELD_NUMBER: _ClassVar[int]
+    LOCKED_STATES_FIELD_NUMBER: _ClassVar[int]
     color_index: int
-    def __init__(self, color_index: _Optional[int] = ...) -> None: ...
+    is_muted: bool
+    locked_states: _containers.RepeatedScalarFieldContainer[ClipInstanceLockedState]
+    def __init__(self, color_index: _Optional[int] = ..., is_muted: bool = ..., locked_states: _Optional[_Iterable[_Union[ClipInstanceLockedState, str]]] = ...) -> None: ...
 
 class SpotClipsByIDRequestBody(_message.Message):
     __slots__ = ("src_clips", "dst_track_id", "dst_track_name", "dst_location_data", "clip_instance_attributes")
@@ -5090,3 +5352,435 @@ class ExchangePublicKeysResponseBody(_message.Message):
     PT_KEY_STRING_FIELD_NUMBER: _ClassVar[int]
     pt_key_string: str
     def __init__(self, pt_key_string: _Optional[str] = ...) -> None: ...
+
+class SignalPathInfo(_message.Message):
+    __slots__ = ("id", "name", "type", "format", "is_active", "in_use")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    NAME_FIELD_NUMBER: _ClassVar[int]
+    TYPE_FIELD_NUMBER: _ClassVar[int]
+    FORMAT_FIELD_NUMBER: _ClassVar[int]
+    IS_ACTIVE_FIELD_NUMBER: _ClassVar[int]
+    IN_USE_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    name: str
+    type: SignalPathType
+    format: StemFormat
+    is_active: bool
+    in_use: bool
+    def __init__(self, id: _Optional[str] = ..., name: _Optional[str] = ..., type: _Optional[_Union[SignalPathType, str]] = ..., format: _Optional[_Union[StemFormat, str]] = ..., is_active: bool = ..., in_use: bool = ...) -> None: ...
+
+class CreateSignalPathRequestBody(_message.Message):
+    __slots__ = ("signalpath_name", "signalpath_type", "signalpath_format")
+    SIGNALPATH_NAME_FIELD_NUMBER: _ClassVar[int]
+    SIGNALPATH_TYPE_FIELD_NUMBER: _ClassVar[int]
+    SIGNALPATH_FORMAT_FIELD_NUMBER: _ClassVar[int]
+    signalpath_name: str
+    signalpath_type: SignalPathType
+    signalpath_format: StemFormat
+    def __init__(self, signalpath_name: _Optional[str] = ..., signalpath_type: _Optional[_Union[SignalPathType, str]] = ..., signalpath_format: _Optional[_Union[StemFormat, str]] = ...) -> None: ...
+
+class CreateSignalPathResponseBody(_message.Message):
+    __slots__ = ("signalpath_info",)
+    SIGNALPATH_INFO_FIELD_NUMBER: _ClassVar[int]
+    signalpath_info: SignalPathInfo
+    def __init__(self, signalpath_info: _Optional[_Union[SignalPathInfo, _Mapping]] = ...) -> None: ...
+
+class SetTrackMainOutputAssignmentsRequestBody(_message.Message):
+    __slots__ = ("track_ids", "track_names", "signalpath_ids")
+    TRACK_IDS_FIELD_NUMBER: _ClassVar[int]
+    TRACK_NAMES_FIELD_NUMBER: _ClassVar[int]
+    SIGNALPATH_IDS_FIELD_NUMBER: _ClassVar[int]
+    track_ids: _containers.RepeatedScalarFieldContainer[str]
+    track_names: _containers.RepeatedScalarFieldContainer[str]
+    signalpath_ids: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, track_ids: _Optional[_Iterable[str]] = ..., track_names: _Optional[_Iterable[str]] = ..., signalpath_ids: _Optional[_Iterable[str]] = ...) -> None: ...
+
+class PanControlInfo(_message.Message):
+    __slots__ = ("pan_space", "parameter", "channel")
+    PAN_SPACE_FIELD_NUMBER: _ClassVar[int]
+    PARAMETER_FIELD_NUMBER: _ClassVar[int]
+    CHANNEL_FIELD_NUMBER: _ClassVar[int]
+    pan_space: PanSpace
+    parameter: PanControlParameter
+    channel: StemChannel
+    def __init__(self, pan_space: _Optional[_Union[PanSpace, str]] = ..., parameter: _Optional[_Union[PanControlParameter, str]] = ..., channel: _Optional[_Union[StemChannel, str]] = ...) -> None: ...
+
+class PluginControlInfo(_message.Message):
+    __slots__ = ("multimono_index", "control_id", "control_name")
+    MULTIMONO_INDEX_FIELD_NUMBER: _ClassVar[int]
+    CONTROL_ID_FIELD_NUMBER: _ClassVar[int]
+    CONTROL_NAME_FIELD_NUMBER: _ClassVar[int]
+    multimono_index: int
+    control_id: str
+    control_name: str
+    def __init__(self, multimono_index: _Optional[int] = ..., control_id: _Optional[str] = ..., control_name: _Optional[str] = ...) -> None: ...
+
+class TrackControlId(_message.Message):
+    __slots__ = ("section", "control_type", "pan", "plugin")
+    SECTION_FIELD_NUMBER: _ClassVar[int]
+    CONTROL_TYPE_FIELD_NUMBER: _ClassVar[int]
+    PAN_FIELD_NUMBER: _ClassVar[int]
+    PLUGIN_FIELD_NUMBER: _ClassVar[int]
+    section: TrackSectionId
+    control_type: TrackControlType
+    pan: PanControlInfo
+    plugin: PluginControlInfo
+    def __init__(self, section: _Optional[_Union[TrackSectionId, str]] = ..., control_type: _Optional[_Union[TrackControlType, str]] = ..., pan: _Optional[_Union[PanControlInfo, _Mapping]] = ..., plugin: _Optional[_Union[PluginControlInfo, _Mapping]] = ...) -> None: ...
+
+class TrackControlInfo(_message.Message):
+    __slots__ = ("control_id", "max_value", "min_value", "steps")
+    CONTROL_ID_FIELD_NUMBER: _ClassVar[int]
+    MAX_VALUE_FIELD_NUMBER: _ClassVar[int]
+    MIN_VALUE_FIELD_NUMBER: _ClassVar[int]
+    STEPS_FIELD_NUMBER: _ClassVar[int]
+    control_id: TrackControlId
+    max_value: float
+    min_value: float
+    steps: int
+    def __init__(self, control_id: _Optional[_Union[TrackControlId, _Mapping]] = ..., max_value: _Optional[float] = ..., min_value: _Optional[float] = ..., steps: _Optional[int] = ...) -> None: ...
+
+class TrackControlBreakpoint(_message.Message):
+    __slots__ = ("time", "value")
+    TIME_FIELD_NUMBER: _ClassVar[int]
+    VALUE_FIELD_NUMBER: _ClassVar[int]
+    time: TimelineLocation
+    value: float
+    def __init__(self, time: _Optional[_Union[TimelineLocation, _Mapping]] = ..., value: _Optional[float] = ...) -> None: ...
+
+class GetTrackControlInfoRequestBody(_message.Message):
+    __slots__ = ("track_ids", "track_names", "control_id")
+    TRACK_IDS_FIELD_NUMBER: _ClassVar[int]
+    TRACK_NAMES_FIELD_NUMBER: _ClassVar[int]
+    CONTROL_ID_FIELD_NUMBER: _ClassVar[int]
+    track_ids: _containers.RepeatedScalarFieldContainer[str]
+    track_names: _containers.RepeatedScalarFieldContainer[str]
+    control_id: TrackControlId
+    def __init__(self, track_ids: _Optional[_Iterable[str]] = ..., track_names: _Optional[_Iterable[str]] = ..., control_id: _Optional[_Union[TrackControlId, _Mapping]] = ...) -> None: ...
+
+class GetTrackControlInfoResponseBody(_message.Message):
+    __slots__ = ("control_info",)
+    CONTROL_INFO_FIELD_NUMBER: _ClassVar[int]
+    control_info: _containers.RepeatedCompositeFieldContainer[TrackControlInfo]
+    def __init__(self, control_info: _Optional[_Iterable[_Union[TrackControlInfo, _Mapping]]] = ...) -> None: ...
+
+class GetTrackControlBreakpointsRequestBody(_message.Message):
+    __slots__ = ("track_id", "track_name", "control_id")
+    TRACK_ID_FIELD_NUMBER: _ClassVar[int]
+    TRACK_NAME_FIELD_NUMBER: _ClassVar[int]
+    CONTROL_ID_FIELD_NUMBER: _ClassVar[int]
+    track_id: str
+    track_name: str
+    control_id: TrackControlId
+    def __init__(self, track_id: _Optional[str] = ..., track_name: _Optional[str] = ..., control_id: _Optional[_Union[TrackControlId, _Mapping]] = ...) -> None: ...
+
+class GetTrackControlBreakpointsResponseBody(_message.Message):
+    __slots__ = ("breakpoints",)
+    BREAKPOINTS_FIELD_NUMBER: _ClassVar[int]
+    breakpoints: _containers.RepeatedCompositeFieldContainer[TrackControlBreakpoint]
+    def __init__(self, breakpoints: _Optional[_Iterable[_Union[TrackControlBreakpoint, _Mapping]]] = ...) -> None: ...
+
+class SetTrackControlBreakpointsRequestBody(_message.Message):
+    __slots__ = ("track_id", "track_name", "control_id", "breakpoints")
+    TRACK_ID_FIELD_NUMBER: _ClassVar[int]
+    TRACK_NAME_FIELD_NUMBER: _ClassVar[int]
+    CONTROL_ID_FIELD_NUMBER: _ClassVar[int]
+    BREAKPOINTS_FIELD_NUMBER: _ClassVar[int]
+    track_id: str
+    track_name: str
+    control_id: TrackControlId
+    breakpoints: _containers.RepeatedCompositeFieldContainer[TrackControlBreakpoint]
+    def __init__(self, track_id: _Optional[str] = ..., track_name: _Optional[str] = ..., control_id: _Optional[_Union[TrackControlId, _Mapping]] = ..., breakpoints: _Optional[_Iterable[_Union[TrackControlBreakpoint, _Mapping]]] = ...) -> None: ...
+
+class TrackRecordEnabledStateChangedFilterBody(_message.Message):
+    __slots__ = ("track_id",)
+    TRACK_ID_FIELD_NUMBER: _ClassVar[int]
+    track_id: str
+    def __init__(self, track_id: _Optional[str] = ...) -> None: ...
+
+class TrackRecordEnabledStateChangedResponseBody(_message.Message):
+    __slots__ = ("track_id", "state")
+    TRACK_ID_FIELD_NUMBER: _ClassVar[int]
+    STATE_FIELD_NUMBER: _ClassVar[int]
+    track_id: str
+    state: bool
+    def __init__(self, track_id: _Optional[str] = ..., state: bool = ...) -> None: ...
+
+class MenuInfo(_message.Message):
+    __slots__ = ("menu_area", "menu_label")
+    MENU_AREA_FIELD_NUMBER: _ClassVar[int]
+    MENU_LABEL_FIELD_NUMBER: _ClassVar[int]
+    menu_area: MenuArea
+    menu_label: _containers.RepeatedCompositeFieldContainer[LocalizedUIString]
+    def __init__(self, menu_area: _Optional[_Union[MenuArea, str]] = ..., menu_label: _Optional[_Iterable[_Union[LocalizedUIString, _Mapping]]] = ...) -> None: ...
+
+class LocalizedUIString(_message.Message):
+    __slots__ = ("locale", "ui_string")
+    LOCALE_FIELD_NUMBER: _ClassVar[int]
+    UI_STRING_FIELD_NUMBER: _ClassVar[int]
+    locale: str
+    ui_string: str
+    def __init__(self, locale: _Optional[str] = ..., ui_string: _Optional[str] = ...) -> None: ...
+
+class InstallMenuHandlerRequestBody(_message.Message):
+    __slots__ = ("menu_info",)
+    MENU_INFO_FIELD_NUMBER: _ClassVar[int]
+    menu_info: MenuInfo
+    def __init__(self, menu_info: _Optional[_Union[MenuInfo, _Mapping]] = ...) -> None: ...
+
+class InstallMenuHandlerResponseBody(_message.Message):
+    __slots__ = ("menu_item_id",)
+    MENU_ITEM_ID_FIELD_NUMBER: _ClassVar[int]
+    menu_item_id: str
+    def __init__(self, menu_item_id: _Optional[str] = ...) -> None: ...
+
+class UninstallMenuHandlerRequestBody(_message.Message):
+    __slots__ = ("menu_item_id",)
+    MENU_ITEM_ID_FIELD_NUMBER: _ClassVar[int]
+    menu_item_id: str
+    def __init__(self, menu_item_id: _Optional[str] = ...) -> None: ...
+
+class MenuItemSelectedResponseBody(_message.Message):
+    __slots__ = ("menu_item_id",)
+    MENU_ITEM_ID_FIELD_NUMBER: _ClassVar[int]
+    menu_item_id: str
+    def __init__(self, menu_item_id: _Optional[str] = ...) -> None: ...
+
+class SetTrackColorRequestBody(_message.Message):
+    __slots__ = ("track_ids", "track_names", "color_index")
+    TRACK_IDS_FIELD_NUMBER: _ClassVar[int]
+    TRACK_NAMES_FIELD_NUMBER: _ClassVar[int]
+    COLOR_INDEX_FIELD_NUMBER: _ClassVar[int]
+    track_ids: _containers.RepeatedScalarFieldContainer[str]
+    track_names: _containers.RepeatedScalarFieldContainer[str]
+    color_index: int
+    def __init__(self, track_ids: _Optional[_Iterable[str]] = ..., track_names: _Optional[_Iterable[str]] = ..., color_index: _Optional[int] = ...) -> None: ...
+
+class SetTrackColorResponseBody(_message.Message):
+    __slots__ = ("success_count",)
+    SUCCESS_COUNT_FIELD_NUMBER: _ClassVar[int]
+    success_count: int
+    def __init__(self, success_count: _Optional[int] = ...) -> None: ...
+
+class Playlist(_message.Message):
+    __slots__ = ("playlist_id", "playlist_name", "is_target", "is_solo_comp_lane_on", "playlist_type")
+    PLAYLIST_ID_FIELD_NUMBER: _ClassVar[int]
+    PLAYLIST_NAME_FIELD_NUMBER: _ClassVar[int]
+    IS_TARGET_FIELD_NUMBER: _ClassVar[int]
+    IS_SOLO_COMP_LANE_ON_FIELD_NUMBER: _ClassVar[int]
+    PLAYLIST_TYPE_FIELD_NUMBER: _ClassVar[int]
+    playlist_id: str
+    playlist_name: str
+    is_target: bool
+    is_solo_comp_lane_on: bool
+    playlist_type: PlaylistType
+    def __init__(self, playlist_id: _Optional[str] = ..., playlist_name: _Optional[str] = ..., is_target: bool = ..., is_solo_comp_lane_on: bool = ..., playlist_type: _Optional[_Union[PlaylistType, str]] = ...) -> None: ...
+
+class GetTrackPlaylistsRequestBody(_message.Message):
+    __slots__ = ("track_id", "track_name", "pagination_request")
+    TRACK_ID_FIELD_NUMBER: _ClassVar[int]
+    TRACK_NAME_FIELD_NUMBER: _ClassVar[int]
+    PAGINATION_REQUEST_FIELD_NUMBER: _ClassVar[int]
+    track_id: str
+    track_name: str
+    pagination_request: PaginationRequest
+    def __init__(self, track_id: _Optional[str] = ..., track_name: _Optional[str] = ..., pagination_request: _Optional[_Union[PaginationRequest, _Mapping]] = ...) -> None: ...
+
+class GetTrackPlaylistsResponseBody(_message.Message):
+    __slots__ = ("playlists", "pagination_response")
+    PLAYLISTS_FIELD_NUMBER: _ClassVar[int]
+    PAGINATION_RESPONSE_FIELD_NUMBER: _ClassVar[int]
+    playlists: _containers.RepeatedCompositeFieldContainer[Playlist]
+    pagination_response: PaginationResponse
+    def __init__(self, playlists: _Optional[_Iterable[_Union[Playlist, _Mapping]]] = ..., pagination_response: _Optional[_Union[PaginationResponse, _Mapping]] = ...) -> None: ...
+
+class SetTrackTimebaseRequestBody(_message.Message):
+    __slots__ = ("track_ids", "track_names", "timebase")
+    TRACK_IDS_FIELD_NUMBER: _ClassVar[int]
+    TRACK_NAMES_FIELD_NUMBER: _ClassVar[int]
+    TIMEBASE_FIELD_NUMBER: _ClassVar[int]
+    track_ids: _containers.RepeatedScalarFieldContainer[str]
+    track_names: _containers.RepeatedScalarFieldContainer[str]
+    timebase: TrackTimebase
+    def __init__(self, track_ids: _Optional[_Iterable[str]] = ..., track_names: _Optional[_Iterable[str]] = ..., timebase: _Optional[_Union[TrackTimebase, str]] = ...) -> None: ...
+
+class SetTrackTimebaseResponseBody(_message.Message):
+    __slots__ = ("success_count",)
+    SUCCESS_COUNT_FIELD_NUMBER: _ClassVar[int]
+    success_count: int
+    def __init__(self, success_count: _Optional[int] = ...) -> None: ...
+
+class GetColorPaletteRequestBody(_message.Message):
+    __slots__ = ("color_palette_target",)
+    COLOR_PALETTE_TARGET_FIELD_NUMBER: _ClassVar[int]
+    color_palette_target: ColorPaletteTarget
+    def __init__(self, color_palette_target: _Optional[_Union[ColorPaletteTarget, str]] = ...) -> None: ...
+
+class GetColorPaletteResponseBody(_message.Message):
+    __slots__ = ("color_list",)
+    COLOR_LIST_FIELD_NUMBER: _ClassVar[int]
+    color_list: _containers.RepeatedScalarFieldContainer[str]
+    def __init__(self, color_list: _Optional[_Iterable[str]] = ...) -> None: ...
+
+class DeleteTrackBehaviorOptions(_message.Message):
+    __slots__ = ("keep_folder_members", "keep_alternate_playlists", "coalesce_automation")
+    KEEP_FOLDER_MEMBERS_FIELD_NUMBER: _ClassVar[int]
+    KEEP_ALTERNATE_PLAYLISTS_FIELD_NUMBER: _ClassVar[int]
+    COALESCE_AUTOMATION_FIELD_NUMBER: _ClassVar[int]
+    keep_folder_members: bool
+    keep_alternate_playlists: bool
+    coalesce_automation: bool
+    def __init__(self, keep_folder_members: bool = ..., keep_alternate_playlists: bool = ..., coalesce_automation: bool = ...) -> None: ...
+
+class DeleteTracksRequestBody(_message.Message):
+    __slots__ = ("track_ids", "track_names", "delete_track_behavior_options")
+    TRACK_IDS_FIELD_NUMBER: _ClassVar[int]
+    TRACK_NAMES_FIELD_NUMBER: _ClassVar[int]
+    DELETE_TRACK_BEHAVIOR_OPTIONS_FIELD_NUMBER: _ClassVar[int]
+    track_ids: _containers.RepeatedScalarFieldContainer[str]
+    track_names: _containers.RepeatedScalarFieldContainer[str]
+    delete_track_behavior_options: DeleteTrackBehaviorOptions
+    def __init__(self, track_ids: _Optional[_Iterable[str]] = ..., track_names: _Optional[_Iterable[str]] = ..., delete_track_behavior_options: _Optional[_Union[DeleteTrackBehaviorOptions, _Mapping]] = ...) -> None: ...
+
+class DeleteTracksResponseBody(_message.Message):
+    __slots__ = ("success_count",)
+    SUCCESS_COUNT_FIELD_NUMBER: _ClassVar[int]
+    success_count: int
+    def __init__(self, success_count: _Optional[int] = ...) -> None: ...
+
+class TrackSoloStateChangedFilterBody(_message.Message):
+    __slots__ = ("track_id",)
+    TRACK_ID_FIELD_NUMBER: _ClassVar[int]
+    track_id: str
+    def __init__(self, track_id: _Optional[str] = ...) -> None: ...
+
+class TrackSoloStateChangedResponseBody(_message.Message):
+    __slots__ = ("track_id", "state")
+    TRACK_ID_FIELD_NUMBER: _ClassVar[int]
+    STATE_FIELD_NUMBER: _ClassVar[int]
+    track_id: str
+    state: bool
+    def __init__(self, track_id: _Optional[str] = ..., state: bool = ...) -> None: ...
+
+class TrackInputMonitorStateChangedFilterBody(_message.Message):
+    __slots__ = ("track_id",)
+    TRACK_ID_FIELD_NUMBER: _ClassVar[int]
+    track_id: str
+    def __init__(self, track_id: _Optional[str] = ...) -> None: ...
+
+class TrackInputMonitorStateChangedResponseBody(_message.Message):
+    __slots__ = ("track_id", "state")
+    TRACK_ID_FIELD_NUMBER: _ClassVar[int]
+    STATE_FIELD_NUMBER: _ClassVar[int]
+    track_id: str
+    state: TrackAttributeState
+    def __init__(self, track_id: _Optional[str] = ..., state: _Optional[_Union[TrackAttributeState, str]] = ...) -> None: ...
+
+class TrackMuteStateChangedFilterBody(_message.Message):
+    __slots__ = ("track_id",)
+    TRACK_ID_FIELD_NUMBER: _ClassVar[int]
+    track_id: str
+    def __init__(self, track_id: _Optional[str] = ...) -> None: ...
+
+class TrackMuteStateChangedResponseBody(_message.Message):
+    __slots__ = ("track_id", "state")
+    TRACK_ID_FIELD_NUMBER: _ClassVar[int]
+    STATE_FIELD_NUMBER: _ClassVar[int]
+    track_id: str
+    state: bool
+    def __init__(self, track_id: _Optional[str] = ..., state: bool = ...) -> None: ...
+
+class PlaylistElement(_message.Message):
+    __slots__ = ("element_location", "start_time", "play_time", "stop_time", "end_time", "channel_clips", "clip_instance_attributes")
+    ELEMENT_LOCATION_FIELD_NUMBER: _ClassVar[int]
+    START_TIME_FIELD_NUMBER: _ClassVar[int]
+    PLAY_TIME_FIELD_NUMBER: _ClassVar[int]
+    STOP_TIME_FIELD_NUMBER: _ClassVar[int]
+    END_TIME_FIELD_NUMBER: _ClassVar[int]
+    CHANNEL_CLIPS_FIELD_NUMBER: _ClassVar[int]
+    CLIP_INSTANCE_ATTRIBUTES_FIELD_NUMBER: _ClassVar[int]
+    element_location: TimelineLocation
+    start_time: TimelineLocation
+    play_time: TimelineLocation
+    stop_time: TimelineLocation
+    end_time: TimelineLocation
+    channel_clips: _containers.RepeatedCompositeFieldContainer[PlaylistElementClip]
+    clip_instance_attributes: ClipInstanceAttributes
+    def __init__(self, element_location: _Optional[_Union[TimelineLocation, _Mapping]] = ..., start_time: _Optional[_Union[TimelineLocation, _Mapping]] = ..., play_time: _Optional[_Union[TimelineLocation, _Mapping]] = ..., stop_time: _Optional[_Union[TimelineLocation, _Mapping]] = ..., end_time: _Optional[_Union[TimelineLocation, _Mapping]] = ..., channel_clips: _Optional[_Iterable[_Union[PlaylistElementClip, _Mapping]]] = ..., clip_instance_attributes: _Optional[_Union[ClipInstanceAttributes, _Mapping]] = ...) -> None: ...
+
+class FadeShapeInfo(_message.Message):
+    __slots__ = ("shape", "curve_bias", "start_offset_percentage", "end_offset_percentage")
+    SHAPE_FIELD_NUMBER: _ClassVar[int]
+    CURVE_BIAS_FIELD_NUMBER: _ClassVar[int]
+    START_OFFSET_PERCENTAGE_FIELD_NUMBER: _ClassVar[int]
+    END_OFFSET_PERCENTAGE_FIELD_NUMBER: _ClassVar[int]
+    shape: FadeShape
+    curve_bias: int
+    start_offset_percentage: float
+    end_offset_percentage: float
+    def __init__(self, shape: _Optional[_Union[FadeShape, str]] = ..., curve_bias: _Optional[int] = ..., start_offset_percentage: _Optional[float] = ..., end_offset_percentage: _Optional[float] = ...) -> None: ...
+
+class FadeInfo(_message.Message):
+    __slots__ = ("type", "slope", "in_shape", "out_shape")
+    TYPE_FIELD_NUMBER: _ClassVar[int]
+    SLOPE_FIELD_NUMBER: _ClassVar[int]
+    IN_SHAPE_FIELD_NUMBER: _ClassVar[int]
+    OUT_SHAPE_FIELD_NUMBER: _ClassVar[int]
+    type: FadeType
+    slope: FadeSlope
+    in_shape: FadeShapeInfo
+    out_shape: FadeShapeInfo
+    def __init__(self, type: _Optional[_Union[FadeType, str]] = ..., slope: _Optional[_Union[FadeSlope, str]] = ..., in_shape: _Optional[_Union[FadeShapeInfo, _Mapping]] = ..., out_shape: _Optional[_Union[FadeShapeInfo, _Mapping]] = ...) -> None: ...
+
+class PlaylistElementClip(_message.Message):
+    __slots__ = ("is_null", "clip_id", "fade_info")
+    IS_NULL_FIELD_NUMBER: _ClassVar[int]
+    CLIP_ID_FIELD_NUMBER: _ClassVar[int]
+    FADE_INFO_FIELD_NUMBER: _ClassVar[int]
+    is_null: bool
+    clip_id: str
+    fade_info: FadeInfo
+    def __init__(self, is_null: bool = ..., clip_id: _Optional[str] = ..., fade_info: _Optional[_Union[FadeInfo, _Mapping]] = ...) -> None: ...
+
+class GetPlaylistElementsRequestBody(_message.Message):
+    __slots__ = ("playlist_id", "playlist_name", "start_time", "end_time", "time_format", "pagination_request")
+    PLAYLIST_ID_FIELD_NUMBER: _ClassVar[int]
+    PLAYLIST_NAME_FIELD_NUMBER: _ClassVar[int]
+    START_TIME_FIELD_NUMBER: _ClassVar[int]
+    END_TIME_FIELD_NUMBER: _ClassVar[int]
+    TIME_FORMAT_FIELD_NUMBER: _ClassVar[int]
+    PAGINATION_REQUEST_FIELD_NUMBER: _ClassVar[int]
+    playlist_id: str
+    playlist_name: str
+    start_time: TimelineLocation
+    end_time: TimelineLocation
+    time_format: TimelineLocationType
+    pagination_request: PaginationRequest
+    def __init__(self, playlist_id: _Optional[str] = ..., playlist_name: _Optional[str] = ..., start_time: _Optional[_Union[TimelineLocation, _Mapping]] = ..., end_time: _Optional[_Union[TimelineLocation, _Mapping]] = ..., time_format: _Optional[_Union[TimelineLocationType, str]] = ..., pagination_request: _Optional[_Union[PaginationRequest, _Mapping]] = ...) -> None: ...
+
+class GetPlaylistElementsResponseBody(_message.Message):
+    __slots__ = ("elements_list", "pagination_response")
+    ELEMENTS_LIST_FIELD_NUMBER: _ClassVar[int]
+    PAGINATION_RESPONSE_FIELD_NUMBER: _ClassVar[int]
+    elements_list: _containers.RepeatedCompositeFieldContainer[PlaylistElement]
+    pagination_response: PaginationResponse
+    def __init__(self, elements_list: _Optional[_Iterable[_Union[PlaylistElement, _Mapping]]] = ..., pagination_response: _Optional[_Union[PaginationResponse, _Mapping]] = ...) -> None: ...
+
+class BatchJobStatusChangedFilterBody(_message.Message):
+    __slots__ = ("id",)
+    ID_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    def __init__(self, id: _Optional[str] = ...) -> None: ...
+
+class BatchJobStatusChangedResponseBody(_message.Message):
+    __slots__ = ("id", "status")
+    ID_FIELD_NUMBER: _ClassVar[int]
+    STATUS_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    status: BatchJobStatus
+    def __init__(self, id: _Optional[str] = ..., status: _Optional[_Union[BatchJobStatus, str]] = ...) -> None: ...
+
+class WriteSelectedTranscriptionToJSONFileResponseBody(_message.Message):
+    __slots__ = ("path_to_json_file",)
+    PATH_TO_JSON_FILE_FIELD_NUMBER: _ClassVar[int]
+    path_to_json_file: str
+    def __init__(self, path_to_json_file: _Optional[str] = ...) -> None: ...

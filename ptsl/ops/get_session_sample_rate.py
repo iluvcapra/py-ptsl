@@ -5,7 +5,7 @@ from ptsl import PTSL_pb2 as pt
 from ptsl.ops import Operation
 
 
-class GetSessionSampleRate(Operation):
+class CId_GetSessionSampleRate(Operation):
 
     def sample_rate(self) -> Optional[float]:
         if self.response.sample_rate == pt.SR_192000:

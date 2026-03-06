@@ -1,5 +1,5 @@
 from .operation import Operation
 
 
-class ExtendSelectionToTargetTracks(Operation):
+class CId_ExtendSelectionToTargetTracks(Operation):
     pass

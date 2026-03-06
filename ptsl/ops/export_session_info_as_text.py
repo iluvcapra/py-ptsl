@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class ExportSessionInfoAsText(Operation):
+class CId_ExportSessionInfoAsText(Operation):
     pass

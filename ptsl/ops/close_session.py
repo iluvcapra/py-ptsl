@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class CloseSession(Operation):
+class CId_CloseSession(Operation):
     pass

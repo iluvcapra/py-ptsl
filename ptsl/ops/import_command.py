@@ -1,5 +1,5 @@
 from .operation import Operation
 
 
-class Import(Operation):
+class CId_Import(Operation):
     pass

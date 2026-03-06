@@ -123,7 +123,7 @@ class ImportSessionDataBuilder:
             location=None
         )
 
-        op = ops.Import(
+        op = ops.CId_Import(
             session_path=self._session_path,
             import_type=import_type,
             session_data=session_data,

@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class Copy(Operation):
+class CId_Copy(Operation):
     pass

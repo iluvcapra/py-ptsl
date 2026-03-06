@@ -2,6 +2,8 @@
 
 Contributions to this project in the form of issue submissions, discussion posts, and code are welcome!
 
+Contributions made by Large Language Models are politely declined.
+
 ## Notes about submitting issues
 
 When submitting issues please take care to note the version of Pro Tools you are using.

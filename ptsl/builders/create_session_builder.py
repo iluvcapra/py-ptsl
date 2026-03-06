@@ -63,7 +63,7 @@ class CreateSessionBuilder:
 
     def create(self) -> None:
         import pprint
-        op = ops.CreateSession(
+        op = ops.CId_CreateSession(
             session_name=self._session_name,
             file_type=self._audio_format,
             sample_rate=self._sample_rate,
@@ -91,7 +91,7 @@ class CreateSessionFromTemplateBuilder(CreateSessionBuilder):
         super().__init__(engine, name, path)
 
     def create(self):
-        op = ops.CreateSession(
+        op = ops.CId_CreateSession(
             session_name=self._session_name,
             create_from_template=True,
             template_group=self._template_group,
@@ -117,7 +117,7 @@ class CreateSessionFromAAFBuilder(CreateSessionBuilder):
         super().__init__(engine, name, path)
 
     def create(self):
-        op = ops.CreateSession(
+        op = ops.CId_CreateSession(
             session_name=self._session_name,
             file_type=self._audio_format,
             sample_rate=self._sample_rate,

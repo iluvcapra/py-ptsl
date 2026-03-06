@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class TrimToSelection(Operation):
+class CId_TrimToSelection(Operation):
     pass

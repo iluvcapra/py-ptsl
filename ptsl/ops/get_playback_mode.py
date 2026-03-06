@@ -5,7 +5,7 @@ from ptsl import PTSL_pb2 as pt
 from ptsl.ops import Operation
 
 
-class GetPlaybackMode(Operation):
+class CId_GetPlaybackMode(Operation):
     pass
 
     def json_cleanup(self, in_json: str) -> str:

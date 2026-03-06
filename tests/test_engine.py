@@ -554,3 +554,490 @@ class TestEngine(TestCase):
             self.assertIsNone(
                 engine.set_session_interleaved_state(new_state=True)
             )
+
+    def test_get_edit_mode(self):
+        fixture = pt.GetEditModeResponseBody(
+            current_setting=pt.EMode_Slip,
+            possible_settings=[pt.EMode_Shuffle,
+                               pt.EMode_Slip,
+                               pt.EMode_Spot,
+                               pt.EMode_GridAbsolute,
+                               pt.EMode_GridRelative,
+                               pt.EMode_Shuffle,
+                               pt.EMode_ShuffleSnapToGridAbsolute,
+                               pt.EMode_ShuffleSnapToGridRelative,
+                               pt.EMode_SlipSnapToGridAbsolute,
+                               pt.EMode_SlipSnapToGridRelative,
+                               pt.EMode_SpotSnapToGridAbsolute,
+                               pt.EMode_SpotSnapToGridRelative,
+                               ]
+        )
+        with open_engine_with_mock_client(fixture) as engine:
+            got = engine.get_edit_mode()
+            self.assertEqual(got, pt.GetEditModeResponseBody(
+                current_setting=pt.EMode_Slip,
+                possible_settings=[pt.EMode_Shuffle,
+                                   pt.EMode_Slip,
+                                   pt.EMode_Spot,
+                                   pt.EMode_GridAbsolute,
+                                   pt.EMode_GridRelative,
+                                   pt.EMode_Shuffle,
+                                   pt.EMode_ShuffleSnapToGridAbsolute,
+                                   pt.EMode_ShuffleSnapToGridRelative,
+                                   pt.EMode_SlipSnapToGridAbsolute,
+                                   pt.EMode_SlipSnapToGridRelative,
+                                   pt.EMode_SpotSnapToGridAbsolute,
+                                   pt.EMode_SpotSnapToGridRelative,
+                                   ]
+            ))
+
+    def test_set_edit_mode(self):
+        with open_engine_with_mock_client() as engine:
+            self.assertIsNone(
+                engine.set_edit_mode(mode=pt.EMO_Slip)
+            )
+
+    def test_set_edit_tool(self):
+        with open_engine_with_mock_client() as engine:
+            self.assertIsNone(
+                engine.set_edit_tool(tool=pt.ET_SmartTool)
+            )
+
+    def test_get_edit_tool(self):
+        fixture = pt.GetEditToolResponseBody(
+            current_setting=pt.ETool_SmartTool,
+            possible_settings=[pt.ETool_SmartTool,
+                               pt.ETool_ZoomNormal,
+                               pt.ETool_ZoomSingle,
+                               pt.ETool_Scrubber,
+                               pt.ETool_Selector,
+                               pt.ETool_GrabberObject,
+                               pt.ETool_GrabberSeparation,
+                               pt.ETool_GrabberTime,
+                               pt.ETool_PencilFreeHand,
+                               pt.ETool_PencilLine,
+                               pt.ETool_PencilParabolic,
+                               pt.ETool_PencilRandom,
+                               pt.ETool_PencilFreeHand,
+                               pt.ETool_PencilSquare,
+                               pt.ETool_PencilTriangle,
+                               pt.ETool_TrimTce,
+                               pt.ETool_TrimLoop,
+                               pt.ETool_TrimScrub,
+                               pt.ETool_TrimStandard,
+                               ]
+        )
+        with open_engine_with_mock_client(fixture) as engine:
+            got = engine.get_edit_tool()
+            self.assertEqual(got, pt.GetEditToolResponseBody(
+                current_setting=pt.ETool_SmartTool,
+                possible_settings=[pt.ETool_SmartTool,
+                                   pt.ETool_ZoomNormal,
+                                   pt.ETool_ZoomSingle,
+                                   pt.ETool_Scrubber,
+                                   pt.ETool_Selector,
+                                   pt.ETool_GrabberObject,
+                                   pt.ETool_GrabberSeparation,
+                                   pt.ETool_GrabberTime,
+                                   pt.ETool_PencilFreeHand,
+                                   pt.ETool_PencilLine,
+                                   pt.ETool_PencilParabolic,
+                                   pt.ETool_PencilRandom,
+                                   pt.ETool_PencilFreeHand,
+                                   pt.ETool_PencilSquare,
+                                   pt.ETool_PencilTriangle,
+                                   pt.ETool_TrimTce,
+                                   pt.ETool_TrimLoop,
+                                   pt.ETool_TrimScrub,
+                                   pt.ETool_TrimStandard,
+                                   ]
+            ))
+
+    def test_recall_zoom_preset(self):
+        with open_engine_with_mock_client() as engine:
+            self.assertIsNone(
+                engine.recall_zoom_preset(preset=1)
+            )
+
+    def test_get_timeline_selection(self):
+        fixture = pt.GetTimelineSelectionResponseBody(
+            in_time="998424",
+            out_time="1098424",
+            play_start_marker_time="998424",
+            post_roll_enabled=False,
+            post_roll_stop_time="1098424",
+            pre_roll_enabled=False,
+            pre_roll_start_time="998424",
+        )
+        with open_engine_with_mock_client(fixture) as engine:
+            got = engine.get_timeline_selection()
+            self.assertEqual(got, ("998424", "1098424")
+                             )
+
+    def test_set_timeline_selection(self):
+        with open_engine_with_mock_client() as engine:
+            self.assertIsNone(
+                engine.set_timeline_selection(in_time="998424",
+                                              out_time="1098424",
+                                              play_start_marker_time="998424",
+                                              post_roll_enabled=False,
+                                              post_roll_stop_time="1098424",
+                                              pre_roll_enabled=False,
+                                              pre_roll_start_time="998424",
+                                              update_video_to=pt.TUVideo_None,
+                                              propagate_to_satellites=False,
+                                              location_type=pt.TLType_TimeCode
+                                              )
+            )
+
+    def test_select_memory_location(self):
+        with open_engine_with_mock_client() as engine:
+            self.assertIsNone(
+                engine.select_memory_location(mem_loc_id=1)
+            )
+
+    def test_set_track_mute_state(self):
+        with open_engine_with_mock_client() as engine:
+            test_track = ["xyz1"]
+            self.assertIsNone(
+                engine.set_track_mute_state(track_names=test_track,
+                                            new_state=True)
+            )
+
+    def test_set_track_solo_state(self):
+        with open_engine_with_mock_client() as engine:
+            test_track = ["xyz1"]
+            self.assertIsNone(
+                engine.set_track_solo_state(track_names=test_track,
+                                            new_state=True)
+            )
+
+    def test_set_track_solo_safe_state(self):
+        with open_engine_with_mock_client() as engine:
+            test_track = ["xyz1"]
+            self.assertIsNone(
+                engine.set_track_solo_safe_state(track_names=test_track,
+                                                 new_state=True)
+            )
+
+    def test_set_track_record_enable_state(self):
+        with open_engine_with_mock_client() as engine:
+            test_track = ["xyz1"]
+            self.assertIsNone(
+                engine.set_track_record_enable_state(track_names=test_track,
+                                                     new_state=True)
+            )
+
+    def test_set_track_record_safe_enable_state(self):
+        with open_engine_with_mock_client() as engine:
+            test_track = ["xyz1"]
+            self.assertIsNone(
+                engine.set_track_record_safe_enable_state(
+                    track_names=test_track,
+                    new_state=True)
+            )
+
+    def test_set_track_input_monitor_state(self):
+        with open_engine_with_mock_client() as engine:
+            test_track = ["xyz1"]
+            self.assertIsNone(
+                engine.set_track_input_monitor_state(track_names=test_track,
+                                                     new_state=True)
+            )
+
+    def test_set_track_smart_dsp_state(self):
+        with open_engine_with_mock_client() as engine:
+            test_track = ["xyz1"]
+            self.assertIsNone(
+                engine.set_track_smart_dsp_state(track_names=test_track,
+                                                 new_state=True)
+            )
+
+    def test_set_track_hidden_state(self):
+        with open_engine_with_mock_client() as engine:
+            test_track = ["xyz1"]
+            self.assertIsNone(
+                engine.set_track_hidden_state(track_names=test_track,
+                                              new_state=True)
+            )
+
+    def test_set_track_inactive_state(self):
+        with open_engine_with_mock_client() as engine:
+            test_track = ["xyz1"]
+            self.assertIsNone(
+                engine.set_track_inactive_state(track_names=test_track,
+                                                new_state=True)
+            )
+
+    def test_set_track_frozen_state(self):
+        with open_engine_with_mock_client() as engine:
+            test_track = ["xyz1"]
+            self.assertIsNone(
+                engine.set_track_frozen_state(track_names=test_track,
+                                              new_state=True)
+            )
+
+    def test_set_track_online_state(self):
+        with open_engine_with_mock_client() as engine:
+            test_track = "xyz1"
+            self.assertIsNone(
+                engine.set_track_online_state(track_name=test_track,
+                                              new_state=True)
+            )
+
+    def test_set_track_open_state(self):
+        with open_engine_with_mock_client() as engine:
+            test_track = ["xyz1"]
+            self.assertIsNone(
+                engine.set_track_open_state(track_names=test_track,
+                                            new_state=True)
+            )
+
+    def test_get_session_ids(self):
+        fixture = pt.GetSessionIDsResponseBody(
+            origin_id="{00000000-2a000000-086ed1e0-94ef763d}",
+            instance_id="{00000000-2a000000-086ed1e0-94ef763d}",
+            parent_id="{00000000-00000000-00000000-00000000}"
+        )
+        with open_engine_with_mock_client(fixture) as engine:
+            got = engine.get_session_ids()
+            self.assertEqual(
+                got.origin_id,
+                "{00000000-2a000000-086ed1e0-94ef763d}")
+            self.assertEqual(
+                got.instance_id,
+                "{00000000-2a000000-086ed1e0-94ef763d}")
+            self.assertEqual(
+                got.parent_id,
+                "{00000000-00000000-00000000-00000000}")
+
+    def test_get_memory_locations_manage_mode(self):
+        fixture = pt.GetMemoryLocationsManageModeResponseBody(
+            enabled=True
+        )
+        with open_engine_with_mock_client(fixture) as engine:
+            got = engine.get_memory_locations_manage_mode()
+            self.assertTrue(got)
+
+    def test_set_memory_locations_manage_mode(self):
+        with open_engine_with_mock_client() as engine:
+            self.assertIsNone(
+                engine.set_memory_locations_manage_mode(new_mode=True)
+            )
+
+    def test_set_main_counter_format(self):
+        with open_engine_with_mock_client() as engine:
+            self.assertIsNone(
+                engine.set_main_counter_format(new_loc_type=pt.TLType_TimeCode)
+            )
+
+    def test_set_sub_counter_format(self):
+        with open_engine_with_mock_client() as engine:
+            self.assertIsNone(
+                engine.set_sub_counter_format(new_loc_type=pt.TLType_TimeCode)
+            )
+
+    def test_get_main_counter_format(self):
+        fixture = pt.GetMainCounterFormatResponseBody(
+            current_setting=pt.TOOptions_BarsBeats,
+            possible_settings=[pt.TOOptions_BarsBeats,
+                               pt.TOOptions_TimeCode,
+                               pt.TOOptions_FeetFrames,
+                               pt.TOOptions_Samples
+                               ],
+            current_type=pt.TLType_TimeCode,
+            possible_types=[pt.TLType_TimeCode, pt.TLType_FeetFrames,
+                            pt.TLType_Samples, pt.TLType_Frames,
+                            pt.TLType_BarsBeats, pt.TLType_MinSecs,
+                            pt.TLType_Ticks, pt.TLType_Seconds
+                            ])
+        with open_engine_with_mock_client(fixture) as engine:
+            got = engine.get_main_counter_format()
+            self.assertEqual(got.current_setting, pt.TOOptions_BarsBeats)
+            self.assertEqual(got.current_type, pt.TLType_TimeCode)
+            self.assertEqual(got.possible_settings, [pt.TOOptions_BarsBeats,
+                                                     pt.TOOptions_TimeCode,
+                                                     pt.TOOptions_FeetFrames,
+                                                     pt.TOOptions_Samples])
+            self.assertEqual(got.possible_types, [pt.TLType_TimeCode,
+                                                  pt.TLType_FeetFrames,
+                                                  pt.TLType_Samples,
+                                                  pt.TLType_Frames,
+                                                  pt.TLType_BarsBeats,
+                                                  pt.TLType_MinSecs,
+                                                  pt.TLType_Ticks,
+                                                  pt.TLType_Seconds
+                                                  ])
+
+    def test_get_sub_counter_format(self):
+        fixture = pt.GetSubCounterFormatResponseBody(
+            current_setting=pt.TOOptions_BarsBeats,
+            possible_settings=[pt.TOOptions_BarsBeats,
+                               pt.TOOptions_TimeCode,
+                               pt.TOOptions_FeetFrames,
+                               pt.TOOptions_Samples
+                               ],
+            current_type=pt.TLType_TimeCode,
+            possible_types=[pt.TLType_TimeCode, pt.TLType_FeetFrames,
+                            pt.TLType_Samples,
+                            pt.TLType_Frames,
+                            pt.TLType_BarsBeats,
+                            pt.TLType_MinSecs,
+                            pt.TLType_Ticks,
+                            pt.TLType_Seconds
+                            ])
+        with open_engine_with_mock_client(fixture) as engine:
+            got = engine.get_sub_counter_format()
+            self.assertEqual(got.current_setting, pt.TOOptions_BarsBeats)
+            self.assertEqual(got.current_type, pt.TLType_TimeCode)
+            self.assertEqual(got.possible_settings, [pt.TOOptions_BarsBeats,
+                                                     pt.TOOptions_TimeCode,
+                                                     pt.TOOptions_FeetFrames,
+                                                     pt.TOOptions_Samples])
+            self.assertEqual(got.possible_types, [pt.TLType_TimeCode,
+                                                  pt.TLType_FeetFrames,
+                                                  pt.TLType_Samples,
+                                                  pt.TLType_Frames,
+                                                  pt.TLType_BarsBeats,
+                                                  pt.TLType_MinSecs,
+                                                  pt.TLType_Ticks,
+                                                  pt.TLType_Seconds
+                                                  ])
+
+    def test_undo(self):
+        fixture = pt.UndoResponseBody(
+            operations=[pt.UndoHistoryOperation(
+                time="2024-08-26T12:43:18+0300",
+                operation="Change Session Start",
+                details="00:00:00:00 to 00:00:00:01"
+            )])
+        with open_engine_with_mock_client(fixture) as engine:
+            got = engine.undo(depth=1)
+            self.assertEqual(got.operations[0], pt.UndoHistoryOperation(
+                time="2024-08-26T12:43:18+0300",
+                operation="Change Session Start",
+                details="00:00:00:00 to 00:00:00:01"
+            ))
+
+    def test_redo(self):
+        fixture = pt.RedoResponseBody(
+            operations=[pt.UndoHistoryOperation(
+                time="2024-08-26T12:43:18+0300",
+                operation="Change Session Start",
+                details="00:00:00:00 to 00:00:00:01"
+            )])
+        with open_engine_with_mock_client(fixture) as engine:
+            got = engine.redo(depth=1)
+            self.assertEqual(got.operations[0], pt.UndoHistoryOperation(
+                time="2024-08-26T12:43:18+0300",
+                operation="Change Session Start",
+                details="00:00:00:00 to 00:00:00:01"
+            ))
+
+    def test_undoall(self):
+        fixture = pt.UndoResponseBody(
+            operations=[pt.UndoHistoryOperation(
+                time="2024-08-26T12:43:18+0300",
+                operation="Change Session Start",
+                details="00:00:00:00 to 00:00:00:01"
+            )])
+        with open_engine_with_mock_client(fixture) as engine:
+            got = engine.undoall()
+            self.assertEqual(got.operations[0], pt.UndoHistoryOperation(
+                time="2024-08-26T12:43:18+0300",
+                operation="Change Session Start",
+                details="00:00:00:00 to 00:00:00:01"
+            ))
+
+    def test_redoall(self):
+        fixture = pt.RedoResponseBody(
+            operations=[pt.UndoHistoryOperation(
+                time="2024-08-26T12:43:18+0300",
+                operation="Change Session Start",
+                details="00:00:00:00 to 00:00:00:01"
+            )])
+        with open_engine_with_mock_client(fixture) as engine:
+            got = engine.redoall()
+            self.assertEqual(got.operations[0], pt.UndoHistoryOperation(
+                time="2024-08-26T12:43:18+0300",
+                operation="Change Session Start",
+                details="00:00:00:00 to 00:00:00:01"
+            ))
+
+    def test_clear_undo_queue(self):
+        with open_engine_with_mock_client() as engine:
+            self.assertIsNone(
+                engine.clear_undo_queue()
+            )
+
+    def test_set_track_dsp_mode_safe_state(self):
+        with open_engine_with_mock_client() as engine:
+            test_track = ["xyz1"]
+            self.assertIsNone(
+                engine.set_track_dsp_mode_safe_state(track_names=test_track,
+                                                     new_state=True)
+            )
+
+    def test_get_system_delay(self):
+        fixture = pt.GetSessionSystemDelayInfoResponseBody(
+            samples=1, delay_compensation_enabled=True
+        )
+        with open_engine_with_mock_client(fixture) as engine:
+            got = engine.get_system_delay()
+            self.assertEqual(got, 1)
+
+    def test_group_clips(self):
+        with open_engine_with_mock_client() as engine:
+            self.assertIsNone(
+                engine.group_clips()
+            )
+
+    def test_ungroup_clips(self):
+        with open_engine_with_mock_client() as engine:
+            self.assertIsNone(
+                engine.ungroup_clips()
+            )
+
+    def test_ungroup_all_clips(self):
+        with open_engine_with_mock_client() as engine:
+            self.assertIsNone(
+                engine.ungroup_all_clips()
+            )
+
+    def test_regroup_clips(self):
+        with open_engine_with_mock_client() as engine:
+            self.assertIsNone(
+                engine.regroup_clips()
+            )
+
+    def test_repeat_selection(self):
+        with open_engine_with_mock_client() as engine:
+            self.assertIsNone(
+                engine.repeat_selection(repeats=2)
+            )
+
+    def test_duplicate_selection(self):
+        with open_engine_with_mock_client() as engine:
+            self.assertIsNone(
+                engine.duplicate_selection()
+            )
+
+    def test_clear_all_memory_locations(self):
+        with open_engine_with_mock_client() as engine:
+            self.assertIsNone(
+                engine.clear_all_memory_locations()
+            )
+
+    def test_get_monitor_output_path(self):
+        fixture = pt.GetMonitorOutputPathResponseBody(
+            monitor_path="xyz1")
+        with open_engine_with_mock_client(fixture) as engine:
+            got = engine.get_monitor_output_path()
+            self.assertEqual(got, "xyz1")
+
+    def test_get_edit_selection(self):
+        fixture = pt.GetEditSelectionResponseBody(
+            in_time="xyz1", out_time="xyz2")
+        with open_engine_with_mock_client(fixture) as engine:
+            got = engine.get_edit_selection()
+            self.assertEqual(got, ("xyz1", "xyz2"))

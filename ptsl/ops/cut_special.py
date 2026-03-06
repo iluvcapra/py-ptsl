@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class CutSpecial(Operation):
+class CId_CutSpecial(Operation):
     pass

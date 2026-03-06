@@ -6,7 +6,7 @@ from ptsl import PTSL_pb2 as pt
 from ptsl.ops import Operation
 
 
-class GetTrackList(Operation):
+class CId_GetTrackList(Operation):
 
     def __init__(self, **kwargs) -> None:
         self.track_list: List[pt.Track] = []

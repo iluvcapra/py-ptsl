@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class SetSessionStartTime(Operation):
+class CId_SetSessionStartTime(Operation):
     pass

@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class GetTransportState(Operation):
+class CId_GetTransportState(Operation):
     pass

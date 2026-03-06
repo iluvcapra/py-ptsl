@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class RenameTargetTrack(Operation):
+class CId_RenameTargetTrack(Operation):
     pass

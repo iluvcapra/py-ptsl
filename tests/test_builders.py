@@ -25,7 +25,7 @@ class TestSessionBuilder(TestCase):
 
                 engine.client.run.assert_called()
                 called_op = engine.client.run.call_args.args[0]
-                self.assertIsInstance(called_op, ops.CreateSession)
+                self.assertIsInstance(called_op, ops.CId_CreateSession)
                 self.assertEqual(called_op.request.file_type, pt.SAF_AIFF)
                 self.assertEqual(called_op.request.sample_rate, pt.SR_44100)
                 self.assertEqual(called_op.request.bit_depth, pt.Bit16)
@@ -47,7 +47,7 @@ class TestSessionBuilder(TestCase):
 
                 engine.client.run.assert_called()
                 called_op = engine.client.run.call_args.args[0]
-                self.assertIsInstance(called_op, ops.CreateSession)
+                self.assertIsInstance(called_op, ops.CId_CreateSession)
                 self.assertEqual(called_op.request.file_type, pt.SAF_WAVE)
                 self.assertEqual(called_op.request.sample_rate, pt.SR_48000)
                 self.assertEqual(called_op.request.bit_depth, pt.Bit32Float)
@@ -75,7 +75,8 @@ class TestSessionBuilder(TestCase):
 
                 engine.client.run.assert_called()
                 called_op = engine.client.run.call_args.args[0]
-                self.assertIsInstance(called_op, ops.ExportSessionInfoAsText)
+                self.assertIsInstance(called_op,
+                                      ops.CId_ExportSessionInfoAsText)
                 self.assertTrue(called_op.request.include_clip_list)
                 self.assertTrue(called_op.request.include_markers)
                 self.assertTrue(called_op.request.include_file_list)
@@ -106,7 +107,8 @@ class TestSessionBuilder(TestCase):
 
                 engine.client.run.assert_called()
                 called_op = engine.client.run.call_args.args[0]
-                self.assertIsInstance(called_op, ops.ExportSessionInfoAsText)
+                self.assertIsInstance(called_op,
+                                      ops.CId_ExportSessionInfoAsText)
                 self.assertEqual(called_op.request.track_offset_options,
                                  pt.TimeCode)
                 self.assertEqual(called_op.request.fade_handling_type,

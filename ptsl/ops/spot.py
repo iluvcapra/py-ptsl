@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class Spot(Operation):
+class CId_Spot(Operation):
     pass

@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class GetPTSLVersion(Operation):
+class CId_GetPTSLVersion(Operation):
     pass

@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class RecallZoomPreset(Operation):
+class CId_RecallZoomPreset(Operation):
     pass

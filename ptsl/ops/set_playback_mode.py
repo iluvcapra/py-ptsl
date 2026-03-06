@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class SetPlaybackMode(Operation):
+class CId_SetPlaybackMode(Operation):
     pass

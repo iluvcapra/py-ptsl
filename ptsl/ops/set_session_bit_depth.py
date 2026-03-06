@@ -1,5 +1,5 @@
 from ptsl.ops import Operation
 
 
-class SetSessionBitDepth(Operation):
+class CId_SetSessionBitDepth(Operation):
     pass
