@@ -8,7 +8,10 @@ build-backend = "poetry.core.masonry.api"
 name = "py-ptsl"
 version = "600.2.0"
 description = "Native Python PTSL (Pro Tools Scripting Library) RPC interface"
-authors = [{name = "Jamie Hardt", email = "jamiehardt@me.com"}]
+authors = [
+    {name = "Jamie Hardt", email = "jamiehardt@me.com"},
+    {name = "Justin Stasiw", email = "justinstasiw@gmail.com"},
+]
 license = "BSD-3-Clause"
 readme = "README.md"
 classifiers = [
