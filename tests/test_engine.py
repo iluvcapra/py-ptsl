@@ -680,12 +680,12 @@ class TestEngine(TestCase):
                 engine.set_timeline_selection(in_time="998424",
                                               out_time="1098424",
                                               play_start_marker_time="998424",
-                                              post_roll_enabled=False,
+                                              post_roll_enabled=pt.TB_False,
                                               post_roll_stop_time="1098424",
-                                              pre_roll_enabled=False,
+                                              pre_roll_enabled=pt.TB_False,
                                               pre_roll_start_time="998424",
                                               update_video_to=pt.TUVideo_None,
-                                              propagate_to_satellites=False,
+                                              propagate_to_satellites=pt.TB_False,
                                               location_type=pt.TLType_TimeCode
                                               )
             )
