@@ -416,7 +416,7 @@ class Engine:
         :param MemoryLocationProperties general_properties: Location properties
         :param str comments: Comment field
         :param int color_index: Optional color index. If omitted, Pro Tools 
-            will cycle to the next color in it's palette rather than preserving 
+            will cycle to the next color in its palette rather than preserving 
             the existing color.
         """
         op = ops.CId_EditMemoryLocation(
