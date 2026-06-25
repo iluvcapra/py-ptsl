@@ -400,7 +400,8 @@ class Engine:
                              time_properties: 'TimeProperties',
                              reference: 'MemoryLocationReference',
                              general_properties: 'MemoryLocationProperties',
-                             comments: str):
+                             comments: str,
+                             color_index: Optional[int] = None):
         """
         Edit a memory location.
 
@@ -414,6 +415,9 @@ class Engine:
         :param MemoryLocationReference reference: Reference
         :param MemoryLocationProperties general_properties: Location properties
         :param str comments: Comment field
+        :param int color_index: Optional color index. If omitted, Pro Tools
+            will cycle to the next color in its palette rather than preserving
+            the existing color.
         """
         op = ops.CId_EditMemoryLocation(
             number=location_number,
@@ -423,7 +427,8 @@ class Engine:
             time_properties=time_properties,
             reference=reference,
             general_properties=general_properties,
-            comments=comments
+            comments=comments,
+            color_index=color_index
         )
 
         self.client.run(op)

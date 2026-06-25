@@ -225,6 +225,15 @@ class TestEngine(TestCase):
                     engine.edit_memory_location(**test_fixture)
                 )
 
+    def test_edit_memory_location_with_color_index(self):
+        with open_engine_with_mock_client() as engine:
+            fixture = self.MARKER_LOCATION_FIXTURE[0].copy()
+            fixture['location_number'] = fixture.pop('number')
+            fixture['color_index'] = 7
+            self.assertIsNone(
+                engine.edit_memory_location(**fixture)
+            )
+
     def test_get_memory_locations(self):
         fixture = pt.GetMemoryLocationsResponseBody(
             memory_locations=[
