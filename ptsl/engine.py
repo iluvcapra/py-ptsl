@@ -248,7 +248,7 @@ class Engine:
                                   audio_location=audio_location,
                                   location_data=location_data
                                   )
-        op = ops.CId_Import(import_type=1, audio_data=audio_data)
+        op = ops.CId_Import(import_type=pt.IType_Audio, audio_data=audio_data)
         self.client.run(op)
 
     def select_all_clips_on_track(self, track_name: str):

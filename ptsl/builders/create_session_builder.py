@@ -62,7 +62,6 @@ class CreateSessionBuilder:
         self._is_interleaved = value
 
     def create(self) -> None:
-        import pprint
         op = ops.CId_CreateSession(
             session_name=self._session_name,
             file_type=self._audio_format,
@@ -74,8 +73,6 @@ class CreateSessionBuilder:
             is_cloud_project=False,
             create_from_template=False,
         )
-        print("------")
-        pprint.pprint(op.request)
         self._engine.client.run(op)
 
 
