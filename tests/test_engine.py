@@ -149,6 +149,12 @@ class TestEngine(TestCase):
             builder.link_to_source_audio()
             self.assertIsNone(builder.import_data())
 
+    def test_import_audio_sends_audio_import_type(self):
+        with open_engine_with_mock_client() as engine:
+            engine.import_audio(["a.wav"])
+            op = engine.client.run.call_args[0][0]
+            self.assertEqual(op.request.import_type, pt.IType_Audio)
+
     def test_select_all_clips_on_track(self):
         with open_engine_with_mock_client() as engine:
             self.assertIsNone(
