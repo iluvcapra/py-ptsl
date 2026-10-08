@@ -1041,6 +1041,29 @@ class TestEngine(TestCase):
                 engine.clear_all_memory_locations()
             )
 
+    def test_clear_memory_location(self):
+        fixture = pt.ClearMemoryLocationResponseBody(
+            success_count=1, failure_count=1, failure_list=[2])
+        with open_engine_with_mock_client(fixture) as engine:
+            got = engine.clear_memory_location([1, 2])
+            self.assertEqual(got, [2])
+            op = engine.client.run.call_args.args[0]
+            self.assertEqual(list(op.request.location_list), [1, 2])
+
+    def test_get_time_as_type(self):
+        fixture = pt.GetTimeAsTypeResponseBody(
+            converted_location=pt.TimelineLocation(
+                location="2|1|000", time_type=pt.TLType_BarsBeats))
+        with open_engine_with_mock_client(fixture) as engine:
+            got = engine.get_time_as_type("96000", pt.TLType_Samples,
+                                          pt.TLType_BarsBeats)
+            self.assertEqual(got, "2|1|000")
+            op = engine.client.run.call_args.args[0]
+            self.assertEqual(op.request.location.location, "96000")
+            self.assertEqual(op.request.location.time_type,
+                             pt.TLType_Samples)
+            self.assertEqual(op.request.time_type, pt.TLType_BarsBeats)
+
     def test_get_monitor_output_path(self):
         fixture = pt.GetMonitorOutputPathResponseBody(
             monitor_path="xyz1")
