@@ -443,6 +443,20 @@ class Engine:
         self.client.run(op)
         return op.response.memory_locations
 
+    def clear_memory_location(self, location_numbers: List[int]) -> List[int]:
+        """
+        Clears the given memory locations.
+
+        :param List[int] location_numbers: Numbers of the memory locations
+            to clear
+        :returns: the numbers of any locations that could not be cleared
+        """
+        op = ops.CId_ClearMemoryLocation(location_list=location_numbers)
+        self.client.run(op)
+        if op.response is None:
+            return []
+        return list(op.response.failure_list)
+
     def consolidate_clip(self):
         """
         Consolidate time selection.
@@ -1330,7 +1344,7 @@ class Engine:
         self.client.run(op)
 
     # PT 2025.6
-    # TODO add GetTimeAsType, SubtractLocations
+    # TODO add SubtractLocations
     # TODO add AddLengthToLocation, SubtractPositions,
     # TODO add AddLengthToPosition
     # TODO add ImportAudioToClipList, SpotClipsByID, GetClipList
@@ -1348,6 +1362,27 @@ class Engine:
         self.client.run(op)
 
         return op.response.monitor_path
+
+    def get_time_as_type(self, location: str,
+                         location_type: TimelineLocationType,
+                         time_type: TimelineLocationType) -> str:
+        """
+        Converts a timeline location to another time format, using the
+        session's tempo and meter map.
+
+        :param str location: The location to convert, e.g. "48000"
+        :param TimelineLocationType location_type: The format of `location`,
+            e.g. `TLType_Samples`
+        :param TimelineLocationType time_type: The format to convert to,
+            e.g. `TLType_BarsBeats`
+        :returns: the converted location string
+        """
+        op = ops.CId_GetTimeAsType(
+            location=pt.TimelineLocation(location=location,
+                                         time_type=location_type),
+            time_type=time_type)
+        self.client.run(op)
+        return op.response.converted_location.location
 
     def get_edit_selection(
             self, loc_type: TimelineLocationType = TLType_TimeCode

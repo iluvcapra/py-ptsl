@@ -86,7 +86,8 @@ from .toggle_play_state import \
     CId_PlayHalfSpeed, CId_RecordHalfSpeed
 
 from .memory_locations import CId_EditMemoryLocation, \
-    CId_GetMemoryLocations, CId_CreateMemoryLocation
+    CId_GetMemoryLocations, CId_CreateMemoryLocation, \
+    CId_ClearMemoryLocation
 
 # Pro Tools 2023.9
 
@@ -152,6 +153,7 @@ from .get_session_ids import CId_GetSessionIDs
 
 from .get_edit_selection import CId_GetEditSelection
 from .get_monitor_output_path import CId_GetMonitorOutputPath
+from .get_time_as_type import CId_GetTimeAsType
 
 # Pro Tools 2025.10
 
