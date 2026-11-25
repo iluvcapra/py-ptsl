@@ -11,3 +11,7 @@ class CId_GetMemoryLocations(Operation):
 
 class CId_CreateMemoryLocation(Operation):
     pass
+
+
+class CId_ClearMemoryLocation(Operation):
+    pass
